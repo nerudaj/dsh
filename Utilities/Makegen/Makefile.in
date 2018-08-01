@@ -1,0 +1,9 @@
+[Modules]
+names=Makegen
+
+[Project]
+install=True
+libs=-lconfig -lstrings
+name=makegen
+type=binary
+

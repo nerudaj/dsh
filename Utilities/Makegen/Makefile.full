@@ -1,0 +1,18 @@
+CC=g++
+CFLAGS=-Wall -Wextra -pedantic -I/tools/libs -L/tools/libs
+LIBS=-lstrings -lconfig
+BINNAME=makegen.exe
+
+all: $(BINNAME)
+
+Makegen.o: Makegen.cpp Makegen.hpp
+	$(CC) $(CFLAGS) $^ -c
+
+$(BINNAME): Main.cpp Makegen.o
+	$(CC) $(CFLAGS) $^ -o $@ $(LIBS)
+
+clean:
+	del /y $(BINNAME) *.o *.gch
+
+install:
+	copy /y $(BINNAME) C:\tools\various

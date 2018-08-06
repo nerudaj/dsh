@@ -1,0 +1,10 @@
+[Modules]
+names=Ini;Args;Item
+installheaders=Config;Ini;Args;Item
+
+[Project]
+install=true
+libs=-llogger
+name=config
+type=library
+

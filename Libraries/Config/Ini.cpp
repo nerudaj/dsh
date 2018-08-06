@@ -1,31 +1,33 @@
-#include "Config.hpp"
+#include "Ini.hpp"
 #include <fstream>
 #include <regex>
 
-bool Config::isSectionHeader(const std::string &line) {
+using namespace cfg;
+
+bool Ini::isSectionHeader(const std::string &line) {
 	return std::regex_match (line, std::regex("\\[.+\\]"));
 }
 
-bool Config::isKeyValuePair(const std::string &line) {
+bool Ini::isKeyValuePair(const std::string &line) {
 	return std::regex_match (line, std::regex(".+=.+"));
 }
 
-void Config::getSectionIdentifier(const std::string &line, std::string &dst) {
+void Ini::getSectionIdentifier(const std::string &line, std::string &dst) {
 	dst = line.substr(1, line.length() - 2);
 }
 
-void Config::getKeyValue(const std::string &line, std::string &dstKey, std::string &dstValue) {
+void Ini::getKeyValue(const std::string &line, std::string &dstKey, std::string &dstValue) {
 	auto delimiterPosition = line.find('=');
 	dstKey = line.substr(0, delimiterPosition);
 	dstValue = line.substr(delimiterPosition + 1, line.length() - delimiterPosition - 1);
 }
 
-bool Config::loadFromFile(const std::string &filename) {
+bool Ini::loadFromFile(const std::string &filename) {
 	config.clear();
 	std::ifstream load(filename);
 	
 	if (!load.good()) {
-		std::cerr << "Config::loadFromFile(...) - Could not open file " << filename << ".\n";
+		std::cerr << "Ini::loadFromFile(...) - Could not open file " << filename << ".\n";
 		return false;
 	}
 	
@@ -48,11 +50,11 @@ bool Config::loadFromFile(const std::string &filename) {
 	return true;
 }
 
-bool Config::saveToFile(const std::string &filename) {
+bool Ini::saveToFile(const std::string &filename) {
 	std::ofstream save (filename);
 	
 	if (!save.good()) {
-		std::cerr << "Config::saveToFile(...) - Could not open file " << filename << ".\n";
+		std::cerr << "Ini::saveToFile(...) - Could not open file " << filename << ".\n";
 		return false;
 	}
 	

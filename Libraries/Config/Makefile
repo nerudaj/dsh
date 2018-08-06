@@ -1,23 +1,28 @@
 CC=g++
-CFLAGS=-Wall -Wextra -pedantic
+INSTALLDIR=C:\tools\utils
+CFLAGS=-Wall -Wextra -pedantic -I$(INSTALLDIR) -L$(INSTALLDIR)
 LIBNAME=libconfig.dll
-INSTALLDIR=C:\tools\libs
-
+LIBS=-llogger
 all: $(LIBNAME)
 
-ConfigItem.o: ConfigItem.cpp ConfigItem.hpp
+Ini.o: Ini.cpp Ini.hpp
 	$(CC) $(CFLAGS) -fPIC $^ -c
 
-Config.o: Config.cpp Config.hpp
+Args.o: Args.cpp Args.hpp
 	$(CC) $(CFLAGS) -fPIC $^ -c
 
-$(LIBNAME): Config.o ConfigItem.o
-	$(CC) -shared $^ -o $@
+Item.o: Item.cpp Item.hpp
+	$(CC) $(CFLAGS) -fPIC $^ -c
+
+$(LIBNAME): Ini.o Args.o Item.o 
+	$(CC) $(CFLAGS) -shared $(LIBS) $^ -o $@
 
 clean:
-	del -y *.o *.gch $(LIBNAME)
+	del $(LIBNAME) *.o *.gch
 
 install:
-	copy /y ConfigItem.hpp $(INSTALLDIR)
-	copy /y Config.hpp $(INSTALLDIR)
 	copy /y $(LIBNAME) $(INSTALLDIR)
+	copy /y Config.hpp $(INSTALLDIR)
+	copy /y Ini.hpp $(INSTALLDIR)
+	copy /y Args.hpp $(INSTALLDIR)
+	copy /y Item.hpp $(INSTALLDIR)

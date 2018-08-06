@@ -1,6 +1,7 @@
 CC=g++
 CFLAGS=-Wall -Wextra -pedantic
 LIBNAME=libstrings.dll
+INSTALLDIR=C:\tools\utils
 
 all: $(LIBNAME)
 
@@ -14,5 +15,5 @@ clean:
 	del -y $(LIBNAME) *.o *.gch
 
 install:
-	copy /y Strings.hpp C:\tools\libs
-	copy /y $(LIBNAME) C:\tools\libs
+	copy /y Strings.hpp $(INSTALLDIR)
+	copy /y $(LIBNAME) $(INSTALLDIR)

@@ -2,6 +2,7 @@
 #include <fstream>
 #include <ciso646>
 #include "Makegen.hpp"
+#include <Config.hpp>
 
 int main(int argc, char *argv[]) {
 	if (argc == 3) {

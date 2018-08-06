@@ -1,0 +1,9 @@
+[Modules]
+names=
+
+[Project]
+install=false
+libs=
+name=dummy
+type=binary
+

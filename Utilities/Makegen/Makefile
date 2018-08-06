@@ -1,8 +1,8 @@
 CC=g++
-INSTALLDIR=C:\tools\libs
+INSTALLDIR=C:\tools\utils
 CFLAGS=-Wall -Wextra -pedantic -I$(INSTALLDIR) -L$(INSTALLDIR)
-LIBS=-lconfig -lstrings
 BINNAME=makegen.exe
+LIBS=-lconfig -lstrings -llogger
 
 all: $(BINNAME)
 
@@ -10,7 +10,7 @@ Makegen.o: Makegen.cpp Makegen.hpp
 	$(CC) $(CFLAGS) $^ -c
 
 $(BINNAME): Main.cpp Makegen.o 
-	$(CC) $(CFLAGS) $(LIBS)$^ -o $@
+	$(CC) $(CFLAGS) $(LIBS) $^ -o $@
 
 clean:
 	del $(BINNAME) *.o *.gch

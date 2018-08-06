@@ -15,4 +15,4 @@ clean:
 	del /y $(BINNAME) *.o *.gch
 
 install:
-	copy /y $(BINNAME) C:\tools\various
+	copy /y $(BINNAME) C:\tools\utils

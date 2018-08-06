@@ -4,7 +4,7 @@
 #include <fstream>
 
 bool Makegen::generateMakefile(const std::string &infile) {
-	Config config;
+	cfg::Ini config;
 	
 	if (!config.loadFromFile(infile)) {
 		std::cerr << "ERROR:generateMakefile: Failed to load " << infile << std::endl;
@@ -15,20 +15,21 @@ bool Makegen::generateMakefile(const std::string &infile) {
 		std::ofstream save ("Makefile");
 		bool isLibrary = config["Project"]["type"] == "library";
 		std::string name;
-		std::vector<std::string> modules;
+		std::vector<std::string> modules, installheaders;
 		Strings::split(';', config["Modules"]["names"].asString(), modules);
+		Strings::split(';', config["Modules"]["installheaders"].asString(), installheaders);
 		
 		save << "CC=g++\n";
-		save << "INSTALLDIR=C:\\tools\\libs\n";
+		save << "INSTALLDIR=C:\\tools\\utils\n";
 		save << "CFLAGS=-Wall -Wextra -pedantic -I$(INSTALLDIR) -L$(INSTALLDIR)\n";
 		
+		save << "LIBS=" << config["Project"]["libs"].asString() << "\n";
 		if (isLibrary) {
 			name = "LIBNAME";
-			save << name << "=lib" << config["Project"]["name"].asString() << ".dll\n";
+			save << name << "=lib" << config["Project"]["name"].asString() << ".dll\n\n";
 		}
 		else {
 			name = "BINNAME";
-			save << "LIBS=" << config["Project"]["libs"].asString() << "\n";
 			save << name << "=" << config["Project"]["name"].asString() << ".exe\n\n";
 		}
 		
@@ -50,22 +51,23 @@ bool Makegen::generateMakefile(const std::string &infile) {
 			save << module << ".o ";
 		}
 		save << "\n";
-		save << "\t$(CC) ";
+		save << "\t$(CC) $(CFLAGS) ";
 		if (isLibrary) save << "-shared ";
-		else save << "$(CFLAGS) $(LIBS)";
-		save << "$^ -o $@\n\n";
+		save << "$(LIBS) $^ -o $@\n\n";
 		
 		// Create clean and install targets
 		save << "clean:\n\tdel $(" << name << ") *.o *.gch\n\n";
 		
 		if (config["Project"]["install"].asBool()) {
 			save << "install:\n";
-			save << "\tcopy /y $(" << name << ") $(INSTALLDIR)";
+			save << "\tcopy /y $(" << name << ") $(INSTALLDIR)\n";
 			
 			if (isLibrary) {
-				for (auto module : modules) {
-					save << "\tcopy /y " << module << ".hpp $(INSTALLDIR)";
+				for (auto header : installheaders) {
+					save << "\tcopy /y " << header << ".hpp $(INSTALLDIR)\n";
 				}
+				
+				
 			}
 		}
 		
@@ -81,13 +83,15 @@ bool Makegen::generateMakefile(const std::string &infile) {
 }
 
 bool Makegen::generateInfile(const std::string &filename, Makegen::Mode mode) {
-	Config config;
+	cfg::Ini config;
 	
 	if (mode == Makegen::Mode::Library) {
 		config["Project"]["type"] = "library";
 		config["Project"]["name"] = "dummy";
+		config["Project"]["libs"] = "";
 		config["Project"]["install"] = "false";
 		config["Modules"]["names"] = "dummy";
+		config["Modules"]["installheaders"] = "";
 	}
 	else {
 		config["Project"]["type"] = "binary";

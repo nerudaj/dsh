@@ -1,0 +1,10 @@
+[Modules]
+names=Logger
+installheaders=Logger
+
+[Project]
+install=true
+libs=
+name=logger
+type=library
+

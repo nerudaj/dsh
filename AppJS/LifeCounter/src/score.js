@@ -45,7 +45,7 @@ function RenderDisplay(id, canvas, app) {
 	score.dom.style.fontSize = SCORE_FONT_SIZE + "px";
 	
 	var minus = canvas.add(0, 0, 0.25, 1, 'button');
-	minus.setText('-', false, SCORE_FONT_SIZE);
+	minus.setText('−', false, SCORE_FONT_SIZE);
 	minus.dom.addEventListener('click', function() { ModifyScore(app.context.players, id, -1); });
 	minus.dom.className = 'score_btn';
 	

@@ -2,7 +2,7 @@ CC=g++
 INSTALLDIR=C:\tools\utils
 CFLAGS=-Wall -Wextra -pedantic -I$(INSTALLDIR) -L$(INSTALLDIR)
 BINNAME=makegen.exe
-LIBS=-lconfig -lstrings -llogger
+LIBS=-lconfig -lstrings
 
 all: $(BINNAME)
 

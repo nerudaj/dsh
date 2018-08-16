@@ -2,8 +2,8 @@
 names=Makegen
 
 [Project]
-install=install
-libs=-lconfig -lstrings -llogger
+install=true
+libs=lconfig;lstrings
 name=makegen
+staticlibs=logger.a
 type=binary
-

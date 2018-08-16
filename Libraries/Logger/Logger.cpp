@@ -1,16 +1,16 @@
 #include "Logger.hpp"
 
-int Logger::loglevel = 1;
+unsigned Logger::loglevel = 1;
 
 void Logger::debug(const std::string &module, const std::string &message) {
 	if (loglevel >= 4) {
-		std::cerr << "DEBUG: " << module << ": " << message << std::endl;
+		std::cout << "DEBUG: " << module << ": " << message << std::endl;
 	}
 }
 
 void Logger::info(const std::string &module, const std::string &message) {
 	if (loglevel >= 3) {
-		std::cerr << "INFO: " << module << ": " << message << std::endl;
+		std::cout << "INFO: " << module << ": " << message << std::endl;
 	}
 }
 

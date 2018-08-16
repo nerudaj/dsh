@@ -1,14 +1,14 @@
 CC=g++
 INSTALLDIR=C:\tools\utils
 CFLAGS=-Wall -Wextra -pedantic -I$(INSTALLDIR) -L$(INSTALLDIR)
-LIBNAME=liblogger.dll
+LIBNAME=logger.a
 all: $(LIBNAME)
 
 Logger.o: Logger.cpp Logger.hpp
-	$(CC) $(CFLAGS) -fPIC $^ -c
+	$(CC) $(CFLAGS) $^ -c
 
 $(LIBNAME): Logger.o 
-	$(CC) -shared $^ -o $@
+	ar rvs $@ $^
 
 clean:
 	del $(LIBNAME) *.o *.gch

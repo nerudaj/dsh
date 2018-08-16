@@ -9,7 +9,7 @@ public:
 		Library, Binary
 	};
 
-	static bool generateMakefile(const std::string &infile);
+	static bool generateMakefile(const std::string &infile, const std::string &outfile);
 	
 	static bool generateInfile(const std::string &filename, Makegen::Mode mode);
 };

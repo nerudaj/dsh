@@ -38,7 +38,7 @@ function RenderBoard(canvas, app) {
 
 function RenderDisplay(id, canvas, app) {
 	if (SCORE_FONT_SIZE == null) {
-		SCORE_FONT_SIZE = GetOptimalFontSize('000', canvas.width * 0.5, canvas.height);
+		SCORE_FONT_SIZE = GetOptimalFontSize('XX', canvas.width * 0.25, canvas.height);
 	}
 	
 	var score = canvas.add(0.25, 0, 0.5, 1, 'div', 'DisplayScore' + id);

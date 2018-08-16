@@ -1,0 +1,33 @@
+html, body {
+	margin: 0px;
+	padding: 0px;
+	font-family: Segoe UI;
+	overflow: hidden;
+}
+
+div {
+	justify-content: center;
+	align-items: center;
+	display: flex;
+}
+
+button {
+	background: none;
+}
+
+#Canvas {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	z-index: 9999999;
+}
+
+.score_btn {
+	border: 0px;
+	opacity: 0.5;
+}
+
+.score_btn:active {
+	opacity: 0.5;
+	background: white;
+}

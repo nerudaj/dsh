@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+	<meta charset="UTF-8"> 
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+	
+	<link rel="stylesheet" type="text/css" href="app.css"> 
+	
+	<title>App</title>
+
+
+	<script type="text/javascript" src="app.min.js"></script>
+	<!--script type="text/javascript" src="src/app.js"></script>
+	<script type="text/javascript" src="src/score.js"></script>
+	<script type="text/javascript" src="src/dice.js"></script>
+	<script type="text/javascript" src="src/settings.js"></script-->
+</head>
+
+<body onload="Init();" id="Core">
+	<div id="Canvas">Loading...</div>
+	<span style="visibility: hidden; position: absolute; top: -200px;" id="HiddenResizer"></span>
+	
+	<script type="text/javascript">
+		// Global variables
+		var app = new App();
+		
+		function Player () {
+			this.score = 0;
+			this.color = "red";
+		}
+		
+		// Bootstrap app
+		function Init() {
+			app.bootstrap('Canvas');
+			
+			// Setup app context
+			app.context['players'] = [];
+			app.context['initScore'] = 0;
+			app.context['numOfPlayers'] = 4;
+			app.context['colorSetup'] = [ 0, 1, 2, 3, 4, 5 ];
+			
+			for (var i = 0; i < app.context.numOfPlayers; i++) {
+				app.context.players.push(new Player());
+				app.context.players[i].score = app.context.initScore;
+				app.context.players[i].color = COLORS[app.context.colorSetup[i]];
+			}
+			
+			// Setup views
+			var views = [
+				{ callback: RenderScore, name: "score" },
+				{ callback: RenderSettings, name: "settings" },
+				{ callback: RenderDice, name: "dice" }
+			];
+			
+			for (var i = 0; i < views.length; i++) {
+				var view = new View();
+				view.render = views[i].callback;
+				app.addView(view, views[i].name);
+			}
+			
+			app.toggleView("score");
+		}
+	</script>
+</body>
+
+</html>

@@ -2,7 +2,7 @@ CC=g++
 INSTALLDIR=C:\tools\utils
 CFLAGS=-Wall -Wextra -pedantic -I$(INSTALLDIR) -L$(INSTALLDIR)
 LIBNAME=libconfig.dll
-LIBS=-llogger
+LIBS=-Wl,--whole-archive /tools/utils/logger.a -Wl,--no-whole-archive
 all: $(LIBNAME)
 
 Ini.o: Ini.cpp Ini.hpp

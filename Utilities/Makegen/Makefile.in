@@ -3,7 +3,7 @@ names=Makegen
 
 [Project]
 install=true
-libs=lconfig;lstrings
+libs=lconfig;lstrings;llogger
 name=makegen
-staticlibs=logger.a
+staticlibs=
 type=binary

@@ -38,14 +38,14 @@ function RenderBoard(canvas, app) {
 
 function RenderDisplay(id, canvas, app) {
 	if (SCORE_FONT_SIZE == null) {
-		SCORE_FONT_SIZE = GetOptimalFontSize('000', canvas.width * 0.5, canvas.height);
+		SCORE_FONT_SIZE = GetOptimalFontSize('XX', canvas.width * 0.25, canvas.height);
 	}
 	
 	var score = canvas.add(0.25, 0, 0.5, 1, 'div', 'DisplayScore' + id);
 	score.dom.style.fontSize = SCORE_FONT_SIZE + "px";
 	
 	var minus = canvas.add(0, 0, 0.25, 1, 'button');
-	minus.setText('-', false, SCORE_FONT_SIZE);
+	minus.setText('−', false, SCORE_FONT_SIZE);
 	minus.dom.addEventListener('click', function() { ModifyScore(app.context.players, id, -1); });
 	minus.dom.className = 'score_btn';
 	
@@ -66,11 +66,11 @@ function ModifyScore(players, id, amount, forceAssign) {
 }
 
 function RenderToolbar(canvas, app) {
-	var opt1 = canvas.add(0, 0, 0.5, 1, 'button', 'TBtnToDice');
+	var opt1 = canvas.add(0.05, 0.05, 0.425, 0.9, 'button', 'TBtnToDice');
 	opt1.setText('Kdo začne?', true);
 	opt1.dom.addEventListener('click', function() { app.toggleView('dice'); });
 	
-	var opt2 = canvas.add(0.5, 0, 0.5, 1, 'button', 'TBtnToSettings');
+	var opt2 = canvas.add(0.525, 0.05, 0.425, 0.9, 'button', 'TBtnToSettings');
 	opt2.setText('Nastavení', true);
 	opt2.dom.addEventListener('click', function() { app.toggleView('settings'); });
 }

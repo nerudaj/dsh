@@ -1,0 +1,12 @@
+[Modules]
+installheaders=waves
+names=waves
+
+[Project]
+install=true
+libs=
+name=waves
+staticlibs=
+subtype=dynamic
+type=library
+

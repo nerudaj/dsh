@@ -80,7 +80,7 @@ function GetOptimalFontSize(str, width, height, startSize) {
 	var rw = resizer.offsetWidth;
 	var rh = resizer.offsetHeight;
 	
-	while (rw > width || rh > height) {
+	while (rw > width * 0.8 || rh > height * 0.8) {
 		fontSize -= 1;
 		resizer.style.fontSize = fontSize + "px";
 		rw = resizer.offsetWidth;
@@ -167,8 +167,8 @@ Element.prototype.setText = function(str, autofit, startSize) {
 	var fontSize = null;
 	
 	if (autofit) {
-		//startsize = DefaultArgument(startsize, 100);
-		GetOptimalFontSize(str, this.width, this.height, startSize);
+		startSize = DefaultArgument(startSize, 100);
+		fontSize = GetOptimalFontSize(str, this.width, this.height, startSize);
 	}
 	else if (startSize !== 'undefined') {
 		fontSize = startSize;

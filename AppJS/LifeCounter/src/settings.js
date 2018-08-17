@@ -52,11 +52,13 @@ function RenderFormInitScore(canvas, app) {
 	
 	var minus5 = canvas.add(0, 0, ITEM_WIDTH, 1, 'button');
 	minus5.dom.addEventListener('click', function() { ModifyInitScore(-5, app); });
+	minus5.dom.className = 'init_score_btn init_score_btn_left';
 	minus5.setColor('darkred');
 	minus5.setText('-5');
 	
 	var minus1 = canvas.add(1 * ITEM_WIDTH, 0, ITEM_WIDTH, 1, 'button');
 	minus1.dom.addEventListener('click', function() { ModifyInitScore(-1, app); });
+	minus1.dom.className = 'init_score_btn init_score_btn_right';
 	minus1.setColor('red');
 	minus1.setText('-1');
 	
@@ -65,11 +67,13 @@ function RenderFormInitScore(canvas, app) {
 	
 	var plus1 = canvas.add(3 * ITEM_WIDTH, 0, ITEM_WIDTH, 1, 'button');
 	plus1.dom.addEventListener('click', function() { ModifyInitScore(1, app); });
+	plus1.dom.className = 'init_score_btn init_score_btn_left';
 	plus1.setColor('lightgreen');
 	plus1.setText('1');
 	
 	var plus5 = canvas.add(4 * ITEM_WIDTH, 0, ITEM_WIDTH, 1, 'button');
 	plus5.dom.addEventListener('click', function() { ModifyInitScore(5, app); });
+	plus5.dom.className = 'init_score_btn init_score_btn_right';
 	plus5.setColor('green');
 	plus5.setText('5');
 }
@@ -103,11 +107,11 @@ function RenderFormColorWheel(canvas, app) {
 }
 
 function RenderSettingsToolbar(canvas, app) {
-	var opt1 = canvas.add(0, 0, 0.5, 1, 'button');
+	var opt1 = canvas.add(0.05, 0.05, 0.425, 0.9, 'button');
 	opt1.dom.addEventListener('click', function() { ApplySettings(app); app.toggleView('score'); });
 	opt1.setText('Použít', true);
 
-	var opt2 = canvas.add(0.5, 0, 0.5, 1, 'button');
+	var opt2 = canvas.add(0.525, 0.05, 0.425, 0.9, 'button');
 	opt2.dom.addEventListener('click', function() { app.toggleView('score'); });
 	opt2.setText('Zpět', true);
 }

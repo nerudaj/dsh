@@ -1,7 +1,11 @@
 var DICE_FONT_SIZE = null;
 
 function RenderDice() {
-	var board = this.app.canvas.add(0, 0, 1, 0.9);
+	var header = this.app.canvas.add(0, 0, 1, 0.1);
+	header.setText('Kdo začne?', true);
+	header.setColor('lightgrey');
+	
+	var board = this.app.canvas.add(0, 0.1, 1, 0.8);
 	RenderDiceRows(board, this.app)
 	
 	var toolbar = this.app.canvas.add(0, 0.9, 1, 0.1);
@@ -11,7 +15,7 @@ function RenderDice() {
 
 function RenderDiceRows(canvas, app) {
 	var ROW_HEIGHT = 1 / app.context.players.length;
-	DICE_FONT_SIZE = GetOptimalFontSize('Hráč X hodil: XX', canvas.width, canvas.height * ROW_HEIGHT);
+	DICE_FONT_SIZE = GetOptimalFontSize('Hráč XX hodil: XXX', canvas.width, canvas.height * ROW_HEIGHT);
 	
 	for (var i = 0; i < app.context.players.length; i++) {
 		var row = canvas.add(0, i * ROW_HEIGHT, 1, ROW_HEIGHT, 'div', 'DiceRow' + i);
@@ -22,11 +26,11 @@ function RenderDiceRows(canvas, app) {
 }
 
 function RenderToolbarDice(canvas, app) {
-	var opt1 = canvas.add(0, 0, 0.5, 1, 'button');
+	var opt1 = canvas.add(0.05, 0.05, 0.425, 0.9, 'button');
 	opt1.dom.addEventListener('click', function() { ThrowDice(app); });
 	opt1.setText('Hoď kostkami', true);
 	
-	var opt2 = canvas.add(0.5, 0, 0.5, 1, 'button');
+	var opt2 = canvas.add(0.525, 0.05, 0.425, 0.9, 'button');
 	opt2.dom.addEventListener('click', function() { app.toggleView('score'); });
 	opt2.setText('Zpět', true);
 }

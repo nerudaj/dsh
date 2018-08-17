@@ -91,8 +91,14 @@ std::vector<T> Waves<T>::sawtooth(float frequency, float amplitude, unsigned sam
 }
 
 template<class T>
-std::vector<T> Waves<T>::noise(float frequency, float amplitude, unsigned samples, unsigned samplesPerSecond) {
+std::vector<T> Waves<T>::noise(float amplitude, unsigned samples) {
 	std::vector<T> result (samples);
+	
+	float maxAmplitude = power(2, sizeof(T) * 8);
+	
+	for (unsigned i = 0; i < samples; i++) {
+		result[i] = (rand() % uint32_t(maxAmplitude)) * amplitude;
+	}
 	
 	return result;
 }

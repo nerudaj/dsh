@@ -3,8 +3,6 @@
 #include <iostream>
 
 const float PI = 3.1415926536f;
-const float PIOVER180 = 0.0174532925f;
-
 float power (unsigned base, unsigned exp) {
 	float result = 1.f;
 	
@@ -18,7 +16,7 @@ std::vector<T> Waves<T>::square(float frequency, float amplitude, unsigned sampl
 	std::vector<T> result (samples);
 	
 	float samplePeriod = samplesPerSecond / frequency; // How many samples per single period
-	float maxAmplitude = power(2, sizeof(T) * 8) / 2 - 1; // -1 to prevent off-by-one error
+	float maxAmplitude = (power(2, sizeof(T) * 8) - 1) / 2; // -1 to prevent off-by-one error
 	unsigned halfPeriod = unsigned(samplePeriod / 2);
 	
 	unsigned cnt = 0, state = -1;
@@ -39,6 +37,24 @@ template<class T>
 std::vector<T> Waves<T>::triangle(float frequency, float amplitude, unsigned samples, unsigned samplesPerSecond) {
 	std::vector<T> result (samples);
 	
+	float samplePeriod = samplesPerSecond / frequency; // How many samples per single period
+	float samplePeriodHalf = samplePeriod / 2;
+	float maxAmplitude = (power(2, sizeof(T) * 8) - 1) / 2; // -1 to prevent off-by-one error
+	
+	for (unsigned i = 0; i < samples; i++) {
+		unsigned normalizedIndex = (i + unsigned(3 * samplePeriod / 4)) % unsigned(samplePeriod);
+		
+		float sample;
+		if (normalizedIndex <= samplePeriodHalf) {
+			sample = -(normalizedIndex / samplePeriodHalf) + 1;
+		}
+		else {
+			sample = (normalizedIndex - samplePeriodHalf) / samplePeriodHalf - 1;
+		}
+		
+		result[i] = T((sample * maxAmplitude * amplitude) + maxAmplitude);
+	}
+	
 	return result;
 }
 
@@ -47,12 +63,12 @@ std::vector<T> Waves<T>::sine(float frequency, float amplitude, unsigned samples
 	std::vector<T> result (samples);
 	
 	float samplePeriod = samplesPerSecond / frequency; // How many samples per single period
-	float maxAmplitude = power(2, sizeof(T) * 8) / 2 - 1; // -1 to prevent off-by-one error
+	float maxAmplitude = (power(2, sizeof(T) * 8) - 1) / 2; // -1 to prevent off-by-one error
 	
 	for (unsigned i = 0; i < samples; i++) {
 		// normovana perioda = samplesPerSecond / frekvence
 		// 2PI .... normovanaPerioda
-		// X  .... sample
+		// X   .... sample
 		float sample = sin(i * 2 * PI / samplePeriod) * (maxAmplitude * amplitude); 
 		result[i] = T(sample + maxAmplitude);
 	}

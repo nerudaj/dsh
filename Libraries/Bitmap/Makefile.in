@@ -1,0 +1,12 @@
+[Modules]
+installheaders=Bitmap
+names=Bitmap
+
+[Project]
+install=true
+libs=-llogger
+name=bitmap
+staticlibs=
+subtype=dynamic
+type=library
+

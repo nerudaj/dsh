@@ -12,6 +12,8 @@ div {
 }
 
 button {
+	border-radius: 15px;
+	border: 3px solid black;
 	background: none;
 }
 
@@ -23,6 +25,7 @@ button {
 }
 
 .score_btn {
+	border-radius: 0px;
 	border: 0px;
 	opacity: 0.5;
 }
@@ -30,4 +33,27 @@ button {
 .score_btn:active {
 	opacity: 0.5;
 	background: white;
+}
+
+.init_score_btn {
+	border: 0px;
+	border-radius: 0px;
+	border-top: 1px solid;
+	border-bottom: 1px solid;
+}
+
+.init_score_btn:active {
+	opacity: 0.5;
+}
+
+.init_score_btn_left {
+	border-top-left-radius: 15px;
+	border-bottom-left-radius: 15px;
+	border-left: 1px solid;
+}
+
+.init_score_btn_right {
+	border-top-right-radius: 15px;
+	border-bottom-right-radius: 15px;
+	border-right: 1px solid;
 }

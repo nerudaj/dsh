@@ -66,11 +66,11 @@ function ModifyScore(players, id, amount, forceAssign) {
 }
 
 function RenderToolbar(canvas, app) {
-	var opt1 = canvas.add(0, 0, 0.5, 1, 'button', 'TBtnToDice');
+	var opt1 = canvas.add(0.05, 0.05, 0.425, 0.9, 'button', 'TBtnToDice');
 	opt1.setText('Kdo začne?', true);
 	opt1.dom.addEventListener('click', function() { app.toggleView('dice'); });
 	
-	var opt2 = canvas.add(0.5, 0, 0.5, 1, 'button', 'TBtnToSettings');
+	var opt2 = canvas.add(0.525, 0.05, 0.425, 0.9, 'button', 'TBtnToSettings');
 	opt2.setText('Nastavení', true);
 	opt2.dom.addEventListener('click', function() { app.toggleView('settings'); });
 }

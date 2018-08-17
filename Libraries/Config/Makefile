@@ -1,8 +1,9 @@
 CC=g++
 INSTALLDIR=C:\tools\utils
 CFLAGS=-Wall -Wextra -pedantic -I$(INSTALLDIR) -L$(INSTALLDIR)
+LIBS=-llogger 
 LIBNAME=libconfig.dll
-LIBS=-Wl,--whole-archive /tools/utils/logger.a -Wl,--no-whole-archive
+
 all: $(LIBNAME)
 
 Ini.o: Ini.cpp Ini.hpp
@@ -15,7 +16,7 @@ Item.o: Item.cpp Item.hpp
 	$(CC) $(CFLAGS) -fPIC $^ -c
 
 $(LIBNAME): Ini.o Args.o Item.o 
-	$(CC) $(CFLAGS) -shared $(LIBS) $^ -o $@
+	$(CC) $(CFLAGS) -shared $(LIBS)  $^ -o $@
 
 clean:
 	del $(LIBNAME) *.o *.gch

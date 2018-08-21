@@ -109,6 +109,10 @@ void Image::setPixel(uint32_t x, uint32_t y, uint8_t value) {
 }
 
 void Image::setPalette(const std::vector<Color> &palette) {
+	colors = palette;
+	
+	while (colors.size() > 256) colors.pop_back();
+	while (colors.size() < 256) colors.push_back({255, 255, 255, 0});
 }
 
 void Image::setPalette(PaletteID id) {

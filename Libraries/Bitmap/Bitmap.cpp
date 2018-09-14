@@ -50,10 +50,12 @@ bool Image::loadFromFile(const std::string &filename) {
 	try {
 		std::ifstream load(filename);
 		
-		// TODO: This
+		log.error("Image", "Loading from file is not implemented!");
 		
 		load.close();
 		load.clear();
+		
+		return false;
 	}
 	catch (std::exception &e) {
 		log.error("Image", "Exception: " + std::string(e.what()));

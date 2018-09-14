@@ -1,0 +1,10 @@
+[Modules]
+names=
+
+[Project]
+install=true
+libs=-lconfig;-lstrings;-llogger
+name=hexrgb
+staticlibs=
+type=binary
+

@@ -3,7 +3,7 @@ var DICE_FONT_SIZE = null;
 function RenderDice() {
 	var header = this.app.canvas.add(0, 0, 1, 0.1);
 	header.setText('Kdo začne?', true);
-	header.setColor('lightgrey');
+	header.setColor('#AAAAAA');
 	
 	var board = this.app.canvas.add(0, 0.1, 1, 0.8);
 	RenderDiceRows(board, this.app)
@@ -26,11 +26,14 @@ function RenderDiceRows(canvas, app) {
 }
 
 function RenderToolbarDice(canvas, app) {
-	var opt1 = canvas.add(0.05, 0.05, 0.425, 0.9, 'button');
+	var TOOLBAR_BUTTON_WIDTH = 0.5;
+	var TOOLBAR_BUTTON_HEIGHT = 1;
+	
+	var opt1 = canvas.add(0.0, 0, TOOLBAR_BUTTON_WIDTH, TOOLBAR_BUTTON_HEIGHT, 'button');
 	opt1.dom.addEventListener('click', function() { ThrowDice(app); });
 	opt1.setText('Hoď kostkami', true);
 	
-	var opt2 = canvas.add(0.525, 0.05, 0.425, 0.9, 'button');
+	var opt2 = canvas.add(0.5, 0, TOOLBAR_BUTTON_WIDTH, TOOLBAR_BUTTON_HEIGHT, 'button');
 	opt2.dom.addEventListener('click', function() { app.toggleView('score'); });
 	opt2.setText('Zpět', true);
 }

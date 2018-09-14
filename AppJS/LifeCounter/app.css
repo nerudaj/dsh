@@ -12,9 +12,18 @@ div {
 }
 
 button {
-	border-radius: 15px;
-	border: 3px solid black;
+	/*border-radius: 15px;
+	border: 3px solid black;*/
+	border: 0px;
+	text-decoration: underline;
 	background: none;
+	padding: 0px;
+	margin: 0px;
+}
+
+button:active {
+	background: white;
+	opacity: 0.5;
 }
 
 #Canvas {
@@ -28,6 +37,7 @@ button {
 	border-radius: 0px;
 	border: 0px;
 	opacity: 0.5;
+	text-decoration: none;
 }
 
 .score_btn:active {
@@ -40,6 +50,7 @@ button {
 	border-radius: 0px;
 	border-top: 1px solid;
 	border-bottom: 1px solid;
+	text-decoration: none;
 }
 
 .init_score_btn:active {

@@ -1,11 +1,11 @@
 [Modules]
-names=Ini;Args;Item
-installheaders=Config;Ini;Args;Item
+names=Ini;Args;Item;Csv
+installheaders=Config;Ini;Args;Item;Csv
 
 [Project]
 name=config
 type=library
 subtype=dynamic
 install=true
-libs=-llogger
+libs=-llogger;-lstrings
 staticlibs=

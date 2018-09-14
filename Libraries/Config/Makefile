@@ -1,7 +1,7 @@
 CC=g++
 INSTALLDIR=C:\tools\utils
 CFLAGS=-Wall -Wextra -pedantic -I$(INSTALLDIR) -L$(INSTALLDIR)
-LIBS=-llogger 
+LIBS=-llogger -lstrings 
 LIBNAME=libconfig.dll
 
 all: $(LIBNAME)
@@ -15,7 +15,10 @@ Args.o: Args.cpp Args.hpp
 Item.o: Item.cpp Item.hpp
 	$(CC) $(CFLAGS) -fPIC $^ -c
 
-$(LIBNAME): Ini.o Args.o Item.o 
+Csv.o: Csv.cpp Csv.hpp
+	$(CC) $(CFLAGS) -fPIC $^ -c
+
+$(LIBNAME): Ini.o Args.o Item.o Csv.o 
 	$(CC) $(CFLAGS) -shared $(LIBS)  $^ -o $@
 
 clean:
@@ -27,3 +30,4 @@ install:
 	copy /y Ini.hpp $(INSTALLDIR)
 	copy /y Args.hpp $(INSTALLDIR)
 	copy /y Item.hpp $(INSTALLDIR)
+	copy /y Csv.hpp $(INSTALLDIR)

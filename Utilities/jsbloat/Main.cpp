@@ -43,8 +43,15 @@ int main(int argc, char *argv[]) {
 	}
 	
 	// Apply rules
+	for (auto row : csv) {
+		Strings::replaceAll(file, row[0], row[1]);
+	}
 	
 	// Export file
+	std::ofstream save (filename + ".out");
+	save << file;
+	save.close();
+	save.clear();
 	
 	return 0;
 }

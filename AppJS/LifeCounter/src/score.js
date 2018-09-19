@@ -6,6 +6,7 @@ function RenderScore() {
 	RenderBoard(board, this.app);
 	
 	var toolbar = this.app.canvas.add(0, 0.9, 1, 0.1);
+	toolbar.dom.style.border = '1px solid black';
 	toolbar.setColor('grey');
 	RenderToolbar(toolbar, this.app);
 }
@@ -27,6 +28,7 @@ function RenderBoard(canvas, app) {
 			}
 			
 			var display = canvas.add(x * ITEM_WIDTH, y * ITEM_HEIGHT, ITEM_WIDTH, ITEM_HEIGHT);
+			display.dom.style.border = '1px solid black';
 			display.setColor(app.context.players[pid].color);
 			RenderDisplay(pid, display, app);
 			
@@ -66,15 +68,19 @@ function ModifyScore(players, id, amount, forceAssign) {
 }
 
 function RenderToolbar(canvas, app) {
-	var opt1 = canvas.add(0, 0, 0.33, 1, 'button', 'TBtnToDice');
-	opt1.setText('Kdo začne?', true);
+	var opt1 = canvas.add(0, 0, 1 / 3, 1, 'button', 'TBtnToDice');
+	var optimFontSize = GetOptimalFontSize('Nastavení', opt1.width, opt1.height);
+	opt1.dom.style.fontSize = optimFontSize + 'px';
+	opt1.setText('Kdo začne?');
 	opt1.dom.addEventListener('click', function() { app.toggleView('dice'); });
 	
-	var opt2 = canvas.add(0.33, 0, 0.33, 1, 'button');
-	opt2.setText('Nezdržuj', true);
+	var opt2 = canvas.add(1 / 3, 0, 1 / 3, 1, 'button');
+	opt2.dom.style.fontSize = optimFontSize + 'px';
+	opt2.setText('Nezdržuj');
 	opt2.dom.addEventListener('click', function() { app.toggleView('timer'); });
 	
-	var opt3 = canvas.add(0.66, 0, 0.33, 1, 'button', 'TBtnToSettings');
-	opt3.setText('Nastavení', true);
+	var opt3 = canvas.add(2 / 3, 0, 1 / 3, 1, 'button', 'TBtnToSettings');
+	opt3.dom.style.fontSize = optimFontSize + 'px';
+	opt3.setText('Nastavení');
 	opt3.dom.addEventListener('click', function() { app.toggleView('settings'); });
 }

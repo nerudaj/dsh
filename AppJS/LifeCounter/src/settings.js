@@ -10,6 +10,7 @@ function RenderSettings() {
 	RenderSettingBoard(board, this.app);
 
 	var toolbar = this.app.canvas.add(0, 0.9, 1, 0.1);
+	toolbar.dom.style.border = '1px solid black';
 	toolbar.setColor('grey');
 	RenderSettingsToolbar(toolbar, this.app);
 }
@@ -59,28 +60,28 @@ function RenderFormInitScore(canvas, app) {
 	minus5.dom.addEventListener('click', function() { ModifyInitScore(-5, app); });
 	minus5.dom.className = 'init_score_btn init_score_btn_left';
 	minus5.setColor('darkred');
-	minus5.setText('-5');
+	minus5.setText('-5', true);
 	
 	var minus1 = canvas.add(1 * ITEM_WIDTH, 0, ITEM_WIDTH, 1, 'button');
 	minus1.dom.addEventListener('click', function() { ModifyInitScore(-1, app); });
 	minus1.dom.className = 'init_score_btn init_score_btn_right';
 	minus1.setColor('red');
-	minus1.setText('-1');
+	minus1.setText('-1', true);
 	
 	var display = canvas.add(2 * ITEM_WIDTH, 0, ITEM_WIDTH, 1, 'div', 'FormInitScoreDisplay');
-	display.setText(app.context.initScore);
+	display.setText(app.context.initScore, true);
 	
 	var plus1 = canvas.add(3 * ITEM_WIDTH, 0, ITEM_WIDTH, 1, 'button');
 	plus1.dom.addEventListener('click', function() { ModifyInitScore(1, app); });
 	plus1.dom.className = 'init_score_btn init_score_btn_left';
 	plus1.setColor('lightgreen');
-	plus1.setText('1');
+	plus1.setText('1', true);
 	
 	var plus5 = canvas.add(4 * ITEM_WIDTH, 0, ITEM_WIDTH, 1, 'button');
 	plus5.dom.addEventListener('click', function() { ModifyInitScore(5, app); });
 	plus5.dom.className = 'init_score_btn init_score_btn_right';
 	plus5.setColor('green');
-	plus5.setText('5');
+	plus5.setText('5', true);
 }
 
 function ModifyInitScore(amount, app) {
@@ -97,6 +98,7 @@ function RenderFormColorWheel(canvas, app) {
 	
 	for (var i = 0; i < MAX_PLAYERS; i++) {
 		var row = canvas.add(0, i * ROW_HEIGHT, 1, ROW_HEIGHT);
+		row.dom.style.border = "1px solid black";
 		
 		for (var c = 0; c < COLORS.length; c++) {
 			var item = row.add(c * ITEM_WIDTH, 0, ITEM_WIDTH, 1);

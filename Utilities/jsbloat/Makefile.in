@@ -3,8 +3,8 @@ names=
 
 [Project]
 install=true
-libs=-lconfig -lstrings
+libs=-lconfig;-lstrings;-llogger
 name=jsbloat
-staticlibs=-llogger
+staticlibs=
 type=binary
 

@@ -1,10 +1,11 @@
 [Modules]
-names=Logger
 installheaders=Logger
+names=Logger
 
 [Project]
 install=true
 libs=
 name=logger
+staticlibs=
+subtype=dynamic
 type=library
-

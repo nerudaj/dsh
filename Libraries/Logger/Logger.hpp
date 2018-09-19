@@ -10,7 +10,7 @@
  */
 class Logger {
 private:
-	static unsigned loglevel; ///< Level determining which events will be reported. Default: 1. Logs nothing if set to 0
+	unsigned loglevel; ///< Level determining which events will be reported. Default: 1. Logs nothing if set to 0
 
 public:
 	/**
@@ -22,7 +22,7 @@ public:
 	 *  \details Logging happen if the loglevel is 4 or higher. Newline is appended to message. Log format:
 	 *  DEBUG: <module>: <message>
 	 */
-	static void debug(const std::string &module, const std::string &message);
+	void debug(const std::string &module, const std::string &message);
 	
 	/**
 	 *  \brief Logs an info message
@@ -33,7 +33,7 @@ public:
 	 *  \details Logging happen if the loglevel is 3 or higher. Newline is appended to message. Log format:
 	 *  INFO: <module>: <message>
 	 */
-	static void info(const std::string &module, const std::string &message);
+	void info(const std::string &module, const std::string &message);
 	
 	/**
 	 *  \brief Logs a warning message
@@ -44,7 +44,7 @@ public:
 	 *  \details Logging happen if the loglevel is 2 or higher. Newline is appended to message. Log format:
 	 *  WARNING: <module>: <message>
 	 */
-	static void warning(const std::string &module, const std::string &message);
+	void warning(const std::string &module, const std::string &message);
 	
 	/**
 	 *  \brief Logs an error message
@@ -55,7 +55,16 @@ public:
 	 *  \details Logging happen if the loglevel is 1 or higher. Newline is appended to message. Log format:
 	 *  ERROR: <module>: <message>
 	 */
-	static void error(const std::string &module, const std::string &message);
+	void error(const std::string &module, const std::string &message);
+	
+	/**
+	 *  \brief Set which messages will get printed
+	 *  
+	 *  \param [in] level 1 - error, 2 - warning, 3 - info, 4 - debug
+	 */
+	void setLoggingLevel(int level);
+	
+	Logger();
 };
 
 #endif

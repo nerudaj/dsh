@@ -1,6 +1,5 @@
 #include "Args.hpp"
 #include <regex>
-#include <Logger.hpp>
 
 using namespace cfg;
 
@@ -23,12 +22,12 @@ bool Args::parse(int argc, char *argv[]) {
 	for (int i = 1; i < argc; i++) {
 		std::string opt(argv[i]);
 		
-		Logger::debug("Args", "Parsing argument " + opt);
+		logger.debug("Args", "Parsing argument " + opt);
 		
 		// If it is '-[a-zA-Z]' string, treat it like a argument
 		if (hasArgumentFormat(opt)) {
 			if (not isOptionDefined(opt)) { // And check whether it is in arguments map
-				Logger::error("Args", opt + " is an unknown argument");
+				logger.error("Args", opt + " is an unknown argument");
 				return false;
 			}
 		}
@@ -39,7 +38,7 @@ bool Args::parse(int argc, char *argv[]) {
 		
 		// Check if it is first occurence of the argument
 		if (arguments[opt].set) {
-			Logger::error("Args", opt + " is already set");
+			logger.error("Args", opt + " is already set");
 			return false;
 		}
 		arguments[opt].set = true;
@@ -47,7 +46,7 @@ bool Args::parse(int argc, char *argv[]) {
 		// Work out optional values
 		if (arguments[opt].hasValue) {
 			if (i + 1 >= argc) {
-				Logger::error("Args", "Argument " + opt + " requires a value");
+				logger.error("Args", "Argument " + opt + " requires a value");
 				return false;
 			}
 			
@@ -59,7 +58,7 @@ bool Args::parse(int argc, char *argv[]) {
 	// Check if all required are set
 	for (auto argument : arguments) {
 		if (argument.second.required and not argument.second.set) {
-			Logger::error("Args", "Argument " + argument.first + " is mandatory");
+			logger.error("Args", "Argument " + argument.first + " is mandatory");
 			return false;
 		}
 	}
@@ -69,7 +68,7 @@ bool Args::parse(int argc, char *argv[]) {
 
 bool Args::setupArguments(const std::string &argarray) {
 	if (not isValidArgArray(argarray)) {
-		Logger::error("Args", "Given argarray is not valid. It must compy to regex: ([a-zA-Z]([!:])?)+");
+		logger.error("Args", "Given argarray is not valid. It must compy to regex: ([a-zA-Z]([!:])?)+");
 		return false;
 	}
 	
@@ -77,10 +76,10 @@ bool Args::setupArguments(const std::string &argarray) {
 		std::string opt = "-";
 		opt += argarray[i];
 		
-		Logger::debug("Args", "Dealing with argument " + opt);
+		logger.debug("Args", "Dealing with argument " + opt);
 		
 		if (isOptionDefined(opt)) {
-			Logger::error("Args", "Redefinition of argument " + opt);
+			logger.error("Args", "Redefinition of argument " + opt);
 			return false;
 		}
 		
@@ -90,13 +89,13 @@ bool Args::setupArguments(const std::string &argarray) {
 			char c = argarray[i + 1];
 			
 			if (c == '!') {
-				Logger::debug("Args", "Argument is mandatory");
+				logger.debug("Args", "Argument is mandatory");
 				arguments[opt].hasValue = true;
 				arguments[opt].required = true;
 				i++;
 			}
 			else if (c == ':') {
-				Logger::debug("Args", "Argument has a value");
+				logger.debug("Args", "Argument has a value");
 				arguments[opt].hasValue = true;
 				i++;
 			}

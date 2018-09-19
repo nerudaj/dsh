@@ -14,7 +14,8 @@ void printHelp(char *progname) {
 		{"-g", "Generate *.in file. Default name is Makefile.in" },
 		{"-i", "Set the name of the infile. Example: '-i infile.in'. Default: 'Makefile.in'"},
 		{"-m", "Set the name of the produced Makefile. Example: '-o Makefile.project'. Default: 'Makefile'"},
-		{"-t", "Set the type of the project (library|binary). Default: 'binary'"}
+		{"-t", "Set the type of the project (library|binary). Default: 'binary'"},
+		{"-v", "Set the verbosity level: 1, 2, 3 or 4. Value of 4 will print everything"}
 	};
 	
 	for (auto row : rows) {
@@ -26,9 +27,10 @@ void printHelp(char *progname) {
 }
 
 int main(int argc, char *argv[]) {
-	//Logger::loglevel = 4;
+	Logger logger;
+	
 	cfg::Args args;
-	args.setupArguments("hgi:m:t:");
+	args.setupArguments("hgi:m:t:v:");
 	
 	if (not args.parse(argc, argv)) {
 		printHelp(argv[0]);
@@ -43,20 +45,21 @@ int main(int argc, char *argv[]) {
 	std::string infile = "Makefile.in", outfile = "Makefile", type = "binary";
 	int generateWhich = 1; // 0 - infile, 1 - outfile
 	
+	if (args.isSet('v')) logger.setLoggingLevel(args.getArgumentValue('v').asInt());
 	if (args.isSet('i')) infile = args.getArgumentValue('i').asString();
 	if (args.isSet('m')) outfile = args.getArgumentValue('o').asString();
 	if (args.isSet('t')) {
 		type = args.getArgumentValue('t').asString();
-		Logger::info("Makegen", "Project type is " + type);
+		logger.info("Makegen", "Project type is " + type);
 	}
 	if (args.isSet('g')) {
-		Logger::info("Makegen", "Generating infile");
+		logger.info("Makegen", "Generating infile");
 		generateWhich = 0;
 	}
 	
 	Makegen::Mode mode = Makegen::Mode::Binary;
 	if (type != "binary" && type != "library") {
-		Logger::warning("Makegen", "Unknown type of the project. Fallback to default (binary)");
+		logger.warning("Makegen", "Unknown type of the project. Fallback to default (binary)");
 	}
 	if (type == "library") mode = Makegen::Mode::Library;
 	

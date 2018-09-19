@@ -1,9 +1,10 @@
 [Modules]
-names=Makegen
+names=
 
 [Project]
 install=true
-libs=lconfig;lstrings;llogger
-name=makegen
+libs=-lconfig;-lstrings;-llogger
+name=hexrgb
 staticlibs=
 type=binary
+

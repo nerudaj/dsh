@@ -4,6 +4,7 @@
 #include <iostream>
 #include <map>
 #include <vector>
+#include <Logger.hpp>
 
 #include "Item.hpp"
 
@@ -38,6 +39,7 @@ namespace cfg {
 		 *  \return TRUE if is
 		 */
 		bool isOptionDefined(const std::string &opt); ///< Whether option is stored in arguments
+		Logger logger;
 		
 	public:
 		/**

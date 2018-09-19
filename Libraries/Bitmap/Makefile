@@ -1,15 +1,15 @@
 CC=g++
 INSTALLDIR=C:\tools\utils
 CFLAGS=-Wall -Wextra -pedantic -I$(INSTALLDIR) -L$(INSTALLDIR)
-LIBS=
-LIBNAME=liblogger.dll
+LIBS=-llogger 
+LIBNAME=libbitmap.dll
 
 all: $(LIBNAME)
 
-Logger.o: Logger.cpp Logger.hpp
+Bitmap.o: Bitmap.cpp Bitmap.hpp
 	$(CC) $(CFLAGS) -fPIC $^ -c
 
-$(LIBNAME): Logger.o 
+$(LIBNAME): Bitmap.o 
 	$(CC) $(CFLAGS) -shared $(LIBS)  $^ -o $@
 
 clean:
@@ -17,4 +17,4 @@ clean:
 
 install:
 	copy /y $(LIBNAME) $(INSTALLDIR)
-	copy /y Logger.hpp $(INSTALLDIR)
+	copy /y Bitmap.hpp $(INSTALLDIR)

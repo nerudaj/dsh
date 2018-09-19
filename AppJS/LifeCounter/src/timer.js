@@ -6,6 +6,7 @@ function RenderTimer() {
 	RenderTimerBoard(board, this.app);
 	
 	var toolbar = this.app.canvas.add(0, 0.9, 1, 0.1);
+	toolbar.dom.style.border = '1px solid black';
 	toolbar.setColor('grey');
 	RenderTimerToolbar(toolbar, this.app);
 }
@@ -57,15 +58,15 @@ function IntToTime(t) {
 }
 
 function RenderTimerControls(canvas, app) {
-	var btnPlay = canvas.add(0, 0, 0.33, 1, 'button');
+	var btnPlay = canvas.add(0, 0, 1 / 3, 1, 'button');
 	btnPlay.dom.addEventListener('click', function() { CountdownControl(app, 'play'); });
 	btnPlay.setText('Spusť', true);
 	
-	var btnPause = canvas.add(0.33, 0, 0.33, 1, 'button');
+	var btnPause = canvas.add(1 / 3, 0, 1 / 3, 1, 'button');
 	btnPause.dom.addEventListener('click', function() { CountdownControl(app, 'pause'); });
 	btnPause.setText('Pauza', true);
 	
-	var btnStop = canvas.add(0.66, 0, 0.33, 1, 'button');
+	var btnStop = canvas.add(2 / 3, 0, 1 / 3, 1, 'button');
 	btnStop.dom.addEventListener('click', function() { CountdownControl(app, 'stop'); });
 	btnStop.setText('Reset', true);
 }
@@ -73,10 +74,14 @@ function RenderTimerControls(canvas, app) {
 function RenderTimerSettings(canvas, app) {
 	var minus5 = canvas.add(0, 0, 0.2, 1, 'button');
 	minus5.dom.addEventListener('click', function() { ModifyInitCountdown(app, -5) });
+	minus5.dom.className = 'init_score_btn init_score_btn_left';
+	minus5.setColor('darkred');
 	minus5.setText('-5', true);
 	
 	var minus1 = canvas.add(0.2, 0, 0.2, 1, 'button');
 	minus1.dom.addEventListener('click', function() { ModifyInitCountdown(app, -1) });
+	minus1.dom.className = 'init_score_btn init_score_btn_right';
+	minus1.setColor('red');
 	minus1.setText('-1', true);
 	
 	var initcnt = canvas.add(0.4, 0, 0.2, 1, 'div', 'InitCountdownDisplay');
@@ -84,10 +89,14 @@ function RenderTimerSettings(canvas, app) {
 	
 	var plus1 = canvas.add(0.6, 0, 0.2, 1, 'button');
 	plus1.dom.addEventListener('click', function() { ModifyInitCountdown(app, 1) });
+	plus1.dom.className = 'init_score_btn init_score_btn_left';
+	plus1.setColor('lightgreen');
 	plus1.setText('+1', true);
 	
 	var plus5 = canvas.add(0.8, 0, 0.2, 1, 'button');
 	plus5.dom.addEventListener('click', function() { ModifyInitCountdown(app, 5); });
+	plus5.dom.className = 'init_score_btn init_score_btn_right';
+	plus5.setColor('green');
 	plus5.setText('+5', true);
 	
 	ModifyInitCountdown(app, 0);

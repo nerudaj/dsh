@@ -18,6 +18,9 @@
 	
 	<!-- Use during development. Add new lines as needed -->
 	<script type="text/javascript" src="src/app.js"></script>
+	<script type="text/javascript" src="src/pieces.js"></script>
+	<script type="text/javascript" src="src/board.js"></script>
+	<script type="text/javascript" src="src/game.js"></script>
 </head>
 
 <body onload="Init();" id="Core">
@@ -38,7 +41,7 @@
 
 			// Setup views
 			var views = [
-				// { callback: fooname, name: "viewname" }
+				{ callback: RenderGame, name: 'game' }
 			];
 			
 			// Add views to app
@@ -49,7 +52,7 @@
 			}
 			
 			// Toggle default view
-			// app.toggleView("viewname");
+			app.toggleView('game');
 		}
 	</script>
 </body>

@@ -1,18 +1,15 @@
 var PIECES = {
-	'white': {
-		'pawn': '♙', // Pesak
-		'rook': '♖', // Vez
-		'knight': '♘', // Jezdec
-		'bishop': '♗', // Strelec
-		'queen': '♕', // Dama
-		'king': '♔' // Kral
-	},
-	'black': {
-		'pawn': '♟',
-		'rook': '♜',
-		'knight': '♞',
-		'bishop': '♝',
-		'queen': '♛',
-		'king': '♚'
-	}
+	'w-pawn': '♙', // Pesak
+	'w-rook': '♖', // Vez
+	'w-knight': '♘', // Jezdec
+	'w-bishop': '♗', // Strelec
+	'w-queen': '♕', // Dama
+	'w-king': '♔', // Kral
+
+	'b-pawn': '♟',
+	'b-rook': '♜',
+	'b-knight': '♞',
+	'b-bishop': '♝',
+	'b-queen': '♛',
+	'b-king': '♚'
 };

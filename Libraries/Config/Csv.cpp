@@ -158,6 +158,17 @@ bool Csv::saveToFile(const std::string &filename, char delimiter, char newline, 
 	return true;
 }
 
+std::size_t Csv::headerID(const std::string &name) {
+	for (std::size_t i = 0; i < headers.size(); i++) {
+		if (headers[i].asStr() == name) {
+			return i;
+		}
+	}
+	
+	throw std::out_of_range;
+	return -1; // Never happens
+}
+
 void Csv::setHeaders(const std::vector<cfg::Item> &headers) {
 	log.info("Csv::setHeaders", "TODO this");
 	Csv::headers = headers;

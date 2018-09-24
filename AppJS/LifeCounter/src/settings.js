@@ -20,24 +20,24 @@ function RenderSettings() {
 'static'; function RenderSettingBoard(canvas, app) {
 	var ROW_COUNT = 11;
 	var ROW_HEIGHT = 1 / ROW_COUNT;
-	canvas.dom.style.fontSize = GetOptimalFontSize('Počáteční skóre', canvas.width, canvas.height * ROW_HEIGHT) + 'px';
+	canvas.dom.style.fontSize = GetOptimalFontSize(TEXTS.initScore, canvas.width, canvas.height * ROW_HEIGHT) + 'px';
 
 	var header1 = canvas.add(0, 0, 1, ROW_HEIGHT);
-	header1.setText('Počet hráčů:', false);
+	header1.setText(TEXTS.plCount, false);
 	header1.setColor('#AAAAAA');
 
 	var pcount = canvas.add(0, 1 * ROW_HEIGHT, 1, ROW_HEIGHT);
 	RenderFormPlayerCount(pcount, app);
 
 	var header2 = canvas.add(0, 2 * ROW_HEIGHT, 1, ROW_HEIGHT);
-	header2.setText('Počáteční skóre:', false);
+	header2.setText(TEXTS.initScore, false);
 	header2.setColor('#AAAAAA');
 
 	var sinit = canvas.add(0, 3 * ROW_HEIGHT, 1, ROW_HEIGHT);
 	RenderFormInitScore(sinit, app);
 
 	var header3 = canvas.add(0, 4 * ROW_HEIGHT, 1, ROW_HEIGHT);
-	header3.setText('Barvy hráčů:', false);
+	header3.setText(TEXTS.plColors, false);
 	header3.setColor('#AAAAAA');
 	
 	var cwheel = canvas.add(0, 5 * ROW_HEIGHT, 1, 6 * ROW_HEIGHT);
@@ -121,11 +121,11 @@ function RenderSettings() {
 	
 	var opt1 = canvas.add(0, 0, TOOLBAR_BUTTON_WIDTH, TOOLBAR_BUTTON_HEIGHT, 'button');
 	opt1.dom.addEventCallback('click', function() { ApplySettings(app); app.toggleView('score'); });
-	opt1.setText('Použít', true);
+	opt1.setText(TEXTS.apply, true);
 
 	var opt2 = canvas.add(0.5, 0, TOOLBAR_BUTTON_WIDTH, TOOLBAR_BUTTON_HEIGHT, 'button');
 	opt2.dom.addEventCallback('click', function() { app.toggleView('score'); });
-	opt2.setText('Zpět', true);
+	opt2.setText(TEXTS.back, true);
 }
 
 'static'; function ApplySettings(app) {

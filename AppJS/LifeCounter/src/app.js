@@ -1,6 +1,6 @@
 "use strict";
 
-var LOG_ERROR_LEVEL = 1;
+'static'; var LOG_ERROR_LEVEL = 1;
 
 function ID(id) {return id;}
 

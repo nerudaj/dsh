@@ -71,18 +71,18 @@ function RenderScore() {
 
 'static'; function RenderToolbar(canvas, app) {
 	var opt1 = canvas.add(0, 0, 1 / 3, 1, 'button', ID('TBtnToDice'));
-	var optimFontSize = GetOptimalFontSize('Nastavení', opt1.width, opt1.height);
+	var optimFontSize = GetOptimalFontSize(TEXTS.settings, opt1.width, opt1.height);
 	opt1.dom.style.fontSize = optimFontSize + 'px';
-	opt1.setText('Kdo začne?');
+	opt1.setText(TEXTS.whoStarts);
 	opt1.dom.addEventCallback('click', function() { app.toggleView('dice'); });
 	
 	var opt2 = canvas.add(1 / 3, 0, 1 / 3, 1, 'button');
 	opt2.dom.style.fontSize = optimFontSize + 'px';
-	opt2.setText('Nezdržuj');
+	opt2.setText(TEXTS.timer);
 	opt2.dom.addEventCallback('click', function() { app.toggleView('timer'); });
 	
 	var opt3 = canvas.add(2 / 3, 0, 1 / 3, 1, 'button', ID('TBtnToSettings'));
 	opt3.dom.style.fontSize = optimFontSize + 'px';
-	opt3.setText('Nastavení');
+	opt3.setText(TEXTS.settings);
 	opt3.dom.addEventCallback('click', function() { app.toggleView('settings'); });
 }

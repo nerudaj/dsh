@@ -19,7 +19,7 @@ function RenderTimer() {
 	context.countdown = context.initCountdown; // Reset countdown value
 	
 	var header = canvas.add(0, 0, 1, 0.1);
-	header.setText('Odpočet', true);
+	header.setText(TEXTS.countdown, true);
 	header.setColor('#AAAAAA');
 	
 	var timer = canvas.add(0, 0.1, 1, 0.4, 'div', ID('CountdownDisplay'));
@@ -31,7 +31,7 @@ function RenderTimer() {
 	var notify = canvas.add(0, 0.6, 1, 0.1);
 	
 	var header2 = canvas.add(0, 0.7, 1, 0.1);
-	header2.setText('Nastavení', true);
+	header2.setText(TEXTS.settings, true);
 	header2.setColor('#AAAAAA');
 	
 	var settings = canvas.add(0, 0.8, 1, 0.2);
@@ -44,11 +44,11 @@ function RenderTimer() {
 	
 	var opt1 = canvas.add(0, 0, TOOLBAR_BUTTON_WIDTH, TOOLBAR_BUTTON_HEIGHT, 'button');
 	opt1.dom.addEventCallback('click', function() { CountdownControl(app, 'stop'); });
-	opt1.setText('Nastav', true);
+	opt1.setText(TEXTS.set, true);
 	
 	var opt2 = canvas.add(0.5, 0, TOOLBAR_BUTTON_WIDTH, TOOLBAR_BUTTON_HEIGHT, 'button');
 	opt2.dom.addEventCallback('click', function() { app.toggleView('score'); });
-	opt2.setText('Zpět', true);
+	opt2.setText(TEXTS.back, true);
 }
 
 // -------------------
@@ -61,7 +61,7 @@ function RenderTimer() {
 
 'static'; function RenderTimerControls(canvas, app) {
 	var labels = [
-		['Spusť', 'play'], ['Pauza', 'pause'], ['Reset', 'stop']
+		[TEXTS.run, 'play'], [TEXTS.pause, 'pause'], [TEXTS.reset, 'stop']
 	];
 	var frac = 1 / labels.length;
 	
@@ -117,7 +117,7 @@ function RenderTimer() {
 			
 			if (context.countdown == 0) {
 				clearInterval(context.cntIntHndl);
-				dom.innerHTML = 'KONEC!';
+				dom.innerHTML = TEXTS.end;
 			}
 		}, 1000);
 	}

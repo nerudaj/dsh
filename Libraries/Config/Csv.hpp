@@ -13,11 +13,9 @@ namespace cfg {
 	protected:
 		std::vector<std::vector<cfg::Item>> rows; ///< Database of rows
 		std::vector<cfg::Item>headers; ///< Array of headers (can be empty)
-	
-		bool parseLine(char **buffer, std::vector<cfg::Item> &row, int flags, char delimiter, char newline, char quote);
-		void tokenToRow(const char *buffer, int start, int last, std::vector<cfg::Item> &row, char quote);
+
 		Logger log;
-	
+
 	public:
 		/**
 		 *  \brief Flags for altering behaviour of \ref loadFromFile.

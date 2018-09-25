@@ -8,21 +8,30 @@ using cfg::Csv;
 enum class ParserMode {
 	Start,
 	Quoted,
-	Unquoted
+	Unquoted,
+	Endquote
 };
 
 struct ParserSettings {
 	char delimiter;
 	char quote;
 	char newline;
-}
+};
 
 bool parseToken(const std::string &file, std::string::const_iterator &itr, std::string &token, int flags, ParserSettings settings) {
 	ParserMode mode = ParserMode::Start;
 
-	std::string token;
+	auto first = itr;
+	auto last = itr;
+	bool parsing = true, rtncode = true;
 
-	while (true) {
+	while (parsing) {
+		if (itr == file.end()) {
+			last = itr;
+			rtncode = false;
+			break;
+		}
+		
 		switch (mode) {
 		case ParserMode::Start:
 			if (*itr == settings.quote) {
@@ -34,18 +43,54 @@ bool parseToken(const std::string &file, std::string::const_iterator &itr, std::
 			break;
 			
 		case ParserMode::Quoted:
-			
+			if (*itr == settings.quote) {
+				 mode = ParserMode::Endquote;
+			}
 			break;
 
 		case ParserMode::Unquoted:
+			if (*itr == settings.delimiter) {
+				last = itr;
+				parsing = false;
+			}
+			else if (*itr == settings.newline) {
+				last = itr;
+				parsing = false;
+				rtncode = false;
+			}
+			else if (*itr == settings.quote) {
+				throw std::runtime_error("Invalid '" + std::string(1, settings.quote) + "' character at position: " + std::to_string(itr - file.begin()));
+			}
+			break;
+			
+		case ParserMode::Endquote:
+			if (*itr == settings.delimiter) {
+				last = itr;
+				parsing = false;
+			}
+			else if (*itr == settings.newline) {
+				last = itr;
+				parsing = false;
+				rtncode = false;
+			}
+			else if (*itr == settings.quote) {
+				mode = ParserMode::Quoted;
+			}
+			else {
+				throw std::runtime_error("Invalid non-delimiter, non-newline character followed after closing quote at position: " + std::to_string(itr - file.begin()));
+			}
 			break;
 		}
+		
+		itr++;
 	}
 	
-	return true;
+	token = std::string(first, last);
+	
+	return rtncode;
 }
 
-bool Csv::parseLine(const std::string &file, std::string::const_iterator &itr, std::vector<cfg::Item> &row, int flags, ParserSettings settings) {
+bool parseLine(const std::string &file, std::string::const_iterator &itr, std::vector<cfg::Item> &row, int flags, ParserSettings settings) {
 	if (itr == file.end()) return false; // Parsing ended
 
 	row.clear();
@@ -56,7 +101,7 @@ bool Csv::parseLine(const std::string &file, std::string::const_iterator &itr, s
 	while (parseToken(file, itr, token, flags, settings)) {
 		if (token[0] == token.back() && token[0] == settings.quote) {
 			token = token.substr(1, token.size() - 2);
-			Strings::replaceAll(token, std::string(settings.quote) + std::string(settings.quote), std::string(settings.quote);
+			Strings::replaceAll(token, std::string(1, settings.quote) + std::string(1, settings.quote), std::string(1, settings.quote));
 		}
 		
 		row.push_back(cfg::Item(token));
@@ -74,13 +119,13 @@ bool Csv::loadFromFile(const std::string &filename, int flags, char delimiter, c
 		std::ifstream load(filename);
 
 		// Get size of file
-		load.seekg(0, load.end);
+		load.seekg(0, std::ios::end);
 		unsigned fsize = load.tellg();
-		load.seekg(0, load.begin);
+		load.seekg(0, std::ios::beg);
 
 		// Allocate buffer
 		char *filebuf = new char[fsize];
-		if (filebuf == NULL) throw std::bad_alloc;
+		if (filebuf == NULL) throw std::bad_alloc();
 
 		// Read file into memory
 		load.read(filebuf, fsize);
@@ -95,7 +140,7 @@ bool Csv::loadFromFile(const std::string &filename, int flags, char delimiter, c
 	}
 	
 	// Parse file
-	auto fileItr = file.begin();
+	std::string::const_iterator fileItr = file.begin();
 	
 	// Process headers
 	if (!(flags & Csv::Flags::NoHeaders)) {
@@ -111,7 +156,7 @@ bool Csv::loadFromFile(const std::string &filename, int flags, char delimiter, c
 	return true;
 }
 
-bool Csv::saveToFile(const std::string &filename, char delimiter, char newline, char quote) {
+/*bool Csv::saveToFile(const std::string &filename, char delimiter, char newline, char quote) {
 	try {
 		log.error("Csv::saveToFile", "Not implemented");
 		return false;
@@ -122,16 +167,16 @@ bool Csv::saveToFile(const std::string &filename, char delimiter, char newline, 
 	}
 	
 	return true;
-}
+}*/
 
 std::size_t Csv::headerID(const std::string &name) {
 	for (std::size_t i = 0; i < headers.size(); i++) {
-		if (headers[i].asStr() == name) {
+		if (headers[i].asString() == name) {
 			return i;
 		}
 	}
 	
-	throw std::out_of_range;
+	throw std::out_of_range("Header " + name + " is not available");
 	return -1; // Never happens
 }
 

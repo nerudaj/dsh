@@ -51,6 +51,12 @@ namespace cfg {
 		bool operator==(const float value) const { return asFloat() == value; }
 
 		Item();
+		Item(const char *value);
+		Item(const std::string &value);
+		Item(const bool value);
+		Item(const int value);
+		Item(const long value);
+		Item(const float value);
 		~Item();
 	};
 }

@@ -188,5 +188,5 @@ void Csv::setHeaders(const std::vector<cfg::Item> &headers) {
 }
 
 Csv::Csv() {
-	log.setLoggingLevel(4);
+	log.setLoggingLevel(3);
 }

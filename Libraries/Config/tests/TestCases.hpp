@@ -5,9 +5,6 @@
 #include "../Config.hpp"
 
 class TestCase {
-private:
-	std::string data;
-
 public:
 	void assume(bool condition, const std::string &message) {
 		if (!condition) throw std::runtime_error(message);
@@ -16,22 +13,28 @@ public:
 	virtual void run() =0;
 
 	TestCase() {}
-	TestCase(const std::string &context) { data = context; }
 	virtual ~TestCase() {}
 };
 
-class Test0 : public TestCase {
+class TestLoadValidCSV : public TestCase {
+protected:
+	std::string data;
+
 public:
 	virtual void run() final override {
 		cfg::Csv csv;
-		assume(csv.loadFromFile("tests/test0.csv", int(cfg::Csv::Flags::NoHeaders)), "CSV did not loaded file test0.csv correctly");
+		assume(csv.loadFromFile(data, int(cfg::Csv::Flags::NoHeaders)), "CSV did not loaded file " + data + " correctly");
 		assume(csv.getSize() == 2, "Number of rows should have been 2");
 		
 		/*for (auto row = csv.begin(); row != csv.end(); row++) {
 			assume(row.size() == 3, "Size of each row should be 3");
 		}*/
+		int cnt = 0;
 		for (auto row : csv) {
-			assume(row.size() == 3, "Size of each row should be 3");
+			assume(row.size() == 3, "Size of row " + std::to_string(cnt) + " should be 3, but is " + std::to_string(row.size()));
+			cnt++;
 		}
 	}
+	
+	TestLoadValidCSV(const std::string &filename) { data = filename; }
 };

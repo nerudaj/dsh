@@ -4,7 +4,10 @@
 
 int main() {
 	std::vector<TestCase*> cases = {
-		new Test0(), 
+		new TestLoadValidCSV("tests/test0.csv"),
+		new TestLoadValidCSV("tests/test1.csv"),
+		new TestLoadValidCSV("tests/test2.csv"),
+		new TestLoadValidCSV("tests/test3.csv")
 	};
 
 	int cnt = 1;

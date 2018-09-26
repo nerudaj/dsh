@@ -9,3 +9,4 @@ subtype=dynamic
 install=true
 libs=-llogger
 staticlibs=
+tests=false

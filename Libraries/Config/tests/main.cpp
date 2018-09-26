@@ -13,12 +13,14 @@ int main() {
 
 		try {
 			test->run();
+			std::cout << "[OK]\n";
 		}
 		catch (std::exception &e) {
 			std::cout << "Exception occured: " << e.what() << "\n";
 		}
 
 		delete test;
+		cnt++;
 	}
 
 	return 0;

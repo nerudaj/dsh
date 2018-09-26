@@ -21,6 +21,15 @@ Csv.o: Csv.cpp Csv.hpp
 $(LIBNAME): Ini.o Args.o Item.o Csv.o 
 	$(CC) $(CFLAGS) -shared $(LIBS)  $^ -o $@
 
+test: $(LIBNAME) install build_test run_test
+
+build_test: tests/main.cpp
+	$(CC) $(CFLAGS) $^ -o $@ -lstrings -llogger -L./ -l:libconfig.dll 
+
+run_test: test
+	cls
+	test
+
 clean:
 	del $(LIBNAME) *.o *.gch
 

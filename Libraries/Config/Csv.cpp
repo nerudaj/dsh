@@ -119,9 +119,11 @@ bool Csv::loadFromFile(const std::string &filename, int flags, char delimiter, c
 		std::ifstream load(filename);
 
 		// Get size of file
-		load.seekg(0, std::ios::end);
+		load.seekg(0, load.end);
 		unsigned fsize = load.tellg();
-		load.seekg(0, std::ios::beg);
+		load.seekg(0, load.beg);
+
+		log.debug("Csv::loadFromFile", "File size is " + std::to_string(fsize) + " bytes.");
 
 		// Allocate buffer
 		char *filebuf = new char[fsize];

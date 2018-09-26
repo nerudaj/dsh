@@ -24,7 +24,7 @@ class Test0 : public TestCase {
 public:
 	virtual void run() final override {
 		cfg::Csv csv;
-		assume(csv.loadFromFile("test0.csv", int(cfg::Csv::Flags::NoHeaders)), "CSV did not loaded file test0.csv correctly");
+		assume(csv.loadFromFile("tests/test0.csv", int(cfg::Csv::Flags::NoHeaders)), "CSV did not loaded file test0.csv correctly");
 		assume(csv.getSize() == 2, "Number of rows should have been 2");
 		
 		/*for (auto row = csv.begin(); row != csv.end(); row++) {

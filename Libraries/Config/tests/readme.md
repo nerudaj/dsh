@@ -24,6 +24,8 @@ In file `tests/TestCases.hpp' create new class TestXX (where XX is smallest unus
 
 Then implement the pure virtual function `void run()` with your test functionality.
 
+Also, implement pure virtual function `std::string name() const` which will be used as a simple tool for obtaining name of your test.
+
 #### Error reporting
 
 As you might have noticed, the run() method has no return value. Instead of that, run() should throw exception whenever neccessary as the testrunner catches any exception and deals with it properly.

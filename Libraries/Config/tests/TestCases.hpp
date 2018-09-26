@@ -1,17 +1,40 @@
 #pragma once
 
 #include <string>
-#include <cassert>
 #include <vector>
 #include "../Config.hpp"
 
+/**
+ *  \brief Base class for deriving test cases from
+ */
 class TestCase {
 public:
+	/**
+	 *  \brief Advanced replacement for assert
+	 *  
+	 *  \param [in] condition Result of bool operation
+	 *  \param [in] message Message that will be displayed if \p condition is false
+	 *  
+	 *  \details If condition is false, then an exception is thrown
+	 */
 	void assume(bool condition, const std::string &message) {
 		if (!condition) throw std::runtime_error(message);
 	}
 
+	/**
+	 *  \brief Main code of test
+	 *  
+	 *  \details Implement this function in your derived class - this is the main logic of your test. Use \ref assume whenever applicable.
+	 */
 	virtual void run() =0;
+
+	/**
+	 *  \brief Get name of the test case
+	 *  
+	 *  \return Copy of name string
+	 *  
+	 *  \details Implement this function in your derived class. This function is used to make testing output more comprehensive. Usual format of this string is: NameOfTheClass(important,parameters)
+	 */
 	virtual std::string name() const = 0;
 
 	TestCase() {}

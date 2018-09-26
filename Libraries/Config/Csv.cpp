@@ -117,6 +117,10 @@ bool Csv::loadFromFile(const std::string &filename, int flags, char delimiter, c
 	std::string file;
 	std::vector<cfg::Item> row;
 
+	if (flags & int(Flags::ResetHeaders)) {
+		headers.clear();
+	}
+	
 	// Load file into memory
 	try {
 		std::ifstream load(filename);

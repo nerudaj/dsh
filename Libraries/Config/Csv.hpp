@@ -36,7 +36,7 @@ namespace cfg {
 		 *  'NoHeaders' flag. You can always set your own set of headers by hand.
 		 *  
 		 *  By default if any row has more/less items than first row, it is expanded/cropped to
-		 *  match. By using 'Pedantic' flag this will not happen and loading will fail with error. By using 'NoRowFit' original values will be preserved with no error.
+		 *  match. By using 'Pedantic' flag this will not happen and loading will fail with error. By using 'NoRowFit' original values will be preserved with no error. Also, NoRowFit will surpress Pedantic.
 		 *  Please do not use headerID in that case.
 		 *  
 		 *  'ResetHeaders' will clear any previously load headers.
@@ -86,7 +86,7 @@ namespace cfg {
 		 *  
 		 *  \return Number of rows. 0 if nothing is loaded.
 		 */
-		unsigned getSize() const { return rows.size(); }
+		unsigned size() const { return rows.size(); }
 		
 		// Overloading
 		const std::vector<cfg::Item> &operator[](unsigned i) const { return rows[i]; }

@@ -49,7 +49,7 @@ public:
 	virtual void run() final override {
 		cfg::Csv csv;
 		assume(csv.loadFromFile(data, int(cfg::Csv::Flags::NoHeaders)), "CSV did not loaded file " + data + " correctly");
-		assume(csv.getSize() == 2, "Number of rows should have been 2");
+		assume(csv.size() == 2, "Number of rows should have been 2");
 
 		int cnt = 0;
 		for (auto row : csv) {
@@ -75,9 +75,9 @@ public:
 		cfg::Csv csv;
 		assume(csv.loadFromFile(data, int(cfg::Csv::Flags::NoHeaders)), "CSV did not loaded file " + data + " correctly");
 		
-		assume(csv.getSize() == refValues.size(), "Number of rows in csv does not match referenceValues");
+		assume(csv.size() == refValues.size(), "Number of rows in csv does not match referenceValues");
 		
-		for (unsigned i = 0; i < csv.getSize(); i++) {
+		for (unsigned i = 0; i < csv.size(); i++) {
 			assume(csv[i].size() == refValues[i].size(), "Number of columns on row " + std::to_string(i) + " in csv (" + std::to_string(csv[i].size()) + ") does not match reference data (" + std::to_string(refValues[i].size()) + ").");
 			
 			for (unsigned p = 0; p < csv[i].size(); p++) {

@@ -135,6 +135,7 @@ bool Csv::loadFromFile(const std::string &filename, int flags, char delimiter, c
 		// Read file into memory
 		load.read(filebuf, fsize);
 		file = std::string(filebuf, fsize);
+		delete[] filebuf;
 
 		load.close();
 		load.clear();

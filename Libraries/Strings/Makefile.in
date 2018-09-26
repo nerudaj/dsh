@@ -1,12 +1,13 @@
 [Modules]
-installheaders=Bitmap
-names=Bitmap
+installheaders=
+names=
 
 [Project]
 install=true
-libs=-llogger
-name=bitmap
+libs=
+name=strings
 staticlibs=
 subtype=dynamic
-type=library
 tests=false
+type=library
+

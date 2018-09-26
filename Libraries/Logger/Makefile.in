@@ -9,3 +9,4 @@ name=logger
 staticlibs=
 subtype=dynamic
 type=library
+tests=false

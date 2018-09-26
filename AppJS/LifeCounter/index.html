@@ -6,19 +6,22 @@
 	<meta charset="UTF-8"> 
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
 
-	<link rel="icon" type="image/x-icon" href="favicon.ico" />
+	<!--link rel="icon" type="image/x-icon" href="favicon.ico" /-->
 	<link rel='shortcut icon' type='image/x-icon' href='favicon.ico' />
+	<link rel="icon" sizes="192x192" href="http://apps.wz.cz/counter/favicon.png">
 
-	<!--link rel="stylesheet" type="text/css" href="app.css"--> 
-	<link rel="stylesheet" type="text/css" href="app.min.css"> 
+	<link rel="stylesheet" type="text/css" href="app.css"> 
+	<!--link rel="stylesheet" type="text/css" href="app.min.css"--> 
 
 	<title>LifeCounter</title>
 
-	<script type="text/javascript" src="app.min.js"></script>
-	<!--script type="text/javascript" src="src/app.js"></script>
+	<!--script type="text/javascript" src="app.min.js"></script-->
+	<script type="text/javascript" src="src/app.js"></script>
 	<script type="text/javascript" src="src/score.js"></script>
 	<script type="text/javascript" src="src/dice.js"></script>
-	<script type="text/javascript" src="src/settings.js"></script-->
+	<script type="text/javascript" src="src/timer.js"></script>
+	<script type="text/javascript" src="src/settings.js"></script>
+	<script type="text/javascript" src="src/texts_en.js"></script>
 </head>
 
 <body onload="Init();" id="Core">
@@ -43,17 +46,21 @@
 			app.context['initScore'] = 0;
 			app.context['numOfPlayers'] = 4;
 			app.context['colorSetup'] = [ 0, 1, 2, 3, 4, 5 ];
+			app.context['initCountdown'] = 30; // 30 seconds
+			app.context['countdown'] = 0;
+			app.context['cntIntHndl'] = null;
 			
 			for (var i = 0; i < app.context.numOfPlayers; i++) {
 				app.context.players.push(new Player());
 				app.context.players[i].score = app.context.initScore;
-				app.context.players[i].color = COLORS[app.context.colorSetup[i]];
+				app.context.players[i].color = Colors[app.context.colorSetup[i]];
 			}
 			
 			// Setup views
 			var views = [
 				{ callback: RenderScore, name: "score" },
 				{ callback: RenderSettings, name: "settings" },
+				{ callback: RenderTimer, name: "timer" },
 				{ callback: RenderDice, name: "dice" }
 			];
 			

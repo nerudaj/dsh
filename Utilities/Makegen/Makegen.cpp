@@ -94,23 +94,32 @@ bool Makegen::generateMakefile(const std::string &infile, const std::string &out
 			
 			// OUTPUT: $(CC) $(CFLAGS) [-shared] $(LIBS) [$(STATICS)] $^ -o $@
 		}
-		
+
+		if (isLibrary && config["Project"]["tests"].asBool()) {
+			save << "test: $(LIBNAME) install build_test run_test\n\n";
+			save << "build_test: tests/main.cpp\n";
+			save << "\t$(CC) $(CFLAGS) $^ -o $@ ";
+			save << "$(LIBS) ";
+			if (hasStaticDeps) save << "$(STATICS) ";
+			save << "-l:$(LIBNAME)\n\n";
+			save << "run_test:\n";
+			save << "\tcls\n\ttest\n\n";
+		}
+
 		// Create clean and install targets
 		save << "clean:\n\tdel $(" << name << ") *.o *.gch\n\n";
-		
+
 		if (config["Project"]["install"].asBool()) {
 			save << "install:\n";
 			save << "\tcopy /y $(" << name << ") $(INSTALLDIR)\n";
-			
+
 			if (isLibrary) {
 				for (auto header : installheaders) {
 					save << "\tcopy /y " << header << ".hpp $(INSTALLDIR)\n";
 				}
-				
-				
 			}
 		}
-		
+
 		save.close();
 		save.clear();
 	}
@@ -118,31 +127,32 @@ bool Makegen::generateMakefile(const std::string &infile, const std::string &out
 		std::cerr << "ERROR:generateMakefile: " << e.what() << std::endl;
 		return false;
 	}
-	
+
 	return true;
 }
 
 bool Makegen::generateInfile(const std::string &filename, Makegen::Mode mode) {
 	cfg::Ini config;
-	
+
 	if (mode == Makegen::Mode::Library) {
 		config["Project"]["type"] = "library";
 		config["Project"]["subtype"] = "dynamic";
 		config["Project"]["name"] = "dummy";
-		config["Project"]["libs"] = "";
-		config["Project"]["staticlibs"] = "";
-		config["Project"]["install"] = "false";
-		config["Modules"]["names"] = "dummy";
+		config["Project"]["tests"] = "true";
+
 		config["Modules"]["installheaders"] = "";
+		config["Project"]["install"] = "true";
 	}
 	else {
 		config["Project"]["type"] = "binary";
 		config["Project"]["name"] = "dummy";
-		config["Project"]["libs"] = "";
-		config["Project"]["staticlibs"] = "";
 		config["Project"]["install"] = "false";
-		config["Modules"]["names"] = "";
 	}
-	
+
+	config["Project"]["libs"] = "";
+	config["Project"]["staticlibs"] = "";
+
+	config["Modules"]["names"] = "";
+
 	return config.saveToFile(filename);
 }

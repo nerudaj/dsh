@@ -9,4 +9,4 @@ name=waves
 staticlibs=
 subtype=dynamic
 type=library
-
+tests=false

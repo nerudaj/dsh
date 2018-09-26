@@ -20,7 +20,7 @@ namespace cfg {
 		/**
 		 *  \brief Flags for altering behaviour of \ref loadFromFile.
 		 */
-		enum Flags { None = 0, Pedantic = 1, NoHeaders = 2, NoRowFit = 4, ResetHeaders = 8 };
+		enum class Flags : std::size_t { None = 0, Pedantic = 1, NoHeaders = 2, NoRowFit = 4, ResetHeaders = 8 };
 
 		/**
 		 *  \brief Load CSV file

@@ -143,7 +143,7 @@ bool Csv::loadFromFile(const std::string &filename, int flags, char delimiter, c
 	std::string::const_iterator fileItr = file.begin();
 	
 	// Process headers
-	if (!(flags & Csv::Flags::NoHeaders)) {
+	if (!(flags & std::size_t(Csv::Flags::NoHeaders))) {
 		parseLine(file, fileItr, row, flags, {delimiter, quote, newline});
 		headers = row;
 	}

@@ -10,6 +10,8 @@ int main() {
 		new TestLoadValidCSV("tests/test3.csv"),
 		new TestLoadValidCSV("tests/test4.csv"),
 		new TestLoadValidCSV("tests/test5.csv"),
+		new TestLoadValidCSV("tests/test6.csv"),
+		new TestLoadValidCSV("tests/test7.csv"),
 		new TestValidCSVData("tests/test0.csv", {
 			{"aaa", "bbb", "ccc"}, { "ddd", "eee", "fff" }
 		}),

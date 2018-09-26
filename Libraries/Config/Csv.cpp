@@ -160,6 +160,23 @@ bool Csv::loadFromFile(const std::string &filename, int flags, char delimiter, c
 	
 	// Process body
 	while (parseLine(file, fileItr, row, flags, {delimiter, quote, newline})) {
+		if (!rows.empty() && !(flags & int(Flags::NoRowFit))) {
+			std::size_t columnCount = headers.empty() ? rows[0].size() : headers.size();
+			
+			if (columnCount != row.size()) {
+				log.debug("Csv::loadFromFile", "Row has bad number of rows. Adjusting...");
+				
+				if (flags & int(Flags::Pedantic)) {
+					log.error("Csv::loadFromFile", "Row " + std::to_string(rows.size() - 1) + " does not have exactly " + std::to_string(columnCount) + " columns");
+					return false;
+				}
+
+				// If we are not pedantic, adjust row size to fit
+				while (columnCount > row.size()) row.push_back(Item());
+				while (columnCount < row.size()) row.pop_back();
+			}
+		}
+
 		rows.push_back(row);
 	}
 	

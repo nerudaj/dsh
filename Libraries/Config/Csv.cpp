@@ -98,14 +98,17 @@ bool parseLine(const std::string &file, std::string::const_iterator &itr, std::v
 	std::string token;
 
 	// Read tokens until line end
-	while (parseToken(file, itr, token, flags, settings)) {
+	bool rtn;
+	do {
+		rtn = parseToken(file, itr, token, flags, settings);
+		
 		if (token[0] == token.back() && token[0] == settings.quote) {
 			token = token.substr(1, token.size() - 2);
 			Strings::replaceAll(token, std::string(1, settings.quote) + std::string(1, settings.quote), std::string(1, settings.quote));
 		}
 		
 		row.push_back(cfg::Item(token));
-	}
+	} while (rtn);
 
 	return true;
 }

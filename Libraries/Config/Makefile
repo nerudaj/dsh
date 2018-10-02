@@ -1,6 +1,6 @@
 CC=g++
 INSTALLDIR=C:\tools\utils
-CFLAGS=-Wall -Wextra -pedantic -I$(INSTALLDIR) -L$(INSTALLDIR)
+CFLAGS=-std=gnu++14 -Wall -Wextra -pedantic -I$(INSTALLDIR) -L$(INSTALLDIR)
 LIBS=-llogger -lstrings 
 LIBNAME=libconfig.dll
 
@@ -19,20 +19,7 @@ Csv.o: Csv.cpp Csv.hpp
 	$(CC) $(CFLAGS) -fPIC $^ -c
 
 $(LIBNAME): Ini.o Args.o Item.o Csv.o 
-	$(CC) $(CFLAGS) -shared $(LIBS)  $^ -o $@
-
-test: $(LIBNAME) install build_test run_test
-
-build_test: tests/main.cpp
-	$(CC) $(CFLAGS) $^ -o test.exe -lstrings -llogger -L./ -l:libconfig.dll 
-
-run_test:
-	copy test.exe $(INSTALLDIR)
-	del test.exe
-	cd tests
-	cls
-	test
-	del $(INSTALLDIR)\test.exe
+	$(CC) $(CFLAGS) -shared $(LIBS) $^ -o $@
 
 clean:
 	del $(LIBNAME) *.o *.gch

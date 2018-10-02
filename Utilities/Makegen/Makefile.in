@@ -3,7 +3,8 @@ names=Makegen
 
 [Project]
 install=true
-libs=lconfig;lstrings;llogger
+flags=-std=gnu++14 -Wall -Wextra -pedantic
+libs=-lconfig;-lstrings;-llogger
 name=makegen
 staticlibs=
 type=binary

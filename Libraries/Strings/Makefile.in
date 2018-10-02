@@ -1,9 +1,10 @@
 [Modules]
-installheaders=
-names=
+installheaders=Strings
+names=Strings
 
 [Project]
 install=true
+flags=-std=gnu++14 -Wall -Wextra -pedantic
 libs=
 name=strings
 staticlibs=

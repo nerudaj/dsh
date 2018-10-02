@@ -25,7 +25,7 @@ bool Makegen::generateMakefile(const std::string &infile, const std::string &out
 		
 		save << "CC=g++\n";
 		save << "INSTALLDIR=C:\\tools\\utils\n";
-		save << "CFLAGS=-Wall -Wextra -pedantic -I$(INSTALLDIR) -L$(INSTALLDIR)\n";
+		save << "CFLAGS=" << config["Project"]["flags"].asString() << " -I$(INSTALLDIR) -L$(INSTALLDIR)\n";
 		
 		// List dynamic deps
 		save << "LIBS=";
@@ -90,7 +90,7 @@ bool Makegen::generateMakefile(const std::string &infile, const std::string &out
 			if (hasStaticDeps) save << "$(STATICS) ";
 			
 			// Finalize
-			save << " $^ -o $@\n\n";
+			save << "$^ -o $@\n\n";
 			
 			// OUTPUT: $(CC) $(CFLAGS) [-shared] $(LIBS) [$(STATICS)] $^ -o $@
 		}
@@ -151,6 +151,7 @@ bool Makegen::generateInfile(const std::string &filename, Makegen::Mode mode) {
 
 	config["Project"]["libs"] = "";
 	config["Project"]["staticlibs"] = "";
+	config["Project"]["flags"] = "-std=gnu++14 -Wall -Wextra -pedantic";
 
 	config["Modules"]["names"] = "";
 

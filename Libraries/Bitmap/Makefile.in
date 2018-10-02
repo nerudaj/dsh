@@ -4,6 +4,7 @@ names=Bitmap
 
 [Project]
 install=true
+flags=-std=gnu++14 -Wall -Wextra -pedantic
 libs=-llogger
 name=bitmap
 staticlibs=

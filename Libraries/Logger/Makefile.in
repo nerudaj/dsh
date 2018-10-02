@@ -4,6 +4,7 @@ names=Logger
 
 [Project]
 install=true
+flags=-std=gnu++14 -Wall -Wextra -pedantic
 libs=
 name=logger
 staticlibs=

@@ -43,6 +43,30 @@ Item::Item() {
 	
 }
 
+Item::Item(const char *value) {
+	*this = value;
+}
+
+Item::Item(const std::string &value) {
+	*this = value;
+}
+
+Item::Item(const bool value) {
+	*this = value;
+}
+
+Item::Item(const int value) {
+	*this = value;
+}
+
+Item::Item(const long value) {
+	*this = value;
+}
+
+Item::Item(const float value) {
+	*this = value;
+}
+
 Item::~Item() {
 	
 }

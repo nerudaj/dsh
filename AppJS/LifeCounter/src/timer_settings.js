@@ -11,7 +11,6 @@ function RenderTimerSettings() {
 	RenderTimerSettingsBoard(board, this.app);
 	
 	var toolbar = canvas.add(0, 0.9, 1, 0.1);
-	toolbar.dom.style.border = '1px solid black';
 	toolbar.setColor('grey');
 	RenderTimerSettingsToolbar(toolbar, this.app);
 }

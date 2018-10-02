@@ -12,7 +12,6 @@ function RenderSettings() {
 	RenderSettingBoard(board, this.app);
 
 	var toolbar = canvas.add(0, 0.9, 1, 0.1);
-	toolbar.dom.style.border = '1px solid black';
 	toolbar.setColor('grey');
 	RenderSettingsToolbar(toolbar, this.app);
 }

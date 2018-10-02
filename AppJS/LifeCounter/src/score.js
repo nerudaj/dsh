@@ -30,7 +30,6 @@ function RenderScore() {
 			}
 			
 			var display = canvas.add(x * ITEM_WIDTH, y * ITEM_HEIGHT, ITEM_WIDTH, ITEM_HEIGHT);
-			display.dom.style.border = '1px solid black';
 			display.setColor(app.context.players[pid].color);
 			RenderDisplay(pid, display, app);
 			

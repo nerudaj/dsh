@@ -15,6 +15,7 @@
 	'set': 'Set',
 	'run': 'Run',
 	'pause': 'Pause',
-	'reset': 'Reset',
+	'stop': 'Stop',
+	'restart': 'Restart',
 	'end': 'END!!',
 };

@@ -15,6 +15,7 @@
 	'set': 'Nastav',
 	'run': 'Spusť',
 	'pause': 'Pauza',
-	'reset': 'Reset',
+	'stop': 'Stop',
+	'restart': 'Restart',
 	'end': 'KONEC!!',
 };

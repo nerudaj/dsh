@@ -16,12 +16,14 @@
 	<title>LifeCounter</title>
 
 	<!--script type="text/javascript" src="app.min.js"></script-->
+	<script type="text/javascript" src="src/helper.js"></script>
 	<script type="text/javascript" src="src/app.js"></script>
 	<script type="text/javascript" src="src/score.js"></script>
 	<script type="text/javascript" src="src/dice.js"></script>
 	<script type="text/javascript" src="src/timer.js"></script>
+	<script type="text/javascript" src="src/timer_settings.js"></script>
 	<script type="text/javascript" src="src/settings.js"></script>
-	<script type="text/javascript" src="src/texts_en.js"></script>
+	<script type="text/javascript" src="src/texts_cz.js"></script>
 </head>
 
 <body onload="Init();" id="Core">
@@ -60,7 +62,8 @@
 			var views = [
 				{ callback: RenderScore, name: "score" },
 				{ callback: RenderSettings, name: "settings" },
-				{ callback: RenderTimer, name: "timer" },
+				{ callback: RenderTimer, name: 'timer' },
+				{ callback: RenderTimerSettings, name: "timer_settings" },
 				{ callback: RenderDice, name: "dice" }
 			];
 			

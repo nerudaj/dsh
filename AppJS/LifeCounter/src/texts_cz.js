@@ -1,4 +1,4 @@
-'static'; TEXTS = {
+'static'; var TEXTS = {
 	'whoStarts': 'Kdo začne?',
 	'throwDice': 'Hoď kostkami',
 	'tossCoin': 'Hoď mincí',

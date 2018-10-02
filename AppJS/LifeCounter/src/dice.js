@@ -7,8 +7,11 @@ function RenderDice() {
 	
 	var board = canvas.add(0, 0.1, 1, 0.8, 'div', ID('ThrowResultBoard'));
 	board.setColor('lightgrey');
-	var optimFontSize = GetOptimalFontSize("#######", board.width, board.height, 1000);
-	board.dom.style.fontSize = optimFontSize + 'px';
+	
+	if (SYS_DICE_DISPLAY_FONT_SIZE == null) {
+		SYS_DICE_DISPLAY_FONT_SIZE = GetOptimalFontSize("#######", board.width, board.height, 1000);
+	}
+	board.dom.style.fontSize = SYS_DICE_DISPLAY_FONT_SIZE + 'px';
 	board.setText("??");
 	
 	var toolbar = canvas.add(0, 0.9, 1, 0.1);
@@ -21,32 +24,39 @@ function RenderDice() {
 	var TOOLBAR_BUTTON_WIDTH = 1 / 3;
 	var TOOLBAR_BUTTON_HEIGHT = 1;
 	
-	var opt1 = canvas.add(0.0, 0, TOOLBAR_BUTTON_WIDTH, TOOLBAR_BUTTON_HEIGHT, 'button');
-	var optimFontSize = GetOptimalFontSize(TEXTS.throwDice, opt1.width, opt1.height);
-	opt1.dom.addEventCallback('click', function() { ThrowDice(app); });
-	opt1.dom.style.fontSize = optimFontSize + 'px';
-	opt1.setText(TEXTS.throwDice);
+	if (SYS_DICE_TOOLBAR_FONT_SIZE == null) {
+		SYS_DICE_TOOLBAR_FONT_SIZE = GetOptimalFontSize(
+			maxStr(TEXTS.throwDice, maxStr(TEXTS.tossCoin, TEXTS.back)),
+			canvas.width * TOOLBAR_BUTTON_WIDTH,
+			canvas.height * TOOLBAR_BUTTON_HEIGHT
+		);
+	}
 	
-	var opt2 = canvas.add(1 / 3, 0, TOOLBAR_BUTTON_WIDTH, TOOLBAR_BUTTON_HEIGHT, 'button');
-	opt2.dom.addEventCallback('click', function() { TossCoin(app); });
-	opt2.dom.style.fontSize = optimFontSize + 'px';
-	opt2.setText(TEXTS.tossCoin);
+	var options = [ TEXTS.throwDice, TEXTS.tossCoin, TEXTS.back ];
+	var foos = [
+		function() { ThrowDice(app); },
+		function() { TossCoin(app); },
+		function() { app.toggleView('score'); }
+	];
 	
-	var opt3 = canvas.add(2 / 3, 0, TOOLBAR_BUTTON_WIDTH, TOOLBAR_BUTTON_HEIGHT, 'button');
-	opt3.dom.addEventCallback('click', function() { app.toggleView('score'); });
-	opt3.dom.style.fontSize = optimFontSize + 'px';
-	opt3.setText(TEXTS.back);
+	for (var i = 0; i < options.length; i++) {
+		(function(p) {
+			var opt = canvas.add(i * TOOLBAR_BUTTON_WIDTH, 0, TOOLBAR_BUTTON_WIDTH, TOOLBAR_BUTTON_HEIGHT, 'button');
+			opt.dom.addEventCallback('click', foos[p]);
+			opt.dom.style.fontSize = SYS_DICE_TOOLBAR_FONT_SIZE + 'px';
+			opt.setText(options[p]);
+		}(i));
+	}
 }
 
 'static'; function ThrowDice(app) {
 	var DICE_SIDES = ['⚀', '⚁', '⚂', '⚃', '⚄', '⚅'];
-	
-	var d1 = Random(1, 6) - 1;
-	var d2 = Random(1, 6) - 1;
-	var d3 = Random(1, 6) - 1;
-	
+
 	var dom = GetDOM(ID('ThrowResultBoard'));
-	dom.innerHTML = DICE_SIDES[d1] + ' ' + DICE_SIDES[d2] + ' ' + DICE_SIDES[d3];
+	dom.innerHTML = '';
+	for (var i = 0; i < 3; i++) {
+		dom.innerHTML += DICE_SIDES[(Random(1, 6) - 1)] + ' ';
+	}
 }
 
 'static'; function TossCoin(app) {

@@ -69,19 +69,30 @@ function RenderScore() {
 }
 
 'static'; function RenderToolbar(canvas, app) {
+	var TOOLBAR_BUTTON_WIDTH = 1 / 3;
+	var TOOLBAR_BUTTON_HEIGHT = 1;
+
+	// Make sure to precompute ideal font size and reuse it whenever possible
+	if (SYS_SCORE_TOOLBAR_FONT_SIZE == null) {
+		SYS_SCORE_TOOLBAR_FONT_SIZE = GetOptimalFontSize(
+			maxStr(TEXTS.whoStarts, maxStr(TEXTS.settings, TEXTS.timer)), // Use longest text
+			canvas.width * TOOLBAR_BUTTON_WIDTH, // Use proper button size
+			canvas.height * TOOLBAR_BUTTON_HEIGHT
+		); // Result of this won't change till resize
+	}
+	
 	var opt1 = canvas.add(0, 0, 1 / 3, 1, 'button', ID('TBtnToDice'));
-	var optimFontSize = GetOptimalFontSize(TEXTS.settings, opt1.width, opt1.height);
-	opt1.dom.style.fontSize = optimFontSize + 'px';
+	opt1.dom.style.fontSize = SYS_SCORE_TOOLBAR_FONT_SIZE + 'px';
 	opt1.setText(TEXTS.whoStarts);
 	opt1.dom.addEventCallback('click', function() { app.toggleView('dice'); });
 	
 	var opt2 = canvas.add(1 / 3, 0, 1 / 3, 1, 'button');
-	opt2.dom.style.fontSize = optimFontSize + 'px';
+	opt2.dom.style.fontSize = SYS_SCORE_TOOLBAR_FONT_SIZE + 'px';
 	opt2.setText(TEXTS.timer);
 	opt2.dom.addEventCallback('click', function() { app.toggleView('timer'); });
 	
 	var opt3 = canvas.add(2 / 3, 0, 1 / 3, 1, 'button', ID('TBtnToSettings'));
-	opt3.dom.style.fontSize = optimFontSize + 'px';
+	opt3.dom.style.fontSize = SYS_SCORE_TOOLBAR_FONT_SIZE + 'px';
 	opt3.setText(TEXTS.settings);
 	opt3.dom.addEventCallback('click', function() { app.toggleView('settings'); });
 }

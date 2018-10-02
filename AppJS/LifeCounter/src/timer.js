@@ -10,7 +10,6 @@ function RenderTimer() {
 	RenderTimerBoard(board, this.app);
 	
 	var toolbar = canvas.add(0, 0.9, 1, 0.1);
-	toolbar.dom.style.border = '1px solid black';
 	toolbar.setColor(SYSCOLOR_TOOLBAR);
 	RenderTimerToolbar(toolbar, this.app);
 }
@@ -45,15 +44,15 @@ function RenderTimer() {
 	var TOOLBAR_BUTTON_HEIGHT = 1;
 	
 	var labels = [ TEXTS.settings, TEXTS.back ];
-	var foos = [
-		function() { CountdownControl(app, 'stop'); app.toggleView('timer_settings'); },
-		function() { app.toggleView('score') }
-	];
+	var gotoViews = [ 'timer_settings', 'score' ];
 
+	var i;
 	for (var i = 0; i < labels.length; i++) {
+		(function(p) {
 		var opt = canvas.add(i * TOOLBAR_BUTTON_WIDTH, 0, TOOLBAR_BUTTON_WIDTH, TOOLBAR_BUTTON_HEIGHT, 'button');
-		opt.dom.addEventCallback('click', foos[i]);
+		opt.dom.addEventCallback('click', function() { CountdownControl(app, 'stop'); app.toggleView(gotoViews[p]); });
 		opt.setText(labels[i], true);
+		}(i));
 	}
 }
 

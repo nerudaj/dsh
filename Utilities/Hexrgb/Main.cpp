@@ -11,6 +11,7 @@ void printHelp(char *progname) {
 	std::vector<std::pair<std::string, std::string>> rows = {
 		{"-h", "Prints this text"},
 		{"-s", "Scale values to represent percentage (255 is 100%)." },
+		{"-S", "Read stdin for input values instead of positional arguments" },
 	};
 	
 	for (auto row : rows) {
@@ -18,7 +19,7 @@ void printHelp(char *progname) {
 	}
 	
 	std::cout << "\n";
-	std::cout << "Details: You can convert multiple hexavalues at once, each one of them will be printed to single line. Hexavalue can start with # symbol, it can have three or six symbols, it can use both minuscule and majuscule letters. Three letter values will be interpreted as following: #abc => #aabbcc.\n";
+	std::cout << "Details: You can convert multiple hexavalues at once, each one of them will be printed to single line. Hexavalue can start with # symbol, it can have three or six symbols, it can use both minuscule and majuscule letters. Three letter values will be interpreted as following: #abc => #aabbcc.\nIf -S was specified, conversion is only performed after EOF is reached.\n\n";
 }
 
 bool isHexvar(const std::string &var) {
@@ -59,19 +60,21 @@ void convertAndPrint(const std::string &var, bool scale) {
 	}
 	
 	// Scale to 0..100 if required
+	std::string append;
 	if (scale) {
 		for (auto &val : rgb) {
 			val = 100 * val / 255;
 		}
+		append = '%';
 	}
 	
 	// Print
-	std::cout << '#' << str << " = rgb(" << rgb[0] << ", " << rgb[1] << ", " << rgb[2] << ")\n";
+	std::cout << '#' << str << " = rgb(" << rgb[0] << append << ", " << rgb[1] << append << ", " << rgb[2] << append << ")\n";
 }
 
 int main(int argc, char *argv[]) {
 	cfg::Args args;
-	args.setupArguments("hs");
+	args.setupArguments("hsS");
 	
 	if (not args.parse(argc, argv)) {
 		printHelp(argv[0]);
@@ -80,7 +83,15 @@ int main(int argc, char *argv[]) {
 	
 	bool scale = args.isSet('s');
 	
-	auto toConv = args.getPositionalArguments();
+	std::vector<std::string> toConv;
+	if (args.isSet('S')) {
+		std::string buf;
+		while (std::cin >> buf) toConv.push_back(buf);
+	}
+	else {
+		auto toConv = args.getPositionalArguments();
+	}
+	
 	if (toConv.size() == 0 || args.isSet('h')) {
 		printHelp(argv[0]);
 		return 0;

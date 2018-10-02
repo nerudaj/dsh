@@ -2,6 +2,7 @@
 #include <fstream>
 #include <regex>
 #include <unordered_map>
+#include <Config.hpp>
 #include <Logger.hpp>
 
 struct RuleForStatic {
@@ -43,15 +44,49 @@ void replaceIds(const std::unordered_map<std::string, std::string> &ids, std::st
 	}
 }
 
-int main(int argc, char *argv[]) {
-	// Grab file names
-	std::vector<std::string> filenames (argc - 1);
-	for (int i = 1; i < argc; i++) {
-		filenames[i - 1] = std::string(argv[i]);
-	Logger log;
+void printHelp(const std::string &progname) {
+	std::cout << "Usage:\n";
+	std::cout << "\t" << progname << " [OPTIONS] file1 file2 file3 ...\n\n";
+	
+	std::vector<std::pair<std::string, std::string>> rows = {
+		{"-h", "Prints this text"},
+		{"-o", "Set the name of output file. Default: concat.min.js"},
+		{"-v", "Set verbosity level (1, 2, 3 or 4). Default: 2"},
+	};
+	
+	for (auto row : rows) {
+		std::cout << "\t" << row.first << ": " << row.second << "\n";
 	}
 	
+	std::cout << "\n";
+	std::cout << "Details: This program will load all files specified as positional arguments, concatenates them and perform several optimizations normal minifier cannot do.\nNamely it will minify names of all methods and global variables that have 'static'; written before their definitions. Please note that you must not have two identical identifiers in different namespaces with only one of them being static (minified will be both).\nSecond optimization relies on existence of function ID in your code. Any DOM id that is wrapped into call to ID function will be minified and calls to ID will be removed, as well as the function itself.\n\n";
+}
+
+int main(int argc, char *argv[]) {
+	cfg::Args args;
+	Logger log;
+	args.setupArguments("ho:v:");
+
+	if (!args.parse(argc, argv)) {
+		printHelp(argv[0]);
+		return 1;
+	}
+
+	if (args.isSet('h')) {
+		printHelp(argv[0]);
+		return 1;
+	}
+	
+	if (args.isSet('v')) {
+		log.setLoggingLevel(args.getArgumentValue('v').asInt());
+	}
+	else {
 		log.setLoggingLevel(2);
+	}
+
+	// Grab file names
+	std::vector<std::string> filenames = args.getPositionalArguments();
+	
 	if (filenames.empty()) {
 		log.warning("jsbloat", "No input filenames given, nothing to do");
 		return 0;
@@ -150,6 +185,11 @@ int main(int argc, char *argv[]) {
 	replaceAll(file, "function ID(id) {return id;}", ""); // Remove marker function
 	
 	log.debug("Loading done", "Minified size: " + std::to_string(file.size()));
+	
+	std::string outfilename = "concat.min.js";
+	if (args.isSet('o')) outfilename = args.getArgumentValue('o').asString();
+	
+	std::ofstream save (outfilename, std::ios::binary);
 	save.write(file.c_str(), file.size());
 	save.close();
 	save.clear();

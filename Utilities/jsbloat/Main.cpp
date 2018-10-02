@@ -2,6 +2,7 @@
 #include <fstream>
 #include <regex>
 #include <unordered_map>
+#include <Logger.hpp>
 
 struct RuleForStatic {
 	std::regex findFunction;
@@ -47,8 +48,15 @@ int main(int argc, char *argv[]) {
 	std::vector<std::string> filenames (argc - 1);
 	for (int i = 1; i < argc; i++) {
 		filenames[i - 1] = std::string(argv[i]);
+	Logger log;
 	}
 	
+		log.setLoggingLevel(2);
+	if (filenames.empty()) {
+		log.warning("jsbloat", "No input filenames given, nothing to do");
+		return 0;
+	}
+
 	// Load files and concatenate into single result
 	std::string file;
 	for (auto filename : filenames) {
@@ -60,7 +68,7 @@ int main(int argc, char *argv[]) {
 			std::size_t len = load.tellg();
 			load.seekg(0, std::ios::beg);
 			
-			std::cerr << "allocating buf\n";
+			log.debug("Loading file", "Allocating buffer");
 			
 			// Allocate buffer
 			char *buf = new char[len];
@@ -68,7 +76,7 @@ int main(int argc, char *argv[]) {
 			// Read buffer and add it to file
 			load.read(buf, len);
 			
-			std::cerr << "allocating str\n";
+			log.debug("Loading file", "Allocating string");
 			
 			file += std::string(buf, len);
 			
@@ -85,7 +93,7 @@ int main(int argc, char *argv[]) {
 		}
 	}
 	
-	std::cout << "Filelen: " << file.size() << "\n";
+	log.debug("Loading done", "Concatenated size: " + std::to_string(file.size()));
 	
 	std::smatch found;
 	
@@ -141,7 +149,7 @@ int main(int argc, char *argv[]) {
 	}
 	replaceAll(file, "function ID(id) {return id;}", ""); // Remove marker function
 	
-	std::ofstream save ("concat.js", std::ios::binary);
+	log.debug("Loading done", "Minified size: " + std::to_string(file.size()));
 	save.write(file.c_str(), file.size());
 	save.close();
 	save.clear();

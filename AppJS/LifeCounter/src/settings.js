@@ -58,32 +58,22 @@ function RenderSettings() {
 'static'; function RenderFormInitScore(canvas, app) {
 	var ITEM_WIDTH = 1/ 5;
 	
-	var minus5 = canvas.add(0, 0, ITEM_WIDTH, 1, 'button');
-	minus5.dom.addEventCallback('click', function() { ModifyInitScore(-5, app); });
-	minus5.dom.className = LEFT_BTN_CLASS;
-	minus5.setColor('darkred');
-	minus5.setText('-5', true);
-	
-	var minus1 = canvas.add(1 * ITEM_WIDTH, 0, ITEM_WIDTH, 1, 'button');
-	minus1.dom.addEventCallback('click', function() { ModifyInitScore(-1, app); });
-	minus1.dom.className = RIGHT_BTN_CLASS;
-	minus1.setColor('red');
-	minus1.setText('-1', true);
+	var offsets = [ 0, 0.2, 0.6, 0.8 ];
+	var values = [ -5, -1, 1, 5 ];
+	var btnColors = [ 'darkred', 'red', 'lightgreen', 'green' ];
+	var classes = [ LEFT_BTN_CLASS, RIGHT_BTN_CLASS, LEFT_BTN_CLASS, RIGHT_BTN_CLASS ];
+	for (var i = 0; i < btnColors.length; i++) {
+		(function(p){
+			var btn = canvas.add(offsets[p], 0, ITEM_WIDTH, 1, 'button');
+			btn.dom.addEventCallback('click', function() { ModifyInitScore(values[p], app); });
+			btn.dom.className = classes[p];
+			btn.setColor(btnColors[p]);
+			btn.setText(values[p], true);
+		}(i));
+	}
 	
 	var display = canvas.add(2 * ITEM_WIDTH, 0, ITEM_WIDTH, 1, 'div', ID('FormInitScoreDisplay'));
 	display.setText(app.context.initScore, true);
-	
-	var plus1 = canvas.add(3 * ITEM_WIDTH, 0, ITEM_WIDTH, 1, 'button');
-	plus1.dom.addEventCallback('click', function() { ModifyInitScore(1, app); });
-	plus1.dom.className = LEFT_BTN_CLASS;
-	plus1.setColor('lightgreen');
-	plus1.setText('1', true);
-	
-	var plus5 = canvas.add(4 * ITEM_WIDTH, 0, ITEM_WIDTH, 1, 'button');
-	plus5.dom.addEventCallback('click', function() { ModifyInitScore(5, app); });
-	plus5.dom.className = RIGHT_BTN_CLASS;
-	plus5.setColor('green');
-	plus5.setText('5', true);
 }
 
 'static'; function ModifyInitScore(amount, app) {
@@ -99,11 +89,8 @@ function RenderSettings() {
 	var ITEM_WIDTH = 1 / Colors.length;
 	
 	for (var i = 0; i < MaxPlayers; i++) {
-		var row = canvas.add(0, i * ROW_HEIGHT, 1, ROW_HEIGHT);
-		row.dom.style.border = "1px solid black";
-		
 		for (var c = 0; c < Colors.length; c++) {
-			var item = row.add(c * ITEM_WIDTH, 0, ITEM_WIDTH, 1);
+			var item = canvas.add(c * ITEM_WIDTH, i * ROW_HEIGHT, ITEM_WIDTH, ROW_HEIGHT);
 			item.setColor(Colors[c]);
 			
 			var checked = '';

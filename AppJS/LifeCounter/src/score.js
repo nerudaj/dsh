@@ -7,10 +7,13 @@ function RenderScore() {
 	var board = canvas.add(0, 0, 1, 0.9);
 	RenderBoard(board, this.app);
 	
-	var toolbar = canvas.add(0, 0.9, 1, 0.1);
-	toolbar.dom.style.border = '1px solid black';
-	toolbar.setColor('grey');
-	RenderToolbar(toolbar, this.app);
+	//RenderToolbar(toolbar, this.app);
+	var buttons = [
+		new ToolbarButton(TEXTS.whoStarts, function() { app.toggleView('dice'); }),
+		new ToolbarButton(TEXTS.timer, function() { app.toggleView('timer'); }),
+		new ToolbarButton(TEXTS.settings, function() { app.toggleView('settings'); })
+	];
+	RenderToolbarTemplate(canvas, buttons, 'score');
 }
 
 'static'; function RenderBoard(canvas, app) {
@@ -66,33 +69,4 @@ function RenderScore() {
 	players[id].score = (forceAssign ? 0 : parseInt(players[id].score)) + amount;
 	
 	GetDOM(ID('DisplayScore') + id).innerHTML = players[id].score;
-}
-
-'static'; function RenderToolbar(canvas, app) {
-	var TOOLBAR_BUTTON_WIDTH = 1 / 3;
-	var TOOLBAR_BUTTON_HEIGHT = 1;
-
-	// Make sure to precompute ideal font size and reuse it whenever possible
-	if (SYS_SCORE_TOOLBAR_FONT_SIZE == null) {
-		SYS_SCORE_TOOLBAR_FONT_SIZE = GetOptimalFontSize(
-			maxStr(TEXTS.whoStarts, maxStr(TEXTS.settings, TEXTS.timer)), // Use longest text
-			canvas.width * TOOLBAR_BUTTON_WIDTH, // Use proper button size
-			canvas.height * TOOLBAR_BUTTON_HEIGHT
-		); // Result of this won't change till resize
-	}
-	
-	var opt1 = canvas.add(0, 0, 1 / 3, 1, 'button', ID('TBtnToDice'));
-	opt1.dom.style.fontSize = SYS_SCORE_TOOLBAR_FONT_SIZE + 'px';
-	opt1.setText(TEXTS.whoStarts);
-	opt1.dom.addEventCallback('click', function() { app.toggleView('dice'); });
-	
-	var opt2 = canvas.add(1 / 3, 0, 1 / 3, 1, 'button');
-	opt2.dom.style.fontSize = SYS_SCORE_TOOLBAR_FONT_SIZE + 'px';
-	opt2.setText(TEXTS.timer);
-	opt2.dom.addEventCallback('click', function() { app.toggleView('timer'); });
-	
-	var opt3 = canvas.add(2 / 3, 0, 1 / 3, 1, 'button', ID('TBtnToSettings'));
-	opt3.dom.style.fontSize = SYS_SCORE_TOOLBAR_FONT_SIZE + 'px';
-	opt3.setText(TEXTS.settings);
-	opt3.dom.addEventCallback('click', function() { app.toggleView('settings'); });
 }

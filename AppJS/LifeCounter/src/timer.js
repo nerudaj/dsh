@@ -9,49 +9,56 @@ function RenderTimer() {
 	board.setColor(SYSCOLOR_CONTENT);
 	RenderTimerBoard(board, this.app);
 	
-	var toolbar = canvas.add(0, 0.9, 1, 0.1);
-	toolbar.setColor(SYSCOLOR_TOOLBAR);
-	RenderTimerToolbar(toolbar, this.app);
+	// Render toolbar
+	var buttons = [
+		new ToolbarButton(TEXTS.settings, function() {
+			CountdownControl(app, 'stop');
+			app.toggleView('timer_settings');
+		}),
+		new ToolbarButton(TEXTS.back, function() {
+			CountdownControl(app, 'stop');
+			app.toggleView('score');
+		})
+	];
+	RenderToolbarTemplate(canvas, buttons, 'timer');
 }
 
 // === TOP LEVEL ===
-
 'static'; function RenderTimerBoard(canvas, app) {
 	var context = app.context;
+	var DISPLAY_WIDTH = 1;
+	var DISPLAY_HEIGHT = 0.4;
 	
 	// Reset countdown value
 	context.countdown = context.initCountdown;
 
-	var countdownDisplay = canvas.add(0, 0, 1, 0.3, 'div', ID('CountdownDisplay'));
-	countdownDisplay.setText(IntToTimeStr(context.initCountdown), true);
+	recomputeTimerDisplayCache(canvas, DISPLAY_WIDTH, DISPLAY_HEIGHT);
+	
+	var countdownDisplay = canvas.add(0, 0, DISPLAY_WIDTH, DISPLAY_HEIGHT, 'div', ID('CountdownDisplay'));
+	countdownDisplay.dom.style.fontSize = SYS_TIMER_DISPLAY_FONT_SIZE + 'px';
+	countdownDisplay.setText(IntToTimeStr(context.initCountdown));
 
 	// Render controls
+	var BUTTON_WIDTH = 0.25;
+	var BUTTON_HEIGHT = 0.1;
+	
 	var labels = [ TEXTS.run, TEXTS.pause, TEXTS.stop, TEXTS.restart ];
 	var actions = [ 'play', 'pause', 'stop', 'restart' ];
-	var count = labels.length;
 	
-	for (var i = 0; i < count; i++) {
-		(function(p){
-		var opt = canvas.add(i * (1 / count), 0.4, (1 / count), 0.2, 'button');
-		opt.dom.addEventCallback('click', function() { CountdownControl(app, actions[p]); });
-		opt.setText(labels[i], true);
-		}(i));
+	if (SYS_TIMER_BUTTON_FONT_SIZE == null) {
+		SYS_TIMER_BUTTON_FONT_SIZE = GetOptimalFontSize(
+			maxStr(maxStr(labels[0], labels[1]), maxStr(labels[2], labels[3])),
+			canvas.width * BUTTON_WIDTH,
+			canvas.height * BUTTON_HEIGHT
+		);
 	}
-}
-
-'static'; function RenderTimerToolbar(canvas, app) {
-	var TOOLBAR_BUTTON_WIDTH = 0.5;
-	var TOOLBAR_BUTTON_HEIGHT = 1;
 	
-	var labels = [ TEXTS.settings, TEXTS.back ];
-	var gotoViews = [ 'timer_settings', 'score' ];
-
-	var i;
 	for (var i = 0; i < labels.length; i++) {
-		(function(p) {
-		var opt = canvas.add(i * TOOLBAR_BUTTON_WIDTH, 0, TOOLBAR_BUTTON_WIDTH, TOOLBAR_BUTTON_HEIGHT, 'button');
-		opt.dom.addEventCallback('click', function() { CountdownControl(app, 'stop'); app.toggleView(gotoViews[p]); });
-		opt.setText(labels[i], true);
+		(function(p){
+		var opt = canvas.add(i * BUTTON_WIDTH, 0.4, BUTTON_WIDTH, BUTTON_HEIGHT, 'button');
+		opt.dom.addEventCallback('click', function() { CountdownControl(app, actions[p]); });
+		opt.dom.style.fontSize = SYS_TIMER_BUTTON_FONT_SIZE + 'px';
+		opt.setText(labels[i]);
 		}(i));
 	}
 }

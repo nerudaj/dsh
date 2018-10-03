@@ -10,38 +10,54 @@ function RenderSettings() {
 	var board = canvas.add(0, 0, 1, 0.9);
 	board.setColor('lightgrey');
 	RenderSettingBoard(board, this.app);
-
-	var toolbar = canvas.add(0, 0.9, 1, 0.1);
-	toolbar.setColor('grey');
-	RenderSettingsToolbar(toolbar, this.app);
+	
+	// Render toolbar
+	var buttons = [
+		new ToolbarButton(TEXTS.apply, function() {
+			ApplySettings(app); app.toggleView('score');
+		}),
+		new ToolbarButton(TEXTS.back, function() {
+			app.toggleView('score');
+		})
+	];
+	RenderToolbarTemplate(canvas, buttons, 'settings');
 }
+
+// === TOP LEVEL ===
 
 'static'; function RenderSettingBoard(canvas, app) {
 	var ROW_COUNT = 11;
 	var ROW_HEIGHT = 1 / ROW_COUNT;
-	canvas.dom.style.fontSize = GetOptimalFontSize(TEXTS.initScore, canvas.width, canvas.height * ROW_HEIGHT) + 'px';
-
-	var header1 = canvas.add(0, 0, 1, ROW_HEIGHT);
-	header1.setText(TEXTS.plCount, false);
-	header1.setColor('#AAAAAA');
+	var headers = [ TEXTS.plCount, TEXTS.initScore, TEXTS.plColors ];
+	
+	if (SYS_SETTINGS_TEXT_FONT_SIZE == null) {
+		SYS_SETTINGS_TEXT_FONT_SIZE = GetOptimalFontSize(
+			maxStr(headers[0], maxStr(headers[1], headers[2])),
+			canvas.width,
+			canvas.height * ROW_HEIGHT
+		);
+	}
+	
+	// This line applies to everything but buttons
+	canvas.dom.style.fontSize = SYS_SETTINGS_TEXT_FONT_SIZE + 'px';
+	
+	for (var i = 0; i < headers.length; i++) {
+		var header = canvas.add(0, 2 * i * ROW_HEIGHT, 1, ROW_HEIGHT);
+		header.setText(headers[i]);
+		header.setColor(SYSCOLOR_HEADER);
+	}
 
 	var pcount = canvas.add(0, 1 * ROW_HEIGHT, 1, ROW_HEIGHT);
 	RenderFormPlayerCount(pcount, app);
 
-	var header2 = canvas.add(0, 2 * ROW_HEIGHT, 1, ROW_HEIGHT);
-	header2.setText(TEXTS.initScore, false);
-	header2.setColor('#AAAAAA');
-
 	var sinit = canvas.add(0, 3 * ROW_HEIGHT, 1, ROW_HEIGHT);
 	RenderFormInitScore(sinit, app);
 
-	var header3 = canvas.add(0, 4 * ROW_HEIGHT, 1, ROW_HEIGHT);
-	header3.setText(TEXTS.plColors, false);
-	header3.setColor('#AAAAAA');
-	
 	var cwheel = canvas.add(0, 5 * ROW_HEIGHT, 1, 6 * ROW_HEIGHT);
 	RenderFormColorWheel(cwheel, app);
 }
+
+// === Second level ===
 
 'static'; function RenderFormPlayerCount(canvas, app) {
 	var ITEM_WIDTH = 1 / (MaxPlayers - MinPlayers + 1);
@@ -56,18 +72,24 @@ function RenderSettings() {
 
 'static'; function RenderFormInitScore(canvas, app) {
 	var ITEM_WIDTH = 1/ 5;
-	
-	var offsets = [ 0, 0.2, 0.6, 0.8 ];
-	var values = [ -5, -1, 1, 5 ];
-	var btnColors = [ 'darkred', 'red', 'lightgreen', 'green' ];
-	var classes = [ LEFT_BTN_CLASS, RIGHT_BTN_CLASS, LEFT_BTN_CLASS, RIGHT_BTN_CLASS ];
-	for (var i = 0; i < btnColors.length; i++) {
+	var values = [ -5, -1, null, 1, 5 ];
+	var btnColors = [ 'darkred', 'red', null, 'lightgreen', 'green' ];
+	var classes = [ LEFT_BTN_CLASS, RIGHT_BTN_CLASS, null, LEFT_BTN_CLASS, RIGHT_BTN_CLASS ];
+
+	if (SYS_SETTINGS_BUTTON_FONT_SIZE == null) {
+		SYS_SETTINGS_BUTTON_FONT_SIZE = GetOptimalFontSize('XX', canvas.width * ITEM_WIDTH, canvas.height);
+	}
+
+	for (var i = 0; i < values.length; i++) {
+		if (values[i] == null) continue;
+		
 		(function(p){
-			var btn = canvas.add(offsets[p], 0, ITEM_WIDTH, 1, 'button');
+			var btn = canvas.add(i * ITEM_WIDTH, 0, ITEM_WIDTH, 1, 'button');
 			btn.dom.addEventCallback('click', function() { ModifyInitScore(values[p], app); });
 			btn.dom.className = classes[p];
+			btn.dom.style.fontSize = SYS_SETTINGS_BUTTON_FONT_SIZE + 'px';
 			btn.setColor(btnColors[p]);
-			btn.setText(values[p], true);
+			btn.setText(values[p]);
 		}(i));
 	}
 	
@@ -99,19 +121,6 @@ function RenderSettings() {
 			item.dom.innerHTML = '<input type="radio" name="' + ID('FormPlayerColor') + i + '" value="' + c + '" ' + checked + '>';
 		}
 	}
-}
-
-'static'; function RenderSettingsToolbar(canvas, app) {
-	var TOOLBAR_BUTTON_WIDTH = 0.5;
-	var TOOLBAR_BUTTON_HEIGHT = 1;
-	
-	var opt1 = canvas.add(0, 0, TOOLBAR_BUTTON_WIDTH, TOOLBAR_BUTTON_HEIGHT, 'button');
-	opt1.dom.addEventCallback('click', function() { ApplySettings(app); app.toggleView('score'); });
-	opt1.setText(TEXTS.apply, true);
-
-	var opt2 = canvas.add(0.5, 0, TOOLBAR_BUTTON_WIDTH, TOOLBAR_BUTTON_HEIGHT, 'button');
-	opt2.dom.addEventCallback('click', function() { app.toggleView('score'); });
-	opt2.setText(TEXTS.back, true);
 }
 
 'static'; function ApplySettings(app) {

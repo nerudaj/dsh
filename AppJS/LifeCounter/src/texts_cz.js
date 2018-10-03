@@ -13,9 +13,9 @@
 	'plColors': 'Barvy hráčů',
 	'countdown': 'Odpočet',
 	'set': 'Nastav',
-	'run': 'Spusť',
-	'pause': 'Pauza',
-	'stop': 'Stop',
-	'restart': 'Restart',
+	'run': '▷', // https://stackoverflow.com/a/27053825/6603609
+	'pause': '❘ ❘',
+	'stop': '◻',
+	'restart': '⟲',
 	'end': 'KONEC!!',
 };

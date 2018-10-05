@@ -1,9 +1,7 @@
 'static'; function RenderDice() {
 	var canvas = this.app.canvas;
-	
-	var header = canvas.add(0, 0, 1, 0.1);
-	header.setText(TEXTS.whoStarts, true);
-	header.setColor('#AAAAAA');
+
+	RenderViewHeaderTemplate(canvas, TEXTS.whoStarts);
 	
 	var board = GetDrawingCanvas(canvas, true);
 	RenderThrowDisplay(board);

@@ -1,9 +1,7 @@
 'static'; function RenderTimer() {
 	var canvas = this.app.canvas;
 	
-	var header = canvas.add(0, 0, 1, 0.1);
-	header.setText(TEXTS.countdown, true);
-	header.setColor(SYSCOLOR_HEADER);
+	RenderViewHeaderTemplate(canvas, TEXTS.countdown);
 	
 	var board = GetDrawingCanvas(canvas, true);
 	RenderTimerBoard(board, this.app);

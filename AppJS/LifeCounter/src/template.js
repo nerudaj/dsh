@@ -1,13 +1,5 @@
-/**
- *  \brief Cache for speeding up text-fit computations
- */
-'static'; var TOOLBAR_TEMPLATE_FONT_SIZE_CACHE = {
-	'score': null,
-	'dice': null,
-	'timer': null,
-	'settings': null,
-	'timer_settings': null
-}
+'static'; var TEMPLATE_HEADER_HEIGHT = 0.1; // --> 'const';?
+'static'; var TEMPLATE_TOOLBAR_HEIGHT = 0.1; // --> 'const';?
 
 /**
  *  @brief Create button for templater
@@ -53,6 +45,20 @@
 	
 	RenderButtonArray(canvas, buttons, 0, 0, 1, 1, cacheID);
 }
+
+'static'; function RenderViewHeaderTemplate(canvas, label) {
+	var header = canvas.add(0, 0, 1, TEMPLATE_HEADER_HEIGHT);
+	
+	var cacheID = ID('headers');
+	if (GLOBAL_FONT_SIZE_CACHE[cacheID] == null) {
+		GLOBAL_FONT_SIZE_CACHE[cacheID] = GetOptimalFontSize(label, header.width, header.height);
+	}
+	
+	header.dom.style.fontSize = GLOBAL_FONT_SIZE_CACHE[cacheID] + 'px';
+	header.setText(label);
+	header.setColor(SYSCOLOR_HEADER);
+}
+
 'static'; function GetDrawingCanvas(core, hasHeader) {
 	var HEADER_OFFSET = hasHeader ? TEMPLATE_HEADER_HEIGHT : 0;
 	var result = core.add(0, HEADER_OFFSET, 1, 1 - HEADER_OFFSET - TEMPLATE_TOOLBAR_HEIGHT);

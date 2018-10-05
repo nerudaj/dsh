@@ -10,6 +10,13 @@
 	return minutes.slice(-2) + ':' + seconds.slice(-2);
 }
 
+/**
+ *  @brief Return longest of two strings
+ *  
+ *  @param [in] str1 First string
+ *  @param [in] str2 Second string
+ *  @return Longer of both strings
+ */
 'static'; function maxStr(str1, str2) {
 	if (str1.length > str2.length) return str1;
 	return str2;

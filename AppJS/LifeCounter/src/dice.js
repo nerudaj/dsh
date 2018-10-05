@@ -5,14 +5,8 @@ function RenderDice() {
 	header.setText(TEXTS.whoStarts, true);
 	header.setColor('#AAAAAA');
 	
-	var board = canvas.add(0, 0.1, 1, 0.8, 'div', ID('ThrowResultBoard'));
-	board.setColor('lightgrey');
-	
-	if (SYS_DICE_DISPLAY_FONT_SIZE == null) {
-		SYS_DICE_DISPLAY_FONT_SIZE = GetOptimalFontSize("#######", board.width, board.height, 1000);
-	}
-	board.dom.style.fontSize = SYS_DICE_DISPLAY_FONT_SIZE + 'px';
-	board.setText("??");
+	var board = GetDrawingCanvas(canvas, true);
+	RenderThrowDisplay(board);
 	
 	// Render toolbar
 	var buttons = [
@@ -27,6 +21,16 @@ function RenderDice() {
 		})
 	];
 	RenderToolbarTemplate(canvas, buttons, 'dice');
+}
+
+'static'; function RenderThrowDisplay(canvas) {
+	var display = canvas.add(0, 0, 1, 1, 'div', ID('ThrowResultBoard'));
+	
+	if (SYS_DICE_DISPLAY_FONT_SIZE == null) {
+		SYS_DICE_DISPLAY_FONT_SIZE = GetOptimalFontSize("#######", display.width, display.height, 1000);
+	}
+	display.dom.style.fontSize = SYS_DICE_DISPLAY_FONT_SIZE + 'px';
+	display.setText("??");
 }
 
 'static'; function ThrowDice(app) {

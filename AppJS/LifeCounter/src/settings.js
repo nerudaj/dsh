@@ -7,8 +7,7 @@ var Colors = [ 'red', 'lightgreen', 'lightblue', 'yellow', 'pink', 'orange', 'gr
 function RenderSettings() {
 	var canvas = this.app.canvas;
 	
-	var board = canvas.add(0, 0, 1, 0.9);
-	board.setColor('lightgrey');
+	var board = GetDrawingCanvas(canvas, false);
 	RenderSettingBoard(board, this.app);
 	
 	// Render toolbar

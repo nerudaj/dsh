@@ -4,7 +4,7 @@ function RenderScore() {
 	var canvas = this.app.canvas;
 	
 	var ScoreFontSize = null; // App might be resized, reset font size
-	var board = canvas.add(0, 0, 1, 0.9);
+	var board = GetDrawingCanvas(canvas, false);
 	RenderBoard(board, this.app);
 	
 	//RenderToolbar(toolbar, this.app);

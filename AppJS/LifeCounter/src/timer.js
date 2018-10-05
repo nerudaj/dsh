@@ -5,8 +5,7 @@ function RenderTimer() {
 	header.setText(TEXTS.countdown, true);
 	header.setColor(SYSCOLOR_HEADER);
 	
-	var board = canvas.add(0, 0.1, 1, 0.8);
-	board.setColor(SYSCOLOR_CONTENT);
+	var board = GetDrawingCanvas(canvas, true);
 	RenderTimerBoard(board, this.app);
 	
 	// Render toolbar

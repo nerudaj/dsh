@@ -48,3 +48,10 @@
 		}(i));
 	}
 }
+
+'static'; function GetDrawingCanvas(core, hasHeader) {
+	var HEADER_OFFSET = hasHeader ? TEMPLATE_HEADER_HEIGHT : 0;
+	var result = core.add(0, HEADER_OFFSET, 1, 1 - HEADER_OFFSET - TEMPLATE_TOOLBAR_HEIGHT);
+	result.setColor(SYSCOLOR_CONTENT);
+	return result;
+}

@@ -10,8 +10,7 @@ function RenderTimerSettings() {
 	header.setColor(SYSCOLOR_HEADER);
 	header.setText(TEXTS.settings, true);
 	
-	var board = canvas.add(0, 0.1, 1, 0.8);
-	board.setColor('lightgrey');
+	var board = GetDrawingCanvas(canvas, true);
 	RenderTimerSettingsBoard(board, this.app);
 	
 	// Render toolbar

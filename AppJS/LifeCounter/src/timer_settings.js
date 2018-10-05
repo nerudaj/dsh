@@ -21,7 +21,7 @@
 			app.toggleView('timer');
 		})
 	];
-	RenderToolbarTemplate(canvas, buttons, 'timer_settings');
+	RenderToolbarTemplate(canvas, buttons, ID('timer_settings'));
 }
 
 // === Second level ===

@@ -13,7 +13,7 @@
 		new ButtonTemplate(TEXTS.timer, function() { app.toggleView('timer'); }),
 		new ButtonTemplate(TEXTS.settings, function() { app.toggleView('settings'); })
 	];
-	RenderToolbarTemplate(canvas, buttons, 'score');
+	RenderToolbarTemplate(canvas, buttons, ID('score'));
 }
 
 'static'; function RenderBoard(canvas, app) {

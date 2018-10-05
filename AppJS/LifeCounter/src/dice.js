@@ -18,7 +18,7 @@
 			app.toggleView('score');
 		})
 	];
-	RenderToolbarTemplate(canvas, buttons, 'dice');
+	RenderToolbarTemplate(canvas, buttons, ID('dice'));
 }
 
 'static'; function RenderThrowDisplay(canvas) {

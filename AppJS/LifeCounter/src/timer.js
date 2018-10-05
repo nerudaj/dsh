@@ -17,7 +17,7 @@
 			app.toggleView('score');
 		})
 	];
-	RenderToolbarTemplate(canvas, buttons, 'timer');
+	RenderToolbarTemplate(canvas, buttons, ID('timer'));
 }
 
 // === TOP LEVEL ===

@@ -13,7 +13,7 @@
 	'plColors': 'Barvy hráčů',
 	'countdown': 'Odpočet',
 	'set': 'Nastav',
-	'run': '▷', // https://stackoverflow.com/a/27053825/6603609
+	'play': '▷', // https://stackoverflow.com/a/27053825/6603609
 	'pause': '❘ ❘',
 	'stop': '◻',
 	'restart': '⟲',

@@ -36,28 +36,21 @@
 	countdownDisplay.setText(IntToTimeStr(context.initCountdown));
 
 	// Render controls
-	var BUTTON_WIDTH = 0.25;
-	var BUTTON_HEIGHT = 0.1;
-	
-	var labels = [ TEXTS.run, TEXTS.pause, TEXTS.stop, TEXTS.restart ];
-	var actions = [ 'play', 'pause', 'stop', 'restart' ];
-	
-	if (SYS_TIMER_BUTTON_FONT_SIZE == null) {
-		SYS_TIMER_BUTTON_FONT_SIZE = GetOptimalFontSize(
-			maxStr(maxStr(labels[0], labels[1]), maxStr(labels[2], labels[3])),
-			canvas.width * BUTTON_WIDTH,
-			canvas.height * BUTTON_HEIGHT
-		);
-	}
-	
-	for (var i = 0; i < labels.length; i++) {
-		(function(p){
-		var opt = canvas.add(i * BUTTON_WIDTH, 0.4, BUTTON_WIDTH, BUTTON_HEIGHT, 'button');
-		opt.dom.addEventCallback('click', function() { CountdownControl(app, actions[p]); });
-		opt.dom.style.fontSize = SYS_TIMER_BUTTON_FONT_SIZE + 'px';
-		opt.setText(labels[i]);
-		}(i));
-	}
+	var buttons = [
+		new ButtonTemplate(TEXTS.play, function() {
+			CountdownControl(app, 'play');
+		}),
+		new ButtonTemplate(TEXTS.pause, function() {
+			CountdownControl(app, 'pause');
+		}),
+		new ButtonTemplate(TEXTS.stop, function() {
+			CountdownControl(app, 'stop');
+		}),
+		new ButtonTemplate(TEXTS.restart, function() {
+			CountdownControl(app, 'restart');
+		})
+	];
+	RenderButtonArray(canvas, buttons, 0, 0.4, 1, 0.1, ID('timer_buttons'));
 }
 
 // === Second level ===

@@ -39,31 +39,28 @@
 	display.dom.style.fontSize = SYS_TIMER_DISPLAY_FONT_SIZE + 'px';
 	display.setText('00:00');
 	
-	// Button constants
-	var options = [ -10, -5, -1, 1, 5, 10 ];
-	var OPTION_WIDTH = 1 / options.length;
-	var OPTION_HEIGHT = 0.1;
-	
-	// Refresh cache
-	if (SYS_TIMER_SETTINGS_BUTTON_FONT_SIZE == null) {
-		SYS_TIMER_SETTINGS_BUTTON_FONT_SIZE = GetOptimalFontSize(
-			'XX',
-			canvas.width * OPTION_WIDTH,
-			canvas.height * OPTION_HEIGHT
-		);
-	}
-	
-	// Draw buttons
-	for (var i = 0; i < options.length; i++) {
-		(function(p) {
-			var opt = canvas.add(i * OPTION_WIDTH, DISPLAY_HEIGHT, OPTION_WIDTH, OPTION_HEIGHT, 'button');
-			opt.dom.addEventCallback('click', function() {
-				ModifyInitCountdown(app, options[p]);
-			});
-			opt.dom.style.fontSize = SYS_TIMER_SETTINGS_BUTTON_FONT_SIZE + 'px';
-			opt.setText(options[p]);
-		}(i));
-	}
+	// Draw control buttons
+	var buttons = [
+		new ButtonTemplate('-10', function() {
+			ModifyInitCountdown(app, -10);
+		}),
+		new ButtonTemplate('-5', function() {
+			ModifyInitCountdown(app, -5);
+		}),
+		new ButtonTemplate('-1', function() {
+			ModifyInitCountdown(app, -1);
+		}),
+		new ButtonTemplate('+1', function() {
+			ModifyInitCountdown(app, 1);
+		}),
+		new ButtonTemplate('+5', function() {
+			ModifyInitCountdown(app, 5);
+		}),
+		new ButtonTemplate('+10', function() {
+			ModifyInitCountdown(app, 10);
+		})
+	];
+	RenderButtonArray(canvas, buttons, 0, 0.4, 1, 0.1, ID('timer_settings_buttons'));
 	
 	// Initialize display
 	ModifyInitCountdown(app, 0);

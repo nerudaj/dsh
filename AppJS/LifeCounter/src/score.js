@@ -1,6 +1,6 @@
 'static'; var ScoreFontSize = null;
 
-function RenderScore() {
+'static'; function RenderScore() {
 	var canvas = this.app.canvas;
 	
 	var ScoreFontSize = null; // App might be resized, reset font size

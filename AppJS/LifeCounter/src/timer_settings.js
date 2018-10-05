@@ -2,7 +2,7 @@
 
 // === TOP LEVEL ===
 
-function RenderTimerSettings() {
+'static'; function RenderTimerSettings() {
 	var canvas = this.app.canvas;
 	TI_TMP_STORAGE = this.app.context.initCountdown;
 	

@@ -4,7 +4,7 @@ var Colors = [ 'red', 'lightgreen', 'lightblue', 'yellow', 'pink', 'orange', 'gr
 'static'; var LEFT_BTN_CLASS = 'init_score_btn init_score_btn_left';
 'static'; var RIGHT_BTN_CLASS = 'init_score_btn init_score_btn_right';
 
-function RenderSettings() {
+'static'; function RenderSettings() {
 	var canvas = this.app.canvas;
 	
 	var board = GetDrawingCanvas(canvas, false);

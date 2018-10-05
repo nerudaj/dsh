@@ -40,6 +40,11 @@
 /////////////////////////
 // Optimization values //
 /////////////////////////
+/**
+ *  \brief Cache for speeding up text-fit computations
+ */
+'static'; var GLOBAL_FONT_SIZE_CACHE = {}
+
 'static'; var SYS_SCORE_DISPLAY_FONT_SIZE = null; // todo: use score display optim
 'static'; var SYS_DICE_DISPLAY_FONT_SIZE = null; // used
 'static'; var SYS_SETTINGS_TEXT_FONT_SIZE = null; // used
@@ -62,6 +67,7 @@
 	TOOLBAR_TEMPLATE_FONT_SIZE_CACHE['timer'] = null;
 	TOOLBAR_TEMPLATE_FONT_SIZE_CACHE['settings'] = null;
 	TOOLBAR_TEMPLATE_FONT_SIZE_CACHE['timer_settings'] = null;
+	GLOBAL_FONT_SIZE_CACHE = {};
 }
 
 'static'; function recomputeTimerDisplayCache(canvas, width, height) {

@@ -1,4 +1,15 @@
 /**
+ *  @brief Constructor of player data storage
+ *  
+ *  @return Player object
+ */
+'static'; function ClassPlayer() {
+	this.score = 0;
+	this.subscore = 0;
+	this.color = "red";
+}
+
+/**
  *  @brief Convert integer time in seconds to string MM:SS reprezentation
  *  
  *  @param [in] t Time in seconds

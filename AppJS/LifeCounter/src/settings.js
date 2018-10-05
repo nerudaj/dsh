@@ -135,7 +135,7 @@ function RenderSettings() {
 	}
 	
 	while (context.numOfPlayers < players.length) players.pop();
-	while (context.numOfPlayers > players.length) players.push(new Player());
+	while (context.numOfPlayers > players.length) players.push(new ClassPlayer());
 	
 	for (var p = 0; p < players.length; p++) {
 		var form_color = GetElementsByName(ID('FormPlayerColor') + p);

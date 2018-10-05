@@ -25,58 +25,12 @@
 	<script type="text/javascript" src="src/timer_settings.js"></script>
 	<script type="text/javascript" src="src/settings.js"></script>
 	<script type="text/javascript" src="src/texts_cz.js"></script>
+	<script type="text/javascript" src="src/main.js"></script>
 </head>
 
-<body onload="Init();" id="Core">
+<body onload="Main();" id="Core">
 	<div id="Canvas">Loading...</div>
 	<span style="visibility: hidden; position: absolute; top: -200px;" id="HiddenResizer"></span>
-	
-	<script type="text/javascript">
-		// Global variables
-		var app = new App();
-		
-		function Player () {
-			this.score = 0;
-			this.color = "red";
-		}
-		
-		// Bootstrap app
-		function Init() {
-			app.bootstrap('Canvas');
-			
-			// Setup app context
-			app.context['players'] = [];
-			app.context['initScore'] = 0;
-			app.context['numOfPlayers'] = 4;
-			app.context['colorSetup'] = [ 0, 1, 2, 3, 4, 5 ];
-			app.context['initCountdown'] = 30; // 30 seconds
-			app.context['countdown'] = 0;
-			app.context['cntIntHndl'] = null;
-			
-			for (var i = 0; i < app.context.numOfPlayers; i++) {
-				app.context.players.push(new Player());
-				app.context.players[i].score = app.context.initScore;
-				app.context.players[i].color = Colors[app.context.colorSetup[i]];
-			}
-			
-			// Setup views
-			var views = [
-				{ callback: RenderScore, name: "score" },
-				{ callback: RenderSettings, name: "settings" },
-				{ callback: RenderTimer, name: 'timer' },
-				{ callback: RenderTimerSettings, name: "timer_settings" },
-				{ callback: RenderDice, name: "dice" }
-			];
-			
-			for (var i = 0; i < views.length; i++) {
-				var view = new View();
-				view.render = views[i].callback;
-				app.addView(view, views[i].name);
-			}
-			
-			app.toggleView("score");
-		}
-	</script>
 </body>
 
 </html>

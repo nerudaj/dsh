@@ -15,6 +15,17 @@
 	return str2;
 }
 
+/**
+ *  @brief Clear interval and return NULL as a new value for handle
+ *  
+ *  @param [in] handle Interval ID handle
+ *  @return NULL
+ */
+'static'; function ReallyClearInterval(handle) {
+	clearInterval(handle);
+	return null;
+}
+
 'static'; var SYSCOLOR_HEADER = '#AAAAAA';
 'static'; var SYSCOLOR_CONTENT = 'lightgrey';
 'static'; var SYSCOLOR_TOOLBAR = 'grey';

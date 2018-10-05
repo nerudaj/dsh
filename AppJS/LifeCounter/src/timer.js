@@ -76,16 +76,16 @@ function RenderTimer() {
 			dom.innerHTML = IntToTimeStr(context.countdown);
 			
 			if (context.countdown == 0) {
-				clearInterval(context.cntIntHndl);
+				context.cntIntHndl = ReallyClearInterval(context.cntIntHndl);
 				dom.innerHTML = TEXTS.end;
 			}
 		}, 1000);
 	}
 	else if (action == 'pause') {
-		clearInterval(context.cntIntHndl);
+		context.cntIntHndl = ReallyClearInterval(context.cntIntHndl);
 	}
 	else if (action == 'stop') {
-		clearInterval(context.cntIntHndl);
+		context.cntIntHndl = ReallyClearInterval(context.cntIntHndl);
 		context.countdown = context.initCountdown;
 		GetDOM(ID('CountdownDisplay')).innerHTML = IntToTimeStr(context.countdown);
 	}

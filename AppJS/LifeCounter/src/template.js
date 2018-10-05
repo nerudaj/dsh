@@ -15,7 +15,7 @@
  *  @param [in] label Label written on the button
  *  @param [in] action Function callback of the button
  */
-'static'; function ToolbarButton(label, action) {
+'static'; function ButtonTemplate(label, action) {
 	this.label = label;
 	this.action = action;
 }

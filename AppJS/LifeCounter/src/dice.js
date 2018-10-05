@@ -16,13 +16,13 @@ function RenderDice() {
 	
 	// Render toolbar
 	var buttons = [
-		new ToolbarButton(TEXTS.throwDice, function() {
+		new ButtonTemplate(TEXTS.throwDice, function() {
 			ThrowDice(app);
 		}),
-		new ToolbarButton(TEXTS.tossCoin, function() {
+		new ButtonTemplate(TEXTS.tossCoin, function() {
 			TossCoin(app);
 		}),
-		new ToolbarButton(TEXTS.back, function() {
+		new ButtonTemplate(TEXTS.back, function() {
 			app.toggleView('score');
 		})
 	];

@@ -13,10 +13,10 @@ function RenderSettings() {
 	
 	// Render toolbar
 	var buttons = [
-		new ToolbarButton(TEXTS.apply, function() {
+		new ButtonTemplate(TEXTS.apply, function() {
 			ApplySettings(app); app.toggleView('score');
 		}),
-		new ToolbarButton(TEXTS.back, function() {
+		new ButtonTemplate(TEXTS.back, function() {
 			app.toggleView('score');
 		})
 	];

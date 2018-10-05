@@ -16,11 +16,11 @@ function RenderTimerSettings() {
 	
 	// Render toolbar
 	var buttons = [
-		new ToolbarButton(TEXTS.apply, function() {
-			app.context.initCountdown = TI_TMP_STORAGE;
+		new ButtonTemplate(TEXTS.apply, function() {
+			app.context.initCountdown = TI_TMP_STORAGE; // Apply modifications to initCountdown
 			app.toggleView('timer');
 		}),
-		new ToolbarButton(TEXTS.back, function() {
+		new ButtonTemplate(TEXTS.back, function() {
 			app.toggleView('timer');
 		})
 	];

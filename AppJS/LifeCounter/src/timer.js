@@ -11,11 +11,11 @@ function RenderTimer() {
 	
 	// Render toolbar
 	var buttons = [
-		new ToolbarButton(TEXTS.settings, function() {
+		new ButtonTemplate(TEXTS.settings, function() {
 			CountdownControl(app, 'stop');
 			app.toggleView('timer_settings');
 		}),
-		new ToolbarButton(TEXTS.back, function() {
+		new ButtonTemplate(TEXTS.back, function() {
 			CountdownControl(app, 'stop');
 			app.toggleView('score');
 		})

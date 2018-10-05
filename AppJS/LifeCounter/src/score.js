@@ -9,9 +9,9 @@ function RenderScore() {
 	
 	//RenderToolbar(toolbar, this.app);
 	var buttons = [
-		new ToolbarButton(TEXTS.whoStarts, function() { app.toggleView('dice'); }),
-		new ToolbarButton(TEXTS.timer, function() { app.toggleView('timer'); }),
-		new ToolbarButton(TEXTS.settings, function() { app.toggleView('settings'); })
+		new ButtonTemplate(TEXTS.whoStarts, function() { app.toggleView('dice'); }),
+		new ButtonTemplate(TEXTS.timer, function() { app.toggleView('timer'); }),
+		new ButtonTemplate(TEXTS.settings, function() { app.toggleView('settings'); })
 	];
 	RenderToolbarTemplate(canvas, buttons, 'score');
 }

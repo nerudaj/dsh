@@ -69,6 +69,7 @@ function RenderTimer() {
 	var context = app.context;
 	
 	if (action == 'play') {
+		if (context.cntIntHndl != null) return;
 		context.cntIntHndl = setInterval(function() {
 			var dom = GetDOM(ID('CountdownDisplay'));
 			context.countdown--;

@@ -53,8 +53,7 @@
 		(function(p) {
 			var opt = canvas.add(x + i * BUTTON_WIDTH, y, BUTTON_WIDTH, h, 'button');
 			opt.dom.addEventCallback('click', buttons[p].action);
-			opt.dom.style.fontSize = GLOBAL_FONT_SIZE_CACHE[cacheID] + 'px';
-			opt.setText(buttons[p].label);
+			opt.setText(buttons[p].label, false, GLOBAL_FONT_SIZE_CACHE[cacheID]);
 		}(i));
 	}
 }
@@ -97,8 +96,7 @@
 		GLOBAL_FONT_SIZE_CACHE[cacheID] = GetOptimalFontSize(label, header.width, header.height);
 	}
 	
-	header.dom.style.fontSize = GLOBAL_FONT_SIZE_CACHE[cacheID] + 'px';
-	header.setText(label);
+	header.setText(label, false, GLOBAL_FONT_SIZE_CACHE[cacheID]);
 	header.setColor(SYSCOLOR_HEADER);
 }
 

@@ -66,19 +66,27 @@
 	SYS_DICE_DISPLAY_FONT_SIZE = null;
 	SYS_SETTINGS_TEXT_FONT_SIZE = null;;
 	SYS_SETTINGS_BUTTON_FONT_SIZE = null;
-	SYS_TIMER_BUTTON_FONT_SIZE = null;
-	SYS_TIMER_DISPLAY_FONT_SIZE = null;
-	SYS_TIMER_SETTINGS_BUTTON_FONT_SIZE = null;
 	GLOBAL_FONT_SIZE_CACHE = {};
 }
 
-'static'; function recomputeTimerDisplayCache(canvas, width, height) {
-	if (SYS_TIMER_DISPLAY_FONT_SIZE == null) {
-		SYS_TIMER_DISPLAY_FONT_SIZE = GetOptimalFontSize(
+/**
+ *  @brief Get value of cached timer display font size cache
+ *  
+ *  @param [in] canvas Parent canvas for timer display
+ *  @param [in] width Width of display element within \p canvas
+ *  @param [in] height Height of display element within \p canvas
+ *  @return Cache value
+ *  
+ *  @details If the cache is empty, new cache value is computed and stored
+ */
+'static'; function ReadTimerDisplayCache(canvas, width, height) {
+	if (GLOBAL_FONT_SIZE_CACHE[ID('timer_display')] == null) {
+		GLOBAL_FONT_SIZE_CACHE[ID('timer_display')] = GetOptimalFontSize(
 			'XX:XX',
 			canvas.width * width,
 			canvas.height * height,
 			250
 		);
 	}
+	return GLOBAL_FONT_SIZE_CACHE[ID('timer_display')];
 }

@@ -29,10 +29,10 @@
 	// Reset countdown value
 	context.countdown = context.initCountdown;
 
-	recomputeTimerDisplayCache(canvas, DISPLAY_WIDTH, DISPLAY_HEIGHT);
+	var DISPLAY_FONT_SIZE = ReadTimerDisplayCache(canvas, DISPLAY_WIDTH, DISPLAY_HEIGHT);
 	
 	var countdownDisplay = canvas.add(0, 0, DISPLAY_WIDTH, DISPLAY_HEIGHT, 'div', ID('CountdownDisplay'));
-	countdownDisplay.dom.style.fontSize = SYS_TIMER_DISPLAY_FONT_SIZE + 'px';
+	countdownDisplay.dom.style.fontSize = DISPLAY_FONT_SIZE + 'px';
 	countdownDisplay.setText(IntToTimeStr(context.initCountdown));
 
 	// Render controls

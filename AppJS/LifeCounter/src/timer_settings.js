@@ -32,11 +32,11 @@
 	var DISPLAY_HEIGHT = 0.4;
 	
 	// Refresh cache
-	recomputeTimerDisplayCache(canvas, DISPLAY_WIDTH, DISPLAY_HEIGHT);
+	var DISPLAY_FONT_SIZE = ReadTimerDisplayCache(canvas, DISPLAY_WIDTH, DISPLAY_HEIGHT);
 	
 	// Draw display
 	var display = canvas.add(0, 0, DISPLAY_WIDTH, DISPLAY_HEIGHT, 'div', ID('DisplayInitCountdown'));
-	display.dom.style.fontSize = SYS_TIMER_DISPLAY_FONT_SIZE + 'px';
+	display.dom.style.fontSize = DISPLAY_FONT_SIZE + 'px';
 	display.setText('00:00');
 	
 	// Draw control buttons

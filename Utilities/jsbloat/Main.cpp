@@ -17,6 +17,8 @@ std::vector<RuleForStatic> rules = {
 	{ std::regex("\'static\'\\; var [_a-zA-Z][_a-zA-Z0-9]*"), std::regex("\'static\'\\; var "), 'v' } 
 };
 
+std::string IDCODES = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVXYZ012345678_";
+
 void replaceAll(std::string &str, const std::string &from, const std::string &to) {
 	if(from.empty()) return;
 	
@@ -29,12 +31,13 @@ void replaceAll(std::string &str, const std::string &from, const std::string &to
 
 void permutateObfuscatedId(std::string &id) {
 	auto last = id.size() - 1;
+	auto loc = IDCODES.find(id[last]);
 	
-	if (id[last] == 'z') {
+	if (IDCODES[loc] == '_') {
 		id += 'a';
 	}
 	else {
-		id[last]++;
+		id[last] = IDCODES[++loc];
 	}
 }
 

@@ -43,20 +43,18 @@
 }
 
 'static'; function RenderDisplay(id, canvas, app) {
-	if (ScoreFontSize == null) {
-		ScoreFontSize = GetOptimalFontSize('XX', canvas.width * 0.25, canvas.height);
-	}
+	var FONT_SIZE = ReadFontSizeCache(canvas, 0.25, 1, 'XX', ID('score_display'));
 	
 	var score = canvas.add(0.25, 0, 0.5, 1, 'div', ID('DisplayScore') + id);
-	score.dom.style.fontSize = ScoreFontSize + 'px';
+	score.dom.style.fontSize = FONT_SIZE + 'px';
 	
 	var minus = canvas.add(0, 0, 0.25, 1, 'button');
-	minus.setText('−', false, ScoreFontSize);
+	minus.setText('−', false, FONT_SIZE);
 	minus.dom.addEventCallback('click', function() { ModifyScore(app.context.players, id, -1); });
 	minus.dom.className = 'score_btn';
 	
 	var plus = canvas.add(0.75, 0, 0.25, 1, 'button');
-	plus.setText('+', false, ScoreFontSize);
+	plus.setText('+', false, FONT_SIZE);
 	plus.dom.addEventCallback('click', function() { ModifyScore(app.context.players, id, 1); });
 	plus.dom.className = 'score_btn';
 	

@@ -32,7 +32,7 @@
 	var DISPLAY_HEIGHT = 0.4;
 	
 	// Refresh cache
-	var DISPLAY_FONT_SIZE = ReadTimerDisplayCache(canvas, DISPLAY_WIDTH, DISPLAY_HEIGHT);
+	var DISPLAY_FONT_SIZE = ReadFontSizeCache(canvas, DISPLAY_WIDTH, DISPLAY_HEIGHT, 'XX:XX', ID('timer_display'));
 	
 	// Draw display
 	var display = canvas.add(0, 0, DISPLAY_WIDTH, DISPLAY_HEIGHT, 'div', ID('DisplayInitCountdown'));

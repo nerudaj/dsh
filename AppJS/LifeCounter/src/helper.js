@@ -70,23 +70,25 @@
 }
 
 /**
- *  @brief Get value of cached timer display font size cache
+ *  @brief Get value of cached value from \ref GLOBAL_FONT_SIZE_CACHE
  *  
  *  @param [in] canvas Parent canvas for timer display
  *  @param [in] width Width of display element within \p canvas
  *  @param [in] height Height of display element within \p canvas
+ *  @param [in] label Text label used for computing cache
+ *  @param [in] cacheID ID of the cache to access
  *  @return Cache value
  *  
  *  @details If the cache is empty, new cache value is computed and stored
  */
-'static'; function ReadTimerDisplayCache(canvas, width, height) {
-	if (GLOBAL_FONT_SIZE_CACHE[ID('timer_display')] == null) {
-		GLOBAL_FONT_SIZE_CACHE[ID('timer_display')] = GetOptimalFontSize(
-			'XX:XX',
+'static'; function ReadFontSizeCache(canvas, width, height, label, cacheID) {
+	if (GLOBAL_FONT_SIZE_CACHE[cacheID] == null) {
+		GLOBAL_FONT_SIZE_CACHE[cacheID] = GetOptimalFontSize(
+			label,
 			canvas.width * width,
 			canvas.height * height,
 			250
 		);
 	}
-	return GLOBAL_FONT_SIZE_CACHE[ID('timer_display')];
+	return GLOBAL_FONT_SIZE_CACHE[cacheID];
 }

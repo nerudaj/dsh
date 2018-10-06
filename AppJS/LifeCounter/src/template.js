@@ -110,7 +110,7 @@
  *  @details Use this in conjunction with \ref RenderToolbarTemplate and \ref RenderViewHeaderTemplate.
  */
 'static'; function GetDrawingCanvas(core, hasHeader) {
-	var HEADER_OFFSET = hasHeader ? TEMPLATE_HEADER_HEIGHT : 0;
+	var HEADER_OFFSET = DefaultArgument(hasHeader, true) ? TEMPLATE_HEADER_HEIGHT : 0;
 	var result = core.add(0, HEADER_OFFSET, 1, 1 - HEADER_OFFSET - TEMPLATE_TOOLBAR_HEIGHT);
 	result.setColor(SYSCOLOR_CONTENT);
 	return result;

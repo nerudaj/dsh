@@ -327,5 +327,8 @@ App.prototype.bootstrap = function(id) {
 	this.canvas.dom = GetDOM(id);
 	
 	var that = this;
-	window.addEventListener('resize', function() { clearOptimizationCache(); that.render(); });
+	window.addEventListener('resize', function() {
+		ClearOptimizationCache();
+		that.render();
+	});
 }

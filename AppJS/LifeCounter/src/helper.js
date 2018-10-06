@@ -52,8 +52,7 @@
  */
 'static'; var GLOBAL_FONT_SIZE_CACHE = {}
 
-
-'static'; function clearOptimizationCache() {
+'static'; function ClearOptimizationCache() {
 	GLOBAL_FONT_SIZE_CACHE = {};
 }
 

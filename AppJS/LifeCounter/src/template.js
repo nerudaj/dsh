@@ -68,7 +68,7 @@
  *  @details This function will create new container element positioned appropriately within parent canvas,
  *  set its style and background color and then render buttons with \ref RenderButtonArray.
  *  
- *  Use this in conjunction with \ref RenderViewHeaderTemplate and \ref GetDrawingCanvas.
+ *  Use this in conjunction with \ref RenderHeaderTemplate and \ref GetDrawingCanvas.
  */
 'static'; function RenderToolbarTemplate(parentCanvas, buttons, cacheID) {
 	var canvas = parentCanvas.add(0, 1 - TEMPLATE_TOOLBAR_HEIGHT, 1, TEMPLATE_TOOLBAR_HEIGHT);
@@ -88,7 +88,7 @@
  *  
  *  Use this in conjunction with \ref RenderToolbarTemplate and \ref GetDrawingCanvas.
  */
-'static'; function RenderViewHeaderTemplate(canvas, label) {
+'static'; function RenderHeaderTemplate(canvas, label) {
 	var header = canvas.add(0, 0, 1, TEMPLATE_HEADER_HEIGHT);
 	
 	var cacheID = ID('CacheHeaders');
@@ -107,7 +107,7 @@
  *  @param [in] hasHeader Whether header is present in view
  *  @return Resulting canvas
  *  
- *  @details Use this in conjunction with \ref RenderToolbarTemplate and \ref RenderViewHeaderTemplate.
+ *  @details Use this in conjunction with \ref RenderToolbarTemplate and \ref RenderHeaderTemplate.
  */
 'static'; function GetDrawingCanvas(core, hasHeader) {
 	var HEADER_OFFSET = DefaultArgument(hasHeader, true) ? TEMPLATE_HEADER_HEIGHT : 0;

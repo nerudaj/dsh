@@ -6,7 +6,7 @@
 	var canvas = this.app.canvas;
 	TI_TMP_STORAGE = this.app.context.initCountdown;
 	
-	RenderViewHeaderTemplate(canvas, TEXTS.settings);
+	RenderHeaderTemplate(canvas, TEXTS.settings);
 	
 	var board = GetDrawingCanvas(canvas);
 	RenderTimerSettingsBoard(board, this.app);

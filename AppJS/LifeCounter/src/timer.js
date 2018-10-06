@@ -1,7 +1,7 @@
 'static'; function RenderTimer() {
 	var canvas = this.app.canvas;
 	
-	RenderViewHeaderTemplate(canvas, TEXTS.countdown);
+	RenderHeaderTemplate(canvas, TEXTS.countdown);
 	
 	var board = GetDrawingCanvas(canvas);
 	RenderTimerBoard(board, this.app);

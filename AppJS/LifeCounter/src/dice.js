@@ -1,7 +1,7 @@
 'static'; function RenderDice() {
 	var canvas = this.app.canvas;
 
-	RenderViewHeaderTemplate(canvas, TEXTS.whoStarts);
+	RenderHeaderTemplate(canvas, TEXTS.whoStarts);
 	
 	var board = GetDrawingCanvas(canvas);
 	RenderThrowDisplay(board);

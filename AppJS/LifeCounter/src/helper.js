@@ -44,10 +44,6 @@
 	return null;
 }
 
-'static'; var SYSCOLOR_HEADER = '#AAAAAA';
-'static'; var SYSCOLOR_CONTENT = 'lightgrey';
-'static'; var SYSCOLOR_TOOLBAR = 'grey';
-
 /////////////////////////
 // Optimization values //
 /////////////////////////

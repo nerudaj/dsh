@@ -1,5 +1,11 @@
-'static'; var TEMPLATE_HEADER_HEIGHT = 0.1; // --> 'const';?
-'static'; var TEMPLATE_TOOLBAR_HEIGHT = 0.1; // --> 'const';?
+// *** CORE LAYOUT VALUES ***
+'static'; var TEMPLATE_HEADER_HEIGHT = 0.1;
+'static'; var TEMPLATE_TOOLBAR_HEIGHT = 0.1;
+
+// *** CORE COLOR SCHEME ***
+'static'; var SYSCOLOR_HEADER = '#AAAAAA';
+'static'; var SYSCOLOR_CONTENT = 'lightgrey';
+'static'; var SYSCOLOR_TOOLBAR = 'grey';
 
 /**
  *  @brief Create button for templater

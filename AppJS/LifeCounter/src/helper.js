@@ -52,18 +52,10 @@
  */
 'static'; var GLOBAL_FONT_SIZE_CACHE = {}
 
-'static'; var SYS_SCORE_DISPLAY_FONT_SIZE = null; // todo: use score display optim
-'static'; var SYS_DICE_DISPLAY_FONT_SIZE = null; // used
 'static'; var SYS_SETTINGS_TEXT_FONT_SIZE = null; // used
 'static'; var SYS_SETTINGS_BUTTON_FONT_SIZE = null; // used
-'static'; var SYS_TIMER_BUTTON_FONT_SIZE = null; // used
-'static'; var SYS_TIMER_DISPLAY_FONT_SIZE = null; // used
-'static'; var SYS_TIMER_SETTINGS_BUTTON_FONT_SIZE = null; // todo: use timer settings toolbar optim
-'static'; var SYS_TIMER_SETTINGS_TOOLBAR_FONT_SIZE = null; // todo: use timer settings toolbar optim
 
 'static'; function clearOptimizationCache() {
-	SYS_SCORE_DISPLAY_FONT_SIZE = null;
-	SYS_DICE_DISPLAY_FONT_SIZE = null;
 	SYS_SETTINGS_TEXT_FONT_SIZE = null;;
 	SYS_SETTINGS_BUTTON_FONT_SIZE = null;
 	GLOBAL_FONT_SIZE_CACHE = {};

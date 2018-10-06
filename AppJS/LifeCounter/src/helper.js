@@ -77,17 +77,20 @@
  *  @param [in] height Height of display element within \p canvas
  *  @param [in] label Text label used for computing cache
  *  @param [in] cacheID ID of the cache to access
+ *  @param [in] hint Optional value hinting start size for heuristics
  *  @return Cache value
  *  
  *  @details If the cache is empty, new cache value is computed and stored
  */
-'static'; function ReadFontSizeCache(canvas, width, height, label, cacheID) {
+'static'; function ReadFontSizeCache(canvas, width, height, label, cacheID, hint) {
+	var hintedFontSize = DefaultArgument(hint, 100);
+	
 	if (GLOBAL_FONT_SIZE_CACHE[cacheID] == null) {
 		GLOBAL_FONT_SIZE_CACHE[cacheID] = GetOptimalFontSize(
 			label,
 			canvas.width * width,
 			canvas.height * height,
-			250
+			hintedFontSize
 		);
 	}
 	return GLOBAL_FONT_SIZE_CACHE[cacheID];

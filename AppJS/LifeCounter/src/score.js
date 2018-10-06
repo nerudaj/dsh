@@ -43,7 +43,7 @@
 }
 
 'static'; function RenderDisplay(id, canvas, app) {
-	var FONT_SIZE = ReadFontSizeCache(canvas, 0.25, 1, 'XX', ID('score_display'));
+	var FONT_SIZE = ReadFontSizeCache(canvas, 0.25, 1, 'XX', ID('score_display'), 250);
 	
 	var score = canvas.add(0.25, 0, 0.5, 1, 'div', ID('DisplayScore') + id);
 	score.dom.style.fontSize = FONT_SIZE + 'px';

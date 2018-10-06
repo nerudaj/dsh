@@ -21,7 +21,7 @@
 			app.toggleView('timer');
 		})
 	];
-	RenderToolbarTemplate(canvas, buttons, ID('timer_settings'));
+	RenderToolbarTemplate(canvas, buttons, ID('CacheToolbarSettingsToolbar'));
 }
 
 // === Second level ===
@@ -32,7 +32,7 @@
 	var DISPLAY_HEIGHT = 0.4;
 	
 	// Refresh cache
-	var DISPLAY_FONT_SIZE = ReadFontSizeCache(canvas, DISPLAY_WIDTH, DISPLAY_HEIGHT, 'XX:XX', ID('timer_display'), 250);
+	var DISPLAY_FONT_SIZE = ReadFontSizeCache(canvas, DISPLAY_WIDTH, DISPLAY_HEIGHT, 'XX:XX', ID('CacheTimerDisplay'), 250);
 	
 	// Draw display
 	var display = canvas.add(0, 0, DISPLAY_WIDTH, DISPLAY_HEIGHT, 'div', ID('DisplayInitCountdown'));

@@ -91,7 +91,7 @@
 'static'; function RenderViewHeaderTemplate(canvas, label) {
 	var header = canvas.add(0, 0, 1, TEMPLATE_HEADER_HEIGHT);
 	
-	var cacheID = ID('headers');
+	var cacheID = ID('CacheHeaders');
 	if (GLOBAL_FONT_SIZE_CACHE[cacheID] == null) {
 		GLOBAL_FONT_SIZE_CACHE[cacheID] = GetOptimalFontSize(label, header.width, header.height);
 	}

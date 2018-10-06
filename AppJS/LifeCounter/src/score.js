@@ -13,7 +13,7 @@
 		new ButtonTemplate(TEXTS.timer, function() { app.toggleView('timer'); }),
 		new ButtonTemplate(TEXTS.settings, function() { app.toggleView('settings'); })
 	];
-	RenderToolbarTemplate(canvas, buttons, ID('score'));
+	RenderToolbarTemplate(canvas, buttons, ID('CacheScoreToolbar'));
 }
 
 'static'; function RenderBoard(canvas, app) {
@@ -43,9 +43,9 @@
 }
 
 'static'; function RenderDisplay(id, canvas, app) {
-	var FONT_SIZE = ReadFontSizeCache(canvas, 0.25, 1, 'XX', ID('score_display'), 250);
+	var FONT_SIZE = ReadFontSizeCache(canvas, 0.25, 1, 'XX', ID('CacheScoreDisplay'), 250);
 	
-	var score = canvas.add(0.25, 0, 0.5, 1, 'div', ID('DisplayScore') + id);
+	var score = canvas.add(0.25, 0, 0.5, 1, 'div', ID('DOMDisplayScore') + id);
 	score.dom.style.fontSize = FONT_SIZE + 'px';
 	
 	var minus = canvas.add(0, 0, 0.25, 1, 'button');
@@ -66,5 +66,5 @@
 	
 	players[id].score = (forceAssign ? 0 : parseInt(players[id].score)) + amount;
 	
-	GetDOM(ID('DisplayScore') + id).innerHTML = players[id].score;
+	GetDOM(ID('DOMDisplayScore') + id).innerHTML = players[id].score;
 }

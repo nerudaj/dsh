@@ -19,7 +19,7 @@ var Colors = [ 'red', 'lightgreen', 'lightblue', 'yellow', 'pink', 'orange', 'gr
 			app.toggleView('score');
 		})
 	];
-	RenderToolbarTemplate(canvas, buttons, ID('settings'));
+	RenderToolbarTemplate(canvas, buttons, ID('CacheSettingsToolbar'));
 }
 
 // === TOP LEVEL ===

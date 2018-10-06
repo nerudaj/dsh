@@ -40,7 +40,14 @@ void permutateObfuscatedId(std::string &id) {
 
 void replaceIds(const std::unordered_map<std::string, std::string> &ids, std::string &file) {
 	for (auto id : ids) {
-		replaceAll(file, id.first, id.second);
+		if (id.second[0] != 'v') {
+			replaceAll(file, id.first + "(", id.second + "(");
+			replaceAll(file, id.first + " ", id.second + " ");
+			replaceAll(file, id.first + ",", id.second + ",");
+		}
+		else {
+			replaceAll(file, id.first, id.second);
+		}
 	}
 }
 
@@ -133,6 +140,8 @@ int main(int argc, char *argv[]) {
 	std::smatch found;
 	
 	std::unordered_map<std::string, std::string> ids;
+	
+	replaceAll(file, " (", "(");
 	
 	// Process all statics
 	for (auto rule : rules) {

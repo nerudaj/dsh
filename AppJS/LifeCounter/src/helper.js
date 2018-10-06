@@ -52,12 +52,8 @@
  */
 'static'; var GLOBAL_FONT_SIZE_CACHE = {}
 
-'static'; var SYS_SETTINGS_TEXT_FONT_SIZE = null; // used
-'static'; var SYS_SETTINGS_BUTTON_FONT_SIZE = null; // used
 
 'static'; function clearOptimizationCache() {
-	SYS_SETTINGS_TEXT_FONT_SIZE = null;;
-	SYS_SETTINGS_BUTTON_FONT_SIZE = null;
 	GLOBAL_FONT_SIZE_CACHE = {};
 }
 

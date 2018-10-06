@@ -9,10 +9,10 @@
 	// Render toolbar
 	var buttons = [
 		new ButtonTemplate(TEXTS.throwDice, function() {
-			ThrowDice(app);
+			ThrowDice();
 		}),
 		new ButtonTemplate(TEXTS.tossCoin, function() {
-			TossCoin(app);
+			TossCoin();
 		}),
 		new ButtonTemplate(TEXTS.back, function() {
 			app.toggleView('score');
@@ -28,7 +28,7 @@
 	display.setText("??", false, FONT_SIZE);
 }
 
-'static'; function ThrowDice(app) {
+'static'; function ThrowDice() {
 	var DICE_SIDES = ['⚀', '⚁', '⚂', '⚃', '⚄', '⚅'];
 
 	var dom = GetDOM(ID('DOMThrowResultBoard'));
@@ -38,7 +38,7 @@
 	}
 }
 
-'static'; function TossCoin(app) {
+'static'; function TossCoin() {
 	var COIN_SIDES = [TEXTS.coin1, TEXTS.coin2];
 	
 	var dom = GetDOM(ID('DOMThrowResultBoard'));

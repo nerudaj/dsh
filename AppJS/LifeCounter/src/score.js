@@ -1,5 +1,3 @@
-'static'; var ScoreFontSize = null;
-
 'static'; function RenderScore() {
 	var canvas = this.app.canvas;
 	

@@ -328,6 +328,7 @@ App.prototype.bootstrap = function(id) {
 	
 	var that = this;
 	window.addEventListener('resize', function() {
+		if (GetDOM(ID('DOMInitScoreInput')) == document.activeElement) return;
 		ClearOptimizationCache();
 		that.render();
 	});

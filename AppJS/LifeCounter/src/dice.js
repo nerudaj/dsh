@@ -3,7 +3,7 @@
 
 	RenderHeaderTemplate(canvas, TEXTS.whoStarts);
 	
-	var board = GetDrawingCanvas(canvas);
+	var board = GetDrawingTemplate(canvas);
 	RenderThrowDisplay(board);
 	
 	// Render toolbar

@@ -3,7 +3,7 @@
 	
 	RenderHeaderTemplate(canvas, TEXTS.countdown);
 	
-	var board = GetDrawingCanvas(canvas);
+	var board = GetDrawingTemplate(canvas);
 	RenderTimerBoard(board, this.app);
 	
 	// Render toolbar

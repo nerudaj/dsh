@@ -11,7 +11,7 @@ var Colors = [ 'red', 'lightgreen', 'lightblue', 'yellow', 'pink', 'orange', 'gr
 	RenderHeaderTemplate(canvas, TEXTS.settings);
 	
 	// Render main
-	var board = GetDrawingCanvas(canvas);
+	var board = GetDrawingTemplate(canvas);
 	// Render
 	
 	// Render toolbar

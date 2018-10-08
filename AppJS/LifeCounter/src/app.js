@@ -4,6 +4,8 @@
 
 function ID(id) {return id;}
 
+function ENUM(id) {return id;}
+
 'static'; Element.prototype.addEventCallback = function(action, callback) {
 	this.addEventListener(action, callback);
 }

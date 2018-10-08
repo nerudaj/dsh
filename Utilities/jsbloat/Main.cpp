@@ -196,6 +196,33 @@ int main(int argc, char *argv[]) {
 	}
 	replaceAll(file, "function ID(id) {return id;}", ""); // Remove marker function
 	
+	// ENUM()
+	std::unordered_map<std::string, int> enums;
+	std::regex findEnums("ENUM\\(\'[_a-zA-Z0-9]+\'\\)");
+	filecopy = file;
+	int idCounter = 0;
+	while (std::regex_search(filecopy, found, findEnums)) {
+		for (auto match : found) {
+			std::string raw = std::string(match);
+			std::string id = raw.substr(6, raw.size() - 8);
+			
+			if (enums.find(id) != enums.end()) continue;
+			
+			enums[id] = idCounter;
+			
+			std::cout << id << " ---> " << idCounter << "\n";
+			idCounter++;
+		}
+		
+		filecopy = found.suffix().str();
+	}
+	
+	// TODO: replace
+	for (auto id : enums) {
+		replaceAll(file, "ENUM('" + id.first + "')", std::to_string(id.second));
+	}
+	replaceAll(file, "function ENUM(id) {return id;}", "");
+	
 	log.debug("Loading done", "Minified size: " + std::to_string(file.size()));
 	
 	std::string outfilename = "concat.min.js";

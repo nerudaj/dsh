@@ -9,11 +9,11 @@
 	// Render toolbar
 	var buttons = [
 		new ButtonTemplate(TEXTS.settings, function() {
-			CountdownControl(app, 'stop');
+			CountdownControl(app, ENUM('stop'));
 			app.toggleView('timer_settings');
 		}),
 		new ButtonTemplate(TEXTS.back, function() {
-			CountdownControl(app, 'stop');
+			CountdownControl(app, ENUM('stop'));
 			app.toggleView('score');
 		})
 	];
@@ -35,19 +35,15 @@
 	countdownDisplay.dom.style.fontSize = DISPLAY_FONT_SIZE + 'px';
 	countdownDisplay.setText(IntToTimeStr(context.initCountdown));
 
-	// Render controls
 	var buttons = [
 		new ButtonTemplate(TEXTS.play, function() {
-			CountdownControl(app, 'play');
-		}),
-		new ButtonTemplate(TEXTS.pause, function() {
-			CountdownControl(app, 'pause');
-		}),
+			CountdownControl(app, ENUM('play_pause'));
+		}, ID('DOMTimerPlayButton')),
 		new ButtonTemplate(TEXTS.stop, function() {
-			CountdownControl(app, 'stop');
+			CountdownControl(app, ENUM('stop'));
 		}),
 		new ButtonTemplate(TEXTS.restart, function() {
-			CountdownControl(app, 'restart');
+			CountdownControl(app, ENUM('restart'));
 		})
 	];
 	RenderButtonArray(canvas, buttons, 0, 0.4, 1, 0.1, ID('timer_buttons'));
@@ -57,31 +53,41 @@
 
 'static'; function CountdownControl(app, action) {
 	var context = app.context;
+	var display = GetDOM(ID('CountdownDisplay'));
 	
-	if (action == 'play') {
-		if (context.cntIntHndl != null) return;
+	if (action == ENUM('play_pause')) {
+		if (context.cntIntHndl != null) { // pause behaviour
+			context.cntIntHndl = ReallyClearInterval(context.cntIntHndl);
+			GetDOM(ID('DOMTimerPlayButton')).innerHTML = TEXTS.play;
+			return;
+		}
+		
+		// play behaviour
+		if (context.countdown == 0) {
+			CountdownControl(app, ENUM('stop'));
+		}
+		GetDOM(ID('DOMTimerPlayButton')).innerHTML = TEXTS.pause;
+		
 		context.cntIntHndl = setInterval(function() {
-			var dom = GetDOM(ID('CountdownDisplay'));
 			context.countdown--;
-			dom.innerHTML = IntToTimeStr(context.countdown);
+			display.innerHTML = IntToTimeStr(context.countdown);
 			
 			if (context.countdown == 0) {
 				context.cntIntHndl = ReallyClearInterval(context.cntIntHndl);
-				dom.innerHTML = TEXTS.end;
+				display.innerHTML = TEXTS.end;
+				GetDOM(ID('DOMTimerPlayButton')).innerHTML = TEXTS.play;
 			}
 		}, 1000);
 	}
-	else if (action == 'pause') {
-		context.cntIntHndl = ReallyClearInterval(context.cntIntHndl);
-	}
-	else if (action == 'stop') {
+	else if (action == ENUM('stop')) {
 		context.cntIntHndl = ReallyClearInterval(context.cntIntHndl);
 		context.countdown = context.initCountdown;
-		GetDOM(ID('CountdownDisplay')).innerHTML = IntToTimeStr(context.countdown);
+		display.innerHTML = IntToTimeStr(context.countdown);
+		GetDOM(ID('DOMTimerPlayButton')).innerHTML = TEXTS.play;
 	}
-	else if (action == 'restart') {
-		CountdownControl(app, 'stop');
-		CountdownControl(app, 'play');
+	else if (action == ENUM('restart')) {
+		CountdownControl(app, ENUM('stop'));
+		CountdownControl(app, ENUM('play_pause'));
 	}
 	else {
 		LogError('Timer', 'CountdownControl', 'Invalid action name: ' + action);

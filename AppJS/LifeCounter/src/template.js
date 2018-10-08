@@ -1,6 +1,6 @@
 // *** CORE LAYOUT VALUES ***
-'static'; var TEMPLATE_HEADER_HEIGHT = 0.1;
-'static'; var TEMPLATE_TOOLBAR_HEIGHT = 0.1;
+'static'; var TEMPLATE_HEADER_HEIGHT = 0.09;
+'static'; var TEMPLATE_TOOLBAR_HEIGHT = 0.09;
 
 // *** CORE COLOR SCHEME ***
 'static'; var SYSCOLOR_HEADER = '#AAAAAA';
@@ -12,10 +12,12 @@
  *  
  *  @param [in] label Label written on the button
  *  @param [in] action Function callback of the button
+ *  @param [in] id Optional id assigned to the button
  */
-'static'; function ButtonTemplate(label, action) {
+'static'; function ButtonTemplate(label, action, id) {
 	this.label = label;
 	this.action = action;
+	this.id = DefaultArgument(id, null);
 }
 
 /**
@@ -51,7 +53,7 @@
 	for (var i = 0; i < buttons.length; i++) {
 		if (buttons[i] == null) continue;
 		(function(p) {
-			var opt = canvas.add(x + i * BUTTON_WIDTH, y, BUTTON_WIDTH, h, 'button');
+			var opt = canvas.add(x + i * BUTTON_WIDTH, y, BUTTON_WIDTH, h, 'button', buttons[p].id);
 			opt.dom.addEventCallback('click', buttons[p].action);
 			opt.setText(buttons[p].label, false, GLOBAL_FONT_SIZE_CACHE[cacheID]);
 		}(i));

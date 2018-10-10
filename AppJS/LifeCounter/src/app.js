@@ -201,6 +201,10 @@ AppElement.prototype.add = function(x, y, w, h, type, id) {
 	this.dom.appendChild(t);
 }
 
+'static'; AppElement.prototype.addEventCallback = function(event, action) {
+	this.dom.addEventListener(event, action);
+}
+
 // ============ //
 // === VIEW === //
 // ============ //

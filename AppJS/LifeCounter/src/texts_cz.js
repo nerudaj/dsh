@@ -12,10 +12,9 @@
 	'plCount': 'Počet hráčů',
 	'plColors': 'Barvy hráčů',
 	'countdown': 'Odpočet',
-	'set': 'Nastav',
 	'play': '▷', // https://stackoverflow.com/a/27053825/6603609
 	'pause': '❘ ❘',
 	'stop': '◻',
 	'restart': '⟲',
-	'end': 'KONEC!!',
+	'end': 'KONEC',
 };

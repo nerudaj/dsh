@@ -1,6 +1,6 @@
 'static'; var MinPlayers = 2;
 'static'; var MaxPlayers = 6;
-var Colors = [ 'red', 'lightgreen', 'lightblue', 'yellow', 'pink', 'orange', 'grey', 'white' ];
+var Colors = [ 'red', 'lightgreen', 'lightblue', 'yellow', 'pink', 'orange', 'grey', '#f5f5f5' ];
 
 'static'; var TMP_PlayerCount = 4;
 'static'; var TMP_PlayerColors = [ 0, 1, 2, 3, 4, 5 ];

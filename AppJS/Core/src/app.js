@@ -1,16 +1,26 @@
 "use strict";
 
-var LOG_ERROR_LEVEL = 1;
+var version = '2.0.0';
+
+'static'; var LOG_ERROR_LEVEL = 1;
+'static'; var PREVENT_RESIZE = false;
+/**
+ *  \brief Cache for speeding up text-fit computations
+ */
+'static'; var GLOBAL_FONT_SIZE_CACHE = {}
+
 
 function ID(id) {return id;}
 
-'static'; Element.prototype.addEventCallback = function(action, callback) {
-	this.addEventListener(action, callback);
-}
+function ENUM(id) {return id;}
 
 // =============== //
 // === METHODS === //
 // =============== //
+'static'; function ClearOptimizationCache() {
+	GLOBAL_FONT_SIZE_CACHE = {};
+}
+
 /**
  *  @brief Get reference to DOM object by id
  */
@@ -103,7 +113,7 @@ function ID(id) {return id;}
 // =============== //
 // === aELEMENT === //
 // =============== //
-function aElement() {
+'static'; function ClassElement() {
 	this.dom = null; ///< DOM of the element
 	this.width = 0; ///< Width of the element in pixels
 	this.height = 0; ///< Height of the element in pixels
@@ -125,11 +135,11 @@ function aElement() {
  *  parent element. Example: To create an element that takes left half of the parent,
  *  use add(0, 0, 0.5, 1);
  */
-aElement.prototype.add = function(x, y, w, h, type, id) {
+ClassElement.prototype.add = function(x, y, w, h, type, id) {
 	type = DefaultArgument(type, "div");
 	id = DefaultArgument(id, null);
 
-	var result = new aElement();
+	var result = new ClassElement();
 
 	var node = document.createElement(type);
 	
@@ -148,6 +158,11 @@ aElement.prototype.add = function(x, y, w, h, type, id) {
 	result.dom.style.top = this.height * y + "px";
 	result.dom.style.width = result.width + "px";
 	result.dom.style.height = result.height + "px";
+	
+	if (type == 'input') {
+		result.addEventCallback('focus', function() { PREVENT_RESIZE = true; });
+		result.addEventCallback('blur', function() { setTimeout(function() { PREVENT_RESIZE = false; }, 500); });
+	}
 
 	return result;
 }
@@ -157,7 +172,7 @@ aElement.prototype.add = function(x, y, w, h, type, id) {
  *  
  *  @param [in] color Valid CSS string for color. You can use canonical names, hexa (#HHHHHH), hsl, rgb, ...
  */
-'static'; aElement.prototype.setColor = function(color) {
+'static'; ClassElement.prototype.setColor = function(color) {
 	this.dom.style.background = color;
 }
 
@@ -171,7 +186,7 @@ aElement.prototype.add = function(x, y, w, h, type, id) {
  *  @details If the text is not set to autofit, the fontSize is implicit and words can
  *  break.
  */
-'static'; aElement.prototype.setText = function(str, autofit, startSize) {
+'static'; ClassElement.prototype.setText = function(str, autofit, startSize) {
 	autofit = DefaultArgument(autofit, false);
 	
 	var fontSize = null;
@@ -193,6 +208,14 @@ aElement.prototype.add = function(x, y, w, h, type, id) {
 	this.dom.appendChild(t);
 }
 
+'static'; ClassElement.prototype.addClass = function(name) {
+	this.dom.className += ' ' + name;
+}
+
+'static'; ClassElement.prototype.addEventCallback = function(event, action) {
+	this.dom.addEventListener(event, action);
+}
+
 // ============ //
 // === VIEW === //
 // ============ //
@@ -209,7 +232,7 @@ aElement.prototype.add = function(x, y, w, h, type, id) {
  *  you can access the drawing canvas with this.app.canvas
  *  and you can also access app's shared data with this.app.context.
  */
-function View() {
+'static'; function ClassView() {
 	this.app = null; ///< Reference to the app object
 }
 
@@ -219,8 +242,8 @@ function View() {
  *  @details This method is only a placeholder. Upon creating new
  *  view, you are obligated to set this.render to your own callback.
  */
-View.prototype.render = function() {
-	LogError("View", "render", "This method is not implemented!");
+'static'; ClassView.prototype.render = function() {
+	LogError("ClassView", "render", "This method is not implemented!");
 }
 
 /**
@@ -230,7 +253,7 @@ View.prototype.render = function() {
  *  
  *  @details This method is called automatically by \ref App during \ref addView.
  */
-View.prototype.bootstrap = function(app) {
+'static'; ClassView.prototype.bootstrap = function(app) {
 	this.app = app;
 }
 
@@ -243,9 +266,9 @@ View.prototype.bootstrap = function(app) {
  *  @details App consists of drawing canvas, shared context
  *  and a number of view between which you can freely toggle.
  */
-function App() {
+'static'; function ClassApp() {
 	this.context = {}; ///< Shared application context. Any data that should be persistent has to be saved there
-	this.canvas = new aElement(); ///< Core drawing canvas
+	this.canvas = new ClassElement(); ///< Core drawing canvas
 	this.views = {}; ///< Storage for views
 	this.currentView = ""; ///< Index to current view
 }
@@ -260,11 +283,11 @@ function App() {
  *  @details View is bootstraped automatically if added
  *  successfully.
  */
-App.prototype.addView = function(view, name) {
+'static'; ClassApp.prototype.addView = function(view, name) {
 	var views = this.views;
 	
 	if (views.hasOwnProperty(name)) {
-		LogError("App", "addView", "View with name " + name + " already exists!");
+		LogError("ClassApp", "addView", "View with name " + name + " already exists!");
 		return false;
 	}
 	
@@ -281,9 +304,9 @@ App.prototype.addView = function(view, name) {
  *  
  *  @pre \ref addView with \p name was called
  */
-App.prototype.toggleView = function(name) {
+'static'; ClassApp.prototype.toggleView = function(name) {
 	if (!this.views.hasOwnProperty(name)) {
-		LogError("App", "toggleView", "View called " + name + " does not exist!");
+		LogError("ClassApp", "toggleView", "View called " + name + " does not exist!");
 		return;
 	}
 	
@@ -296,7 +319,7 @@ App.prototype.toggleView = function(name) {
  *  
  *  @details When app is redrawed it also recomputes viewport, so it will resize if needed
  */
-App.prototype.render = function() {
+'static'; ClassApp.prototype.render = function() {
 	var canvas = this.canvas;
 	
 	// Clear everything rendered so far
@@ -323,9 +346,13 @@ App.prototype.render = function() {
  *  thing in your program. It registers automatic resize
  *  of the app as well as it binds to drawing canvas.
  */
-App.prototype.bootstrap = function(id) {
+'static'; ClassApp.prototype.bootstrap = function(id) {
 	this.canvas.dom = GetDOM(id);
 	
 	var that = this;
-	window.addEventListener('resize', function() { that.render(); });
+	window.addEventListener('resize', function() {
+		if (PREVENT_RESIZE) return;
+		ClearOptimizationCache();
+		that.render();
+	});
 }

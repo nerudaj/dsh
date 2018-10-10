@@ -1,4 +1,4 @@
-html, body {
+html, body, button {
 	margin: 0px;
 	padding: 0px;
 	font-family: Segoe UI;
@@ -13,6 +13,14 @@ div {
 
 button {
 	background: none;
+	padding: 0px;
+	margin: 0px;
+	border: 0px;
+}
+
+button:active {
+	background: white;
+	opacity: 0.5;
 }
 
 #Canvas {
@@ -20,4 +28,30 @@ button {
 	top: 0px;
 	left: 0px;
 	z-index: 9999999;
+}
+
+.header {
+	background: rgb(31, 31, 31);
+	color: rgb(176, 176, 176);
+}
+
+.content, .content button {
+	background: #000000;
+	color: rgb(245, 245, 245);
+}
+
+.content input, .content select {
+	text-align: center;
+	background: rgb(31, 31, 31);
+	color: rgb(176, 176, 176);
+	border: 1px solid rgb(176, 176, 176);
+}
+
+.toolbar, .toolbar button {
+	background: rgb(31, 31, 31);
+	color: rgb(176, 176, 176);
+}
+
+.button_separator {
+	border-left: 1px solid rgb(176, 176, 176);
 }

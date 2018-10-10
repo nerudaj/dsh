@@ -106,7 +106,7 @@ function ENUM(id) {return id;}
 // =============== //
 // === aELEMENT === //
 // =============== //
-function aElement() {
+function AppElement() {
 	this.dom = null; ///< DOM of the element
 	this.width = 0; ///< Width of the element in pixels
 	this.height = 0; ///< Height of the element in pixels
@@ -128,11 +128,11 @@ function aElement() {
  *  parent element. Example: To create an element that takes left half of the parent,
  *  use add(0, 0, 0.5, 1);
  */
-aElement.prototype.add = function(x, y, w, h, type, id) {
+AppElement.prototype.add = function(x, y, w, h, type, id) {
 	type = DefaultArgument(type, "div");
 	id = DefaultArgument(id, null);
 
-	var result = new aElement();
+	var result = new AppElement();
 
 	var node = document.createElement(type);
 	
@@ -165,7 +165,7 @@ aElement.prototype.add = function(x, y, w, h, type, id) {
  *  
  *  @param [in] color Valid CSS string for color. You can use canonical names, hexa (#HHHHHH), hsl, rgb, ...
  */
-'static'; aElement.prototype.setColor = function(color) {
+'static'; AppElement.prototype.setColor = function(color) {
 	this.dom.style.background = color;
 }
 
@@ -179,7 +179,7 @@ aElement.prototype.add = function(x, y, w, h, type, id) {
  *  @details If the text is not set to autofit, the fontSize is implicit and words can
  *  break.
  */
-'static'; aElement.prototype.setText = function(str, autofit, startSize) {
+'static'; AppElement.prototype.setText = function(str, autofit, startSize) {
 	autofit = DefaultArgument(autofit, false);
 	
 	var fontSize = null;

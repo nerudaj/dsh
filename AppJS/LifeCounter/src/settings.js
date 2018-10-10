@@ -106,7 +106,7 @@ var Colors = [ 'red', 'lightgreen', 'lightblue', 'yellow', 'pink', 'orange', 'gr
 			option.setText(i);
 			option.addEventCallback('click', function() {
 				TMP_PlayerCount = p;
-				app.toggleView('settings');
+				app.toggleView(ENUM('settings'));
 			});
 			if (p == TMP_PlayerCount) {
 				option.dom.selected = 'selected';

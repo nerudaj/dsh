@@ -7,10 +7,6 @@ function ID(id) {return id;}
 
 function ENUM(id) {return id;}
 
-'static'; Element.prototype.addEventCallback = function(action, callback) {
-	this.addEventListener(action, callback);
-}
-
 // =============== //
 // === METHODS === //
 // =============== //
@@ -153,8 +149,8 @@ AppElement.prototype.add = function(x, y, w, h, type, id) {
 	result.dom.style.height = result.height + "px";
 	
 	if (type == 'input') {
-		result.dom.addEventCallback('focus', function() { PREVENT_RESIZE = true; });
-		result.dom.addEventCallback('blur', function() { setTimeout(function() { PREVENT_RESIZE = false; }, 500); });
+		result.addEventCallback('focus', function() { PREVENT_RESIZE = true; });
+		result.addEventCallback('blur', function() { setTimeout(function() { PREVENT_RESIZE = false; }, 500); });
 	}
 
 	return result;

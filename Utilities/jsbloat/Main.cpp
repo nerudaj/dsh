@@ -47,6 +47,7 @@ void replaceIds(const std::unordered_map<std::string, std::string> &ids, std::st
 			replaceAll(file, id.first + "(", id.second + "(");
 			replaceAll(file, id.first + " ", id.second + " ");
 			replaceAll(file, id.first + ",", id.second + ",");
+			replaceAll(file, id.first + ".", id.second + ".");
 		}
 		else {
 			replaceAll(file, id.first, id.second);

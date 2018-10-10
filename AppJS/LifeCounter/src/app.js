@@ -151,6 +151,11 @@ aElement.prototype.add = function(x, y, w, h, type, id) {
 	result.dom.style.top = this.height * y + "px";
 	result.dom.style.width = result.width + "px";
 	result.dom.style.height = result.height + "px";
+	
+	if (type == 'input') {
+		result.dom.addEventCallback('focus', function() { PREVENT_RESIZE = true; });
+		result.dom.addEventCallback('blur', function() { setTimeout(function() { PREVENT_RESIZE = false; }, 500); });
+	}
 
 	return result;
 }

@@ -227,7 +227,7 @@ function View() {
  *  @details This method is only a placeholder. Upon creating new
  *  view, you are obligated to set this.render to your own callback.
  */
-View.prototype.render = function() {
+'static'; View.prototype.render = function() {
 	LogError("View", "render", "This method is not implemented!");
 }
 
@@ -238,7 +238,7 @@ View.prototype.render = function() {
  *  
  *  @details This method is called automatically by \ref App during \ref addView.
  */
-View.prototype.bootstrap = function(app) {
+'static'; View.prototype.bootstrap = function(app) {
 	this.app = app;
 }
 
@@ -253,7 +253,7 @@ View.prototype.bootstrap = function(app) {
  */
 function App() {
 	this.context = {}; ///< Shared application context. Any data that should be persistent has to be saved there
-	this.canvas = new aElement(); ///< Core drawing canvas
+	this.canvas = new AppElement(); ///< Core drawing canvas
 	this.views = {}; ///< Storage for views
 	this.currentView = ""; ///< Index to current view
 }
@@ -268,7 +268,7 @@ function App() {
  *  @details View is bootstraped automatically if added
  *  successfully.
  */
-App.prototype.addView = function(view, name) {
+'static'; App.prototype.addView = function(view, name) {
 	var views = this.views;
 	
 	if (views.hasOwnProperty(name)) {
@@ -289,7 +289,7 @@ App.prototype.addView = function(view, name) {
  *  
  *  @pre \ref addView with \p name was called
  */
-App.prototype.toggleView = function(name) {
+'static'; App.prototype.toggleView = function(name) {
 	if (!this.views.hasOwnProperty(name)) {
 		LogError("App", "toggleView", "View called " + name + " does not exist!");
 		return;
@@ -304,7 +304,7 @@ App.prototype.toggleView = function(name) {
  *  
  *  @details When app is redrawed it also recomputes viewport, so it will resize if needed
  */
-App.prototype.render = function() {
+'static'; App.prototype.render = function() {
 	var canvas = this.canvas;
 	
 	// Clear everything rendered so far
@@ -331,7 +331,7 @@ App.prototype.render = function() {
  *  thing in your program. It registers automatic resize
  *  of the app as well as it binds to drawing canvas.
  */
-App.prototype.bootstrap = function(id) {
+'static'; App.prototype.bootstrap = function(id) {
 	this.canvas.dom = GetDOM(id);
 	
 	var that = this;

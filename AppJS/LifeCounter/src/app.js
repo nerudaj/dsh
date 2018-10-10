@@ -1,6 +1,7 @@
 "use strict";
 
 'static'; var LOG_ERROR_LEVEL = 1;
+'static'; var PREVENT_RESIZE = false;
 
 function ID(id) {return id;}
 
@@ -330,7 +331,7 @@ App.prototype.bootstrap = function(id) {
 	
 	var that = this;
 	window.addEventListener('resize', function() {
-		if (GetDOM(ID('DOMInitScoreInput')) == document.activeElement) return;
+		if (PREVENT_RESIZE) return;
 		ClearOptimizationCache();
 		that.render();
 	});

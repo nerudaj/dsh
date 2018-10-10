@@ -3,6 +3,7 @@
 	
 	var ScoreFontSize = null; // App might be resized, reset font size
 	var board = GetDrawingTemplate(canvas, false);
+	board.dom.className = '';
 	RenderBoard(board, this.app);
 	
 	//RenderToolbar(toolbar, this.app);
@@ -49,12 +50,12 @@
 	var minus = canvas.add(0, 0, 0.25, 1, 'button');
 	minus.setText('−', false, FONT_SIZE);
 	minus.dom.addEventCallback('click', function() { ModifyScore(app.context.players, id, -1); });
-	minus.dom.className = 'score_btn';
+	minus.addClass('score_btn');
 	
 	var plus = canvas.add(0.75, 0, 0.25, 1, 'button');
 	plus.setText('+', false, FONT_SIZE);
 	plus.dom.addEventCallback('click', function() { ModifyScore(app.context.players, id, 1); });
-	plus.dom.className = 'score_btn';
+	plus.addClass('score_btn');
 	
 	ModifyScore(app.context.players, id, app.context.players[id].score, true);
 }

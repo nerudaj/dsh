@@ -2,11 +2,6 @@
 'static'; var TEMPLATE_HEADER_HEIGHT = 0.09;
 'static'; var TEMPLATE_TOOLBAR_HEIGHT = 0.09;
 
-// *** CORE COLOR SCHEME ***
-'static'; var SYSCOLOR_HEADER = '#AAAAAA';
-'static'; var SYSCOLOR_CONTENT = 'lightgrey';
-'static'; var SYSCOLOR_TOOLBAR = 'grey';
-
 /**
  *  @brief Create button for templater
  *  
@@ -56,6 +51,7 @@
 			var opt = canvas.add(x + i * BUTTON_WIDTH, y, BUTTON_WIDTH, h, 'button', buttons[p].id);
 			opt.dom.addEventCallback('click', buttons[p].action);
 			opt.setText(buttons[p].label, false, GLOBAL_FONT_SIZE_CACHE[cacheID]);
+			if (i > 0) opt.addClass('button_separator');
 		}(i));
 	}
 }
@@ -74,7 +70,7 @@
  */
 'static'; function RenderToolbarTemplate(parentCanvas, buttons, cacheID) {
 	var canvas = parentCanvas.add(0, 1 - TEMPLATE_TOOLBAR_HEIGHT, 1, TEMPLATE_TOOLBAR_HEIGHT);
-	canvas.setColor(SYSCOLOR_TOOLBAR);
+	canvas.addClass('toolbar');
 	
 	RenderButtonArray(canvas, buttons, 0, 0, 1, 1, cacheID);
 }
@@ -99,7 +95,7 @@
 	}
 	
 	header.setText(label, false, GLOBAL_FONT_SIZE_CACHE[cacheID]);
-	header.setColor(SYSCOLOR_HEADER);
+	header.addClass('header');
 }
 
 /**
@@ -114,6 +110,6 @@
 'static'; function GetDrawingTemplate(core, hasHeader) {
 	var HEADER_OFFSET = DefaultArgument(hasHeader, true) ? TEMPLATE_HEADER_HEIGHT : 0;
 	var result = core.add(0, HEADER_OFFSET, 1, 1 - HEADER_OFFSET - TEMPLATE_TOOLBAR_HEIGHT);
-	result.setColor(SYSCOLOR_CONTENT);
+	result.addClass('content');
 	return result;
 }

@@ -1,8 +1,6 @@
 'static'; var MinPlayers = 2;
 'static'; var MaxPlayers = 6;
 var Colors = [ 'red', 'lightgreen', 'lightblue', 'yellow', 'pink', 'orange', 'grey', 'white' ];
-'static'; var LEFT_BTN_CLASS = 'init_score_btn init_score_btn_left';
-'static'; var RIGHT_BTN_CLASS = 'init_score_btn init_score_btn_right';
 
 'static'; var TMP_PlayerCount = 4;
 'static'; var TMP_PlayerColors = [ 0, 1, 2, 3, 4, 5 ];
@@ -48,7 +46,7 @@ var Colors = [ 'red', 'lightgreen', 'lightblue', 'yellow', 'pink', 'orange', 'gr
 	
 	for (var i = 0; i < labels.length; i++) {
 		var label = canvas.add(0, i * LABEL_HEIGHT, LABEL_WIDTH, LABEL_HEIGHT);
-		label.dom.className = 'align_left';
+		label.addClass('align_left');
 		label.setText(labels[i], false, LABEL_FONT_SIZE);
 	}
 	

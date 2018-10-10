@@ -1,5 +1,5 @@
 // The most important global variable
-var app = new App();
+var app = new ClassApp();
 
 // Main function will bootstrap the App
 function Main() {
@@ -32,7 +32,7 @@ function Main() {
 	
 	// Instantiate views
 	for (var i = 0; i < views.length; i++) {
-		var view = new View();
+		var view = new ClassView();
 		view.render = views[i].callback;
 		app.addView(view, views[i].name);
 	}

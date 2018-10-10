@@ -102,7 +102,7 @@ function ENUM(id) {return id;}
 // =============== //
 // === aELEMENT === //
 // =============== //
-function AppElement() {
+'static'; function ClassElement() {
 	this.dom = null; ///< DOM of the element
 	this.width = 0; ///< Width of the element in pixels
 	this.height = 0; ///< Height of the element in pixels
@@ -124,11 +124,11 @@ function AppElement() {
  *  parent element. Example: To create an element that takes left half of the parent,
  *  use add(0, 0, 0.5, 1);
  */
-AppElement.prototype.add = function(x, y, w, h, type, id) {
+ClassElement.prototype.add = function(x, y, w, h, type, id) {
 	type = DefaultArgument(type, "div");
 	id = DefaultArgument(id, null);
 
-	var result = new AppElement();
+	var result = new ClassElement();
 
 	var node = document.createElement(type);
 	
@@ -161,7 +161,7 @@ AppElement.prototype.add = function(x, y, w, h, type, id) {
  *  
  *  @param [in] color Valid CSS string for color. You can use canonical names, hexa (#HHHHHH), hsl, rgb, ...
  */
-'static'; AppElement.prototype.setColor = function(color) {
+'static'; ClassElement.prototype.setColor = function(color) {
 	this.dom.style.background = color;
 }
 
@@ -175,7 +175,7 @@ AppElement.prototype.add = function(x, y, w, h, type, id) {
  *  @details If the text is not set to autofit, the fontSize is implicit and words can
  *  break.
  */
-'static'; AppElement.prototype.setText = function(str, autofit, startSize) {
+'static'; ClassElement.prototype.setText = function(str, autofit, startSize) {
 	autofit = DefaultArgument(autofit, false);
 	
 	var fontSize = null;
@@ -197,11 +197,11 @@ AppElement.prototype.add = function(x, y, w, h, type, id) {
 	this.dom.appendChild(t);
 }
 
-'static'; AppElement.prototype.addClass = function(name) {
+'static'; ClassElement.prototype.addClass = function(name) {
 	this.dom.className += ' ' + name;
 }
 
-'static'; AppElement.prototype.addEventCallback = function(event, action) {
+'static'; ClassElement.prototype.addEventCallback = function(event, action) {
 	this.dom.addEventListener(event, action);
 }
 
@@ -221,7 +221,7 @@ AppElement.prototype.add = function(x, y, w, h, type, id) {
  *  you can access the drawing canvas with this.app.canvas
  *  and you can also access app's shared data with this.app.context.
  */
-function View() {
+'static'; function ClassView() {
 	this.app = null; ///< Reference to the app object
 }
 
@@ -231,8 +231,8 @@ function View() {
  *  @details This method is only a placeholder. Upon creating new
  *  view, you are obligated to set this.render to your own callback.
  */
-'static'; View.prototype.render = function() {
-	LogError("View", "render", "This method is not implemented!");
+'static'; ClassView.prototype.render = function() {
+	LogError("ClassView", "render", "This method is not implemented!");
 }
 
 /**
@@ -242,7 +242,7 @@ function View() {
  *  
  *  @details This method is called automatically by \ref App during \ref addView.
  */
-'static'; View.prototype.bootstrap = function(app) {
+'static'; ClassView.prototype.bootstrap = function(app) {
 	this.app = app;
 }
 
@@ -255,9 +255,9 @@ function View() {
  *  @details App consists of drawing canvas, shared context
  *  and a number of view between which you can freely toggle.
  */
-function App() {
+'static'; function ClassApp() {
 	this.context = {}; ///< Shared application context. Any data that should be persistent has to be saved there
-	this.canvas = new AppElement(); ///< Core drawing canvas
+	this.canvas = new ClassElement(); ///< Core drawing canvas
 	this.views = {}; ///< Storage for views
 	this.currentView = ""; ///< Index to current view
 }
@@ -272,11 +272,11 @@ function App() {
  *  @details View is bootstraped automatically if added
  *  successfully.
  */
-'static'; App.prototype.addView = function(view, name) {
+'static'; ClassApp.prototype.addView = function(view, name) {
 	var views = this.views;
 	
 	if (views.hasOwnProperty(name)) {
-		LogError("App", "addView", "View with name " + name + " already exists!");
+		LogError("ClassApp", "addView", "View with name " + name + " already exists!");
 		return false;
 	}
 	
@@ -293,9 +293,9 @@ function App() {
  *  
  *  @pre \ref addView with \p name was called
  */
-'static'; App.prototype.toggleView = function(name) {
+'static'; ClassApp.prototype.toggleView = function(name) {
 	if (!this.views.hasOwnProperty(name)) {
-		LogError("App", "toggleView", "View called " + name + " does not exist!");
+		LogError("ClassApp", "toggleView", "View called " + name + " does not exist!");
 		return;
 	}
 	
@@ -308,7 +308,7 @@ function App() {
  *  
  *  @details When app is redrawed it also recomputes viewport, so it will resize if needed
  */
-'static'; App.prototype.render = function() {
+'static'; ClassApp.prototype.render = function() {
 	var canvas = this.canvas;
 	
 	// Clear everything rendered so far
@@ -335,7 +335,7 @@ function App() {
  *  thing in your program. It registers automatic resize
  *  of the app as well as it binds to drawing canvas.
  */
-'static'; App.prototype.bootstrap = function(id) {
+'static'; ClassApp.prototype.bootstrap = function(id) {
 	this.canvas.dom = GetDOM(id);
 	
 	var that = this;

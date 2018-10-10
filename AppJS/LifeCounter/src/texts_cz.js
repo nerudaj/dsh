@@ -1,4 +1,4 @@
-'static'; TEXTS = {
+'static'; var TEXTS = {
 	'whoStarts': 'Kdo začne?',
 	'throwDice': 'Hoď kostkami',
 	'tossCoin': 'Hoď mincí',
@@ -12,9 +12,9 @@
 	'plCount': 'Počet hráčů',
 	'plColors': 'Barvy hráčů',
 	'countdown': 'Odpočet',
-	'set': 'Nastav',
-	'run': 'Spusť',
-	'pause': 'Pauza',
-	'reset': 'Reset',
-	'end': 'KONEC!!',
+	'play': '▷', // https://stackoverflow.com/a/27053825/6603609
+	'pause': '❘ ❘',
+	'stop': '◻',
+	'restart': '⟲',
+	'end': 'KONEC',
 };

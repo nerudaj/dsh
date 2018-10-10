@@ -1,57 +1,46 @@
-function RenderDice() {
+'static'; function RenderDice() {
 	var canvas = this.app.canvas;
+
+	RenderHeaderTemplate(canvas, TEXTS.whoStarts);
 	
-	var header = canvas.add(0, 0, 1, 0.1);
-	header.setText(TEXTS.whoStarts, true);
-	header.setColor('#AAAAAA');
+	var board = GetDrawingTemplate(canvas);
+	RenderThrowDisplay(board);
 	
-	var board = canvas.add(0, 0.1, 1, 0.8, 'div', ID('ThrowResultBoard'));
-	board.setColor('lightgrey');
-	var optimFontSize = GetOptimalFontSize("#######", board.width, board.height, 1000);
-	board.dom.style.fontSize = optimFontSize + 'px';
-	board.setText("??");
-	
-	var toolbar = canvas.add(0, 0.9, 1, 0.1);
-	toolbar.setColor('grey');
-	toolbar.dom.style.border = '1px solid black';
-	RenderToolbarDice(toolbar, this.app);
+	// Render toolbar
+	var buttons = [
+		new ButtonTemplate(TEXTS.throwDice, function() {
+			ThrowDice();
+		}),
+		new ButtonTemplate(TEXTS.tossCoin, function() {
+			TossCoin();
+		}),
+		new ButtonTemplate(TEXTS.back, function() {
+			app.toggleView(ENUM('score'));
+		})
+	];
+	RenderToolbarTemplate(canvas, buttons, ID('CacheDiceToolbar'));
 }
 
-'static'; function RenderToolbarDice(canvas, app) {
-	var TOOLBAR_BUTTON_WIDTH = 1 / 3;
-	var TOOLBAR_BUTTON_HEIGHT = 1;
+'static'; function RenderThrowDisplay(canvas) {
+	var display = canvas.add(0, 0, 1, 1, 'div', ID('DOMThrowResultBoard'));
 	
-	var opt1 = canvas.add(0.0, 0, TOOLBAR_BUTTON_WIDTH, TOOLBAR_BUTTON_HEIGHT, 'button');
-	var optimFontSize = GetOptimalFontSize(TEXTS.throwDice, opt1.width, opt1.height);
-	opt1.dom.addEventCallback('click', function() { ThrowDice(app); });
-	opt1.dom.style.fontSize = optimFontSize + 'px';
-	opt1.setText(TEXTS.throwDice);
-	
-	var opt2 = canvas.add(1 / 3, 0, TOOLBAR_BUTTON_WIDTH, TOOLBAR_BUTTON_HEIGHT, 'button');
-	opt2.dom.addEventCallback('click', function() { TossCoin(app); });
-	opt2.dom.style.fontSize = optimFontSize + 'px';
-	opt2.setText(TEXTS.tossCoin);
-	
-	var opt3 = canvas.add(2 / 3, 0, TOOLBAR_BUTTON_WIDTH, TOOLBAR_BUTTON_HEIGHT, 'button');
-	opt3.dom.addEventCallback('click', function() { app.toggleView('score'); });
-	opt3.dom.style.fontSize = optimFontSize + 'px';
-	opt3.setText(TEXTS.back);
+	var FONT_SIZE = ReadFontSizeCache(display, 1, 1, '#######', ID('CacheThrowDisplay'), 1000);
+	display.setText("??", false, FONT_SIZE);
 }
 
-'static'; function ThrowDice(app) {
+'static'; function ThrowDice() {
 	var DICE_SIDES = ['⚀', '⚁', '⚂', '⚃', '⚄', '⚅'];
-	
-	var d1 = Random(1, 6) - 1;
-	var d2 = Random(1, 6) - 1;
-	var d3 = Random(1, 6) - 1;
-	
-	var dom = GetDOM(ID('ThrowResultBoard'));
-	dom.innerHTML = DICE_SIDES[d1] + ' ' + DICE_SIDES[d2] + ' ' + DICE_SIDES[d3];
+
+	var dom = GetDOM(ID('DOMThrowResultBoard'));
+	dom.innerHTML = '';
+	for (var i = 0; i < 3; i++) {
+		dom.innerHTML += DICE_SIDES[(Random(1, 6) - 1)] + ' ';
+	}
 }
 
-'static'; function TossCoin(app) {
+'static'; function TossCoin() {
 	var COIN_SIDES = [TEXTS.coin1, TEXTS.coin2];
 	
-	var dom = GetDOM(ID('ThrowResultBoard'));
+	var dom = GetDOM(ID('DOMThrowResultBoard'));
 	dom.innerHTML = COIN_SIDES[Random(1, 2) - 1];
 }

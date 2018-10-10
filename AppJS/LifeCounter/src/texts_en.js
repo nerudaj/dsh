@@ -12,9 +12,9 @@
 	'plCount': 'Player count',
 	'plColors': 'Player colors',
 	'countdown': 'Countdown',
-	'set': 'Set',
-	'run': 'Run',
-	'pause': 'Pause',
-	'reset': 'Reset',
+	'play': '▷',
+	'pause': '❘ ❘',
+	'stop': '◻',
+	'restart': '⟲',
 	'end': 'END!!',
 };

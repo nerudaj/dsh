@@ -17,6 +17,8 @@ std::vector<RuleForStatic> rules = {
 	{ std::regex("\'static\'\\; var [_a-zA-Z][_a-zA-Z0-9]*"), std::regex("\'static\'\\; var "), 'v' } 
 };
 
+std::string IDCODES = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVXYZ012345678_";
+
 void replaceAll(std::string &str, const std::string &from, const std::string &to) {
 	if(from.empty()) return;
 	
@@ -29,18 +31,28 @@ void replaceAll(std::string &str, const std::string &from, const std::string &to
 
 void permutateObfuscatedId(std::string &id) {
 	auto last = id.size() - 1;
+	auto loc = IDCODES.find(id[last]);
 	
-	if (id[last] == 'z') {
+	if (IDCODES[loc] == '_') {
 		id += 'a';
 	}
 	else {
-		id[last]++;
+		id[last] = IDCODES[++loc];
 	}
 }
 
 void replaceIds(const std::unordered_map<std::string, std::string> &ids, std::string &file) {
 	for (auto id : ids) {
-		replaceAll(file, id.first, id.second);
+		if (id.second[0] != 'v') {
+			replaceAll(file, id.first + "(", id.second + "(");
+			replaceAll(file, id.first + " ", id.second + " ");
+			replaceAll(file, id.first + ",", id.second + ",");
+			replaceAll(file, " " + id.first + ".", " " + id.second + ".");
+			replaceAll(file, "\n" + id.first + ".", "\n" + id.second + ".");
+		}
+		else {
+			replaceAll(file, id.first, id.second);
+		}
 	}
 }
 
@@ -134,6 +146,8 @@ int main(int argc, char *argv[]) {
 	
 	std::unordered_map<std::string, std::string> ids;
 	
+	replaceAll(file, " (", "(");
+	
 	// Process all statics
 	for (auto rule : rules) {
 		std::string filecopy = file;
@@ -183,6 +197,33 @@ int main(int argc, char *argv[]) {
 		replaceAll(file, "ID('" + id.first + "')", "'" + id.second + "'");
 	}
 	replaceAll(file, "function ID(id) {return id;}", ""); // Remove marker function
+	
+	// ENUM()
+	std::unordered_map<std::string, int> enums;
+	std::regex findEnums("ENUM\\(\'[_a-zA-Z0-9]+\'\\)");
+	filecopy = file;
+	int idCounter = 0;
+	while (std::regex_search(filecopy, found, findEnums)) {
+		for (auto match : found) {
+			std::string raw = std::string(match);
+			std::string id = raw.substr(6, raw.size() - 8);
+			
+			if (enums.find(id) != enums.end()) continue;
+			
+			enums[id] = idCounter;
+			
+			std::cout << id << " ---> " << idCounter << "\n";
+			idCounter++;
+		}
+		
+		filecopy = found.suffix().str();
+	}
+	
+	// TODO: replace
+	for (auto id : enums) {
+		replaceAll(file, "ENUM('" + id.first + "')", std::to_string(id.second));
+	}
+	replaceAll(file, "function ENUM(id) {return id;}", "");
 	
 	log.debug("Loading done", "Minified size: " + std::to_string(file.size()));
 	

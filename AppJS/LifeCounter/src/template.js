@@ -1,6 +1,6 @@
 // *** CORE LAYOUT VALUES ***
-'static'; var TEMPLATE_HEADER_HEIGHT = 0.09;
-'static'; var TEMPLATE_TOOLBAR_HEIGHT = 0.09;
+'static'; var TEMPLATE_HEADER_HEIGHT = 0.0807;
+'static'; var TEMPLATE_TOOLBAR_HEIGHT = TEMPLATE_HEADER_HEIGHT;
 
 /**
  *  @brief Create button for templater

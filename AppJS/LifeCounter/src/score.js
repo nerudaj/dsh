@@ -8,9 +8,9 @@
 	
 	//RenderToolbar(toolbar, this.app);
 	var buttons = [
-		new ButtonTemplate(TEXTS.whoStarts, function() { app.toggleView('dice'); }),
-		new ButtonTemplate(TEXTS.timer, function() { app.toggleView('timer'); }),
-		new ButtonTemplate(TEXTS.settings, function() { app.toggleView('settings'); })
+		new ButtonTemplate(TEXTS.whoStarts, function() { app.toggleView(ENUM('dice')); }),
+		new ButtonTemplate(TEXTS.timer, function() { app.toggleView(ENUM('timer')); }),
+		new ButtonTemplate(TEXTS.settings, function() { app.toggleView(ENUM('settings')); })
 	];
 	RenderToolbarTemplate(canvas, buttons, ID('CacheScoreToolbar'));
 }

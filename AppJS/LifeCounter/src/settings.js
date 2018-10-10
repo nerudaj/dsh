@@ -20,11 +20,11 @@ var Colors = [ 'red', 'lightgreen', 'lightblue', 'yellow', 'pink', 'orange', 'gr
 	var buttons = [
 		new ButtonTemplate(TEXTS.apply, function() {
 			ApplySettings(app);
-			app.toggleView('score');
+			app.toggleView(ENUM('score'));
 		}),
 		new ButtonTemplate(TEXTS.back, function() {
 			RestoreTemporaries(app);
-			app.toggleView('score');
+			app.toggleView(ENUM('score'));
 		})
 	];
 	RenderToolbarTemplate(canvas, buttons, ID('CacheSettingsToolbar'));

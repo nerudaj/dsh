@@ -23,11 +23,11 @@ function Main() {
 	
 	// Setup views
 	var views = [
-		{ callback: RenderScore, name: "score" },
-		{ callback: RenderSettings, name: "settings" },
-		{ callback: RenderTimer, name: 'timer' },
-		{ callback: RenderTimerSettings, name: "timer_settings" },
-		{ callback: RenderDice, name: "dice" }
+		{ callback: RenderScore, name: ENUM('score') },
+		{ callback: RenderSettings, name: ENUM('settings') },
+		{ callback: RenderTimer, name: ENUM('timer') },
+		{ callback: RenderTimerSettings, name: ENUM('timer_settings') },
+		{ callback: RenderDice, name: ENUM('dice') }
 	];
 	
 	// Instantiate views
@@ -38,5 +38,5 @@ function Main() {
 	}
 	
 	// Aaand toggle the main view
-	app.toggleView("score");
+	app.toggleView(ENUM('score'));
 }

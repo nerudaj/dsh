@@ -10,11 +10,11 @@
 	var buttons = [
 		new ButtonTemplate(TEXTS.settings, function() {
 			CountdownControl(app, ENUM('stop'));
-			app.toggleView('timer_settings');
+			app.toggleView(ENUM('timer_settings'));
 		}),
 		new ButtonTemplate(TEXTS.back, function() {
 			CountdownControl(app, ENUM('stop'));
-			app.toggleView('score');
+			app.toggleView(ENUM('score'));
 		})
 	];
 	RenderToolbarTemplate(canvas, buttons, ID('timer'));

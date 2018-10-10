@@ -15,10 +15,10 @@
 	var buttons = [
 		new ButtonTemplate(TEXTS.apply, function() {
 			app.context.initCountdown = TI_TMP_STORAGE; // Apply modifications to initCountdown
-			app.toggleView('timer');
+			app.toggleView(ENUM('timer'));
 		}),
 		new ButtonTemplate(TEXTS.back, function() {
-			app.toggleView('timer');
+			app.toggleView(ENUM('timer'));
 		})
 	];
 	RenderToolbarTemplate(canvas, buttons, ID('CacheToolbarSettingsToolbar'));

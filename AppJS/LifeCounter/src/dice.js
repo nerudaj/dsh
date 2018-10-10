@@ -15,7 +15,7 @@
 			TossCoin();
 		}),
 		new ButtonTemplate(TEXTS.back, function() {
-			app.toggleView('score');
+			app.toggleView(ENUM('score'));
 		})
 	];
 	RenderToolbarTemplate(canvas, buttons, ID('CacheDiceToolbar'));

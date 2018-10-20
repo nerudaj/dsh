@@ -50,7 +50,7 @@
 /**
  *  \brief Cache for speeding up text-fit computations
  */
-'static'; var GLOBAL_FONT_SIZE_CACHE = {}
+'static'; var GLOBAL_FONT_SIZE_CACHE = {};
 
 'static'; function ClearOptimizationCache() {
 	GLOBAL_FONT_SIZE_CACHE = {};

@@ -24,7 +24,7 @@
 'static'; function RenderThrowDisplay(canvas) {
 	var display = canvas.add(0, 0, 1, 1, 'div', ID('DOMThrowResultBoard'));
 	
-	var FONT_SIZE = ReadFontSizeCache(display, 1, 1, '#######', ID('CacheThrowDisplay'), 1000);
+	var FONT_SIZE = ReadFontSizeCache(display, 1, 1, '⚀⚀⚀', ID('CacheThrowDisplay'), Math.min(canvas.width, canvas.height));
 	display.setText("??", false, FONT_SIZE);
 }
 
@@ -34,7 +34,7 @@
 	var dom = GetDOM(ID('DOMThrowResultBoard'));
 	dom.innerHTML = '';
 	for (var i = 0; i < 3; i++) {
-		dom.innerHTML += DICE_SIDES[(Random(1, 6) - 1)] + ' ';
+		dom.innerHTML += DICE_SIDES[(Random(1, 6) - 1)];
 	}
 }
 

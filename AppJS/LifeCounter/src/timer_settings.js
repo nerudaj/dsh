@@ -69,6 +69,11 @@
 // === Third level ===
 
 'static'; function ModifyInitCountdown(app, amount) {
-	TI_TMP_STORAGE += amount;
+	if (TI_TMP_STORAGE + amount <= 0) {
+		TI_TMP_STORAGE = 1;
+	}
+	else {
+		TI_TMP_STORAGE += amount;
+	}
 	GetDOM(ID('DisplayInitCountdown')).innerHTML = IntToTimeStr(TI_TMP_STORAGE);
 }

@@ -18,40 +18,14 @@
 	
 	<!-- Use during development. Add new lines as needed -->
 	<script type="text/javascript" src="src/app.js"></script>
+	<script type="text/javascript" src="src/template.js"></script>
+	<script type="text/javascript" src="src/main.js"></script>
+	<script type="text/javascript" src="src/mainpage.js"></script>
 </head>
 
-<body onload="Init();" id="Core">
+<body onload="Main();" id="Core">
 	<div id="Canvas">Loading...</div>
 	<span style="visibility: hidden; position: absolute; top: -200px;" id="HiddenResizer"></span>
-	
-	<script type="text/javascript">
-		// Global variables
-		var app = new App();
-
-		// Bootstrap app
-		function Init() {
-			// Bootstrap app
-			app.bootstrap('Canvas');
-
-			// Setup app context
-			// app.context['key'] = value;
-
-			// Setup views
-			var views = [
-				// { callback: fooname, name: "viewname" }
-			];
-			
-			// Add views to app
-			for (var i = 0; i < views.length; i++) {
-				var view = new View();
-				view.render = views[i].callback;
-				app.addView(view, views[i].name);
-			}
-			
-			// Toggle default view
-			// app.toggleView("viewname");
-		}
-	</script>
 </body>
 
 </html>

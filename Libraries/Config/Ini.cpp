@@ -50,6 +50,20 @@ bool Ini::loadFromFile(const std::string &filename) {
 	return true;
 }
 
+template<typename T>
+std::vector<std::string> getSortedMapKeys(const std::map<std::string, T> &map) {
+	std::vector<std::string> result;
+	result.reserve(map.size());
+	
+	for (auto key : map) {
+		result.push_back(key.first);
+	}
+	
+	std::sort(result.begin(), result.end());
+	
+	return result;
+}
+
 bool Ini::saveToFile(const std::string &filename) {
 	std::ofstream save (filename);
 	
@@ -58,11 +72,13 @@ bool Ini::saveToFile(const std::string &filename) {
 		return false;
 	}
 	
-	for (auto section : config) {
-		save << "[" << section.first << "]\n";
+	auto headerKeys = getSortedMapKeys(config);
+	for (auto sortedKey : headerKeys) {
+		save << "[" << sortedKey << "]\n";
 		
-		for (auto item : section.second) {
-			save << item.first << "=" << item.second.asString() << "\n";
+		auto sectionKeys = getSortedMapKeys(config[sortedKey]);
+		for (auto key : sectionKeys) {
+			save << key << "=" << config[sortedKey][key].asString() << "\n";
 		}
 		
 		save << "\n";

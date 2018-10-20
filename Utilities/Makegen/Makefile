@@ -1,8 +1,8 @@
 CC=g++
 INSTALLDIR=C:\tools\utils
-CFLAGS=-Wall -Wextra -pedantic -I$(INSTALLDIR) -L$(INSTALLDIR)
+CFLAGS=-std=gnu++14 -Wall -Wextra -pedantic -I$(INSTALLDIR) -L$(INSTALLDIR)
+LIBS=-lconfig -lstrings -llogger 
 BINNAME=makegen.exe
-LIBS=-lconfig -lstrings -llogger
 
 all: $(BINNAME)
 

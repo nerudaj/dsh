@@ -37,22 +37,28 @@ template<class T>
 std::vector<T> Waves<T>::triangle(float frequency, float amplitude, unsigned samples, unsigned samplesPerSecond) {
 	std::vector<T> result (samples);
 	
-	float samplePeriod = samplesPerSecond / frequency; // How many samples per single period
-	float samplePeriodHalf = samplePeriod / 2;
+	unsigned samplePeriod = samplesPerSecond / frequency; // How many samples per single period
 	float maxAmplitude = (power(2, sizeof(T) * 8) - 1) / 2; // -1 to prevent off-by-one error
 	
+	auto f1 = [=] (unsigned x) { return 4.f * float(x) / samplePeriod; };
+	auto f2 = [=] (unsigned x) { return -4.f * float(x) / samplePeriod + 2.f; };
+	auto f3 = [=] (unsigned x) { return 4.f * float(x) / samplePeriod - 4.f; };
+	
 	for (unsigned i = 0; i < samples; i++) {
-		unsigned normalizedIndex = (i + unsigned(3 * samplePeriod / 4)) % unsigned(samplePeriod);
+		unsigned x = i % samplePeriod;
 		
 		float sample;
-		if (normalizedIndex <= samplePeriodHalf) {
-			sample = -(normalizedIndex / samplePeriodHalf) + 1;
+		if (x < samplePeriod / 4) {
+			sample = f1(x);
+		}
+		else if (x < 3 * samplePeriod / 4) {
+			sample = f2(x);
 		}
 		else {
-			sample = (normalizedIndex - samplePeriodHalf) / samplePeriodHalf - 1;
+			sample = f3(x);
 		}
 		
-		result[i] = T((sample * maxAmplitude * amplitude) + maxAmplitude);
+		result[i] = T(sample * (maxAmplitude * amplitude) + maxAmplitude);
 	}
 	
 	return result;

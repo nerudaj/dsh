@@ -40,23 +40,3 @@ function Render() {
 ```
 
 As you can see from the following snippet, the add method accepts percentage values to allow for proper rensponsibility. This means that each time the viewport dimensions will change, the app will scale up/down properly as needed. The add method has even more quirks to it, check its documentation in `src/app.js`.
-
-### Special keywords
-
-App.JS, in conjunction with command line utility jsbloat (present in this repo) can be minified way more effectively than your usual javascript app. First off, if you need to use string based IDs in your app (many app.js methods do), wrap that string in call to ID: ID("MyUniqueID") at every occurence in code (do not store that string in variable).
-
-Jsbloat will obfuscate those IDs and it will optimize away calls to ID, so your code will be smaller.
-
-There is similar function called ENUM which will turn those strings into numbers.
-
-Also, prepend each function definition with `'static';` statement. This will force obfuscation on those function calls. You can also use that for global variables and prototype functions as well.
-
-I recommend to take result of jsbloat and use a production minified on that source since inter-functions minifications or whitespace and comment minifications are not tackled by jsbloat.
-
-## Adding new files
-
-Any .js source has to be added in appropriate head section in index.html.
-
-## Production version
-
-If you want to 

@@ -11,7 +11,8 @@ function Main() {
 
 	// Setup views
 	var views = [
-		{ callback: RenderMainPage, name: ENUM('mainpage') }
+		{ callback: RenderMainPage, name: ENUM('mainpage') },
+		{ callback: RenderHintPage, name: ENUM('hints') }
 	];
 	
 	// Add views to app

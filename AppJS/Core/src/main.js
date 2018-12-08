@@ -8,7 +8,7 @@ function Main() {
 
 	// Setup app context
 	app.context['time'] = 0;
-	app.context['foo'] = 'x'; // easing function string
+	app.context['foo'] = 'SmoothStop(x, 2)'; // easing function string
 	app.context['handle'] = null; // Interval handle
 	
 	// Setup views

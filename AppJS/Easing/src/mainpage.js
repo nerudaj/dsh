@@ -1,6 +1,9 @@
 'static'; var POINT_COUNT = 100;
 'static'; var FRAME_TIME = 25; // in ms
 'static'; var ANIMATION_DURATION = 1; // in s
+'static'; var LABEL_INPUT = 'Input function:';
+'static'; var LABEL_FOO = 'Function visualisation:';
+'static'; var LABEL_ANIM = 'Animation visualisation:';
 
 /* PUBLIC FUNCTION DB START */
 function Power(x, exp) {
@@ -44,7 +47,7 @@ function Crossfade(a, b, x) {
 		}),
 		new ButtonTemplate('Hints', function() {
 			clearInterval(app.context.handle);
-			app.toggleView('hints');
+			app.toggleView(ENUM('hints'));
 		})
 	];
 	RenderToolbarTemplate(canvas, buttons, ID('toolbar_button_cache'));
@@ -63,7 +66,6 @@ function Crossfade(a, b, x) {
 }
 
 'static'; function IsWidescreen(canvas) {
-	console.log(canvas.width > canvas.height);
 	return canvas.width > canvas.height;
 }
 
@@ -71,7 +73,7 @@ function Crossfade(a, b, x) {
 	// Precompute header size to cache
 	if (GLOBAL_FONT_SIZE_CACHE[ID('MainpageHeaderFontSize')] == null) {
 		GLOBAL_FONT_SIZE_CACHE[ID('MainpageHeaderFontSize')] = GetOptimalFontSize(
-			'Function visualisation:',
+			LABEL_FOO,
 			canvas.width * 0.5,
 			canvas.height * 0.5 * 0.25,
 			1000
@@ -92,7 +94,7 @@ function Crossfade(a, b, x) {
 	// Precompute header size to cache
 	if (GLOBAL_FONT_SIZE_CACHE[ID('MainpageHeaderFontSize')] == null) {
 		GLOBAL_FONT_SIZE_CACHE[ID('MainpageHeaderFontSize')] = GetOptimalFontSize(
-			'Function visualisation:',
+			LABEL_FOO,
 			canvas.width * 0.5,
 			canvas.height * 0.1,
 			1000
@@ -112,12 +114,11 @@ function Crossfade(a, b, x) {
 // --------- Second level
 'static'; function SetHeaderLabel(header, label) {
 	header.setText(label, false, GLOBAL_FONT_SIZE_CACHE[ID('MainpageHeaderFontSize')]);
-	//header.setText(label, true);
 }
 
 'static'; function RenderInputBar(app, canvas, headerHeight) {
 	var header = canvas.add(0, 0, 1, headerHeight);
-	SetHeaderLabel(header, 'Input function:');
+	SetHeaderLabel(header, LABEL_INPUT);
 	
 	var inputwrap = canvas.add(0, headerHeight, 1, 1 - headerHeight);
 	
@@ -130,7 +131,7 @@ function Crossfade(a, b, x) {
 
 'static'; function RenderFunctionDisplay(app, canvas) {
 	var header = canvas.add(0, 0, 1, 0.25);
-	SetHeaderLabel(header, 'Function visualisation:');
+	SetHeaderLabel(header, LABEL_FOO);
 	
 	var displaywrap = canvas.add(0, 0.25, 1, 0.75);
 	
@@ -141,7 +142,7 @@ function Crossfade(a, b, x) {
 
 'static'; function RenderAnimationDisplay(app, canvas) {
 	var header = canvas.add(0, 0, 1, 0.25);
-	SetHeaderLabel(header, 'Animation visualisation:');
+	SetHeaderLabel(header, LABEL_ANIM);
 	
 	var displaywrap = canvas.add(0, 0.25, 1, 0.75);
 	

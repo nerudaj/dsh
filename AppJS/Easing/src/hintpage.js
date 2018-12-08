@@ -4,7 +4,7 @@
 	RenderHeaderTemplate(canvas, "Hints");
 	
 	var board = GetDrawingTemplate(canvas);
-	board.setText('TODO: hints');
+	board.dom.innerHTML='<ul><li>Math.PI(x)</li><li>Math.sqrt(x)</li><li>Math.sin(x)</li><li>Math.cos(x)</li><li>Math.abs(x)</li><li>SmoothStart(x, level)</li><li>SmoothStop(x, level)</li><li>Flip(x)</li><li>Crossfade(a, b, x)</li></ul>';
 	
 	var buttons = [
 		new ButtonTemplate('Back', function() {

@@ -7,8 +7,10 @@ function Main() {
 	app.bootstrap('Canvas');
 
 	// Setup app context
-	// app.context['key'] = value;
-
+	app.context['time'] = 0;
+	app.context['foo'] = 'x'; // easing function string
+	app.context['handle'] = null; // Interval handle
+	
 	// Setup views
 	var views = [
 		{ callback: RenderMainPage, name: ENUM('mainpage') }

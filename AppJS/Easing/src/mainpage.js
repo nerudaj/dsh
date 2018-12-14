@@ -158,9 +158,23 @@ function Crossfade(a, b, x) {
 
 'static'; function processFunction(app) {
 	var context = app.context;
-	ReallyClearInterval(app);
-	context.foo = GetDOM(ID('FooInput')).value;
 	
+	// Test function for errors
+	try {
+		var x = 0;
+		eval(context.foobak); 
+	}
+	catch (e) {
+		alert(e.message);
+		return;
+	}
+	
+	// Copy backup to full function
+	context.foo = context.foobak;
+	
+	ReallyClearInterval(app);
+	
+	// Compute array of points to draw
 	var points = new Array(POINT_COUNT);
 	var x; // used by easingFunction
 	for (var i = 0; i < POINT_COUNT; i++) {

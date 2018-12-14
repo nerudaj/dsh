@@ -125,8 +125,11 @@ function Crossfade(a, b, x) {
 	var offsetX = 20 / inputwrap.width;
 	var offsetY = 20 / inputwrap.height;
 	var input = inputwrap.add(offsetX, offsetY, 1 - 2 * offsetX, 1 - 2 * offsetY, 'input', ID('FooInput'));
+	input.addEventCallback('keyup', function() {
+		app.context.foobak = input.dom.value;
+	});
 	input.dom.type = 'text';
-	input.dom.value = 'SmoothStop(x, 2)';
+	input.dom.value = app.context.foobak;
 }
 
 'static'; function RenderFunctionDisplay(app, canvas) {

@@ -7,10 +7,8 @@ function Main() {
 	app.bootstrap('Canvas');
 
 	// Setup app context
-	app.context['time'] = 0;
-	app.context['foo'] = 'SmoothStop(x, 2)'; // easing function string
-	app.context['handle'] = null; // Interval handle
-	
+	// app.context['key'] = value;
+
 	// Setup views
 	var views = [
 		{ callback: RenderMainPage, name: ENUM('mainpage') }

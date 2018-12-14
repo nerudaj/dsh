@@ -7,7 +7,10 @@ function Main() {
 	app.bootstrap('Canvas');
 
 	// Setup app context
-	// app.context['key'] = value;
+	app.context['time'] = 0;
+	app.context['foo'] = 'SmoothStop(x, 2)'; // easing function string
+	app.context['foobak'] = 'SmoothStop(x, 2)'; // easing function backup
+	app.context['handle'] = null; // Interval handle
 
 	// Setup views
 	var views = [

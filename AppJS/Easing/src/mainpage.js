@@ -4,6 +4,7 @@
 'static'; var LABEL_INPUT = 'Input function:';
 'static'; var LABEL_FOO = 'Function visualisation:';
 'static'; var LABEL_ANIM = 'Animation visualisation:';
+'static'; var STROKE_WHITE = '#FFFFFF';
 
 /* PUBLIC FUNCTION DB START */
 function Power(x, exp) {
@@ -185,7 +186,7 @@ function Crossfade(a, b, x) {
 	// Draw points into canvas
 	var canvas = GetDOM(ID('FooDisplay'));
 	var ctx = canvas.getContext('2d');
-	ctx.strokeStyle='#FFFFFF';
+	ctx.strokeStyle = STROKE_WHITE;
 	
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 	ctx.beginPath();
@@ -207,7 +208,7 @@ function Crossfade(a, b, x) {
 	var context = app.context;
 	var canvas = GetDOM(ID('AnimDisplay'));
 	var ctx = canvas.getContext('2d');
-	ctx.strokeStyle='#FFFFFF';
+	ctx.strokeStyle = STROKE_WHITE;
 	
 	var x = context.time / (1000 / FRAME_TIME * ANIMATION_DURATION);
 	var position = eval(context.foo) * canvas.width;

@@ -96,18 +96,18 @@ bool Makegen::generateMakefile(const std::string &infile, const std::string &out
 		}
 
 		if (isLibrary && config["Project"]["tests"].asBool()) {
-			save << "test: $(LIBNAME) install build_test run_test\n\n";
-			save << "build_test: tests/main.cpp\n";
-			save << "\t$(CC) $(CFLAGS) $^ -o $@ ";
+			save << "test: $(LIBNAME) testrunner.exe run_test\n\n";
+			save << "testrunner.exe: tests/main.cpp\n";
+			save << "\t$(CC) $(CFLAGS) -I./ -L./ $^ -o $@ ";
 			save << "$(LIBS) ";
 			if (hasStaticDeps) save << "$(STATICS) ";
-			save << "-l:$(LIBNAME)\n\n";
+			save << "-l" << config["Project"]["name"].asString() << "\n\n";
 			save << "run_test:\n";
-			save << "\tcls\n\ttest\n\n";
+			save << "\tcls\n\ttestrunner\n\n";
 		}
 
 		// Create clean and install targets
-		save << "clean:\n\tdel $(" << name << ") *.o *.gch\n\n";
+		save << "clean:\n\tdel $(" << name << ") *.o *.gch testrunner.exe\n\n";
 
 		if (config["Project"]["install"].asBool()) {
 			save << "install:\n";

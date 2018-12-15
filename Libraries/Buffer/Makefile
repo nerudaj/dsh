@@ -1,10 +1,18 @@
 CC=g++
-CFLAGS=-std=gnu++14 -Wall -Wextra -pedantic
+CFLAGS=-std=gnu++14 -Wall -Wextra -pedantic -I$(INSTALLDIR)
+LIBNAME=Buffer.hpp
 
-all: buffer.exe
+test: $(LIBNAME) testrunner.exe run_test
 
-buffer.exe: main.cpp
-	$(CC) $(CFLAGS) $^ -o $@
+testrunner.exe: tests/main.cpp
+	$(CC) $(CFLAGS) -I./ $^ -o $@
+
+run_test:
+	cls
+	testrunner
+
+install:
+	copy /y $(LIBNAME) $(INSTALLDIR)
 
 clean:
-	del /y buffer.exe
+	del testrunner.exe

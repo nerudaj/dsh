@@ -12,8 +12,17 @@ Strings.o: Strings.cpp Strings.hpp
 $(LIBNAME): Strings.o 
 	$(CC) $(CFLAGS) -shared $(LIBS) $^ -o $@
 
+test: $(LIBNAME) testrunner.exe run_test
+
+testrunner.exe: tests/main.cpp
+	$(CC) $(CFLAGS) -I./ -L./ $^ -o $@ $(LIBS) -lstrings
+
+run_test:
+	cls
+	testrunner
+
 clean:
-	del $(LIBNAME) *.o *.gch
+	del $(LIBNAME) *.o *.gch testrunner.exe
 
 install:
 	copy /y $(LIBNAME) $(INSTALLDIR)

@@ -9,6 +9,6 @@ libs=
 name=strings
 staticlibs=
 subtype=dynamic
-tests=false
+tests=true
 type=library
 

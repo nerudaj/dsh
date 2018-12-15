@@ -10,4 +10,4 @@ subtype=dynamic
 install=true
 libs=-llogger;-lstrings
 staticlibs=
-tests=false
+tests=true

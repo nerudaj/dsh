@@ -21,8 +21,17 @@ Csv.o: Csv.cpp Csv.hpp
 $(LIBNAME): Ini.o Args.o Item.o Csv.o 
 	$(CC) $(CFLAGS) -shared $(LIBS) $^ -o $@
 
+test: $(LIBNAME) testrunner.exe run_test
+
+testrunner.exe: tests/main.cpp
+	$(CC) $(CFLAGS) -I./ -L./ $^ -o $@ $(LIBS) -lconfig
+
+run_test:
+	cls
+	testrunner
+
 clean:
-	del $(LIBNAME) *.o *.gch
+	del $(LIBNAME) *.o *.gch testrunner.exe
 
 install:
 	copy /y $(LIBNAME) $(INSTALLDIR)

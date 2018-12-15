@@ -15,11 +15,6 @@ make
 make install
 cd ..
 
-cd Waves
-make
-make install
-cd ..
-
 cd ..
 
 @echo Libraries installed
@@ -27,6 +22,11 @@ cd ..
 cd Utilities
 
 cd Makegen
+make
+make install
+cd ..
+
+cd jsbloat
 make
 make install
 cd ..

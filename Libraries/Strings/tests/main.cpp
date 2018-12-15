@@ -1,7 +1,7 @@
 #include <stdexcept>
 #include <string>
 #include <vector>
-#include <Strings.hpp>
+#include "../Strings.hpp"
 
 using std::string;
 using std::vector;
@@ -66,12 +66,38 @@ public:
 	TestReplaceAll(const string &in, const string &fromstr, const string &tosstr, const string &refout) : input(in), from(fromstr), to(tosstr), ref(refout) {}
 };
 
+class TestTrim : public TestCase {
+protected:
+	string input;
+	string ref;
+
+public:
+	virtual void run() final override {
+		Strings::trim(input);
+		assume(input == ref, 
+			"Value mismatch, expected '" + ref + 
+			"' but got '" + input + "'"
+		);
+	}
+	
+	virtual string name() const final override {
+		return "TestTrim";
+	}
+	
+	TestTrim(const string &in, const string &refout) : input(in), ref(refout) {}
+};
+
 int main() {
 	vector<TestCase*> testcases = {
 		new TestReplaceAll("aaa", "", "", "aaa"),
 		new TestReplaceAll("", "a", "b", ""),
 		new TestReplaceAll("aaa", "a", "aa", "aaaaaa"),
-		new TestReplaceAll("abc", "bc", "aa", "aaa")
+		new TestReplaceAll("abc", "bc", "aa", "aaa"),
+		new TestTrim("a", "a"),
+		new TestTrim(" a", "a"),
+		new TestTrim("a ", "a"),
+		new TestTrim(" a ", "a"),
+		new TestTrim(" \t\n\r\f\va \t\n\r\f\v", "a")
 	};
 	
 	int cnt = 1;

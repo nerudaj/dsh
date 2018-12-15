@@ -43,3 +43,7 @@ void Strings::replaceAll(std::string &str, const std::string &from, const std::s
 		start_pos += to.length(); // In case 'to' contains 'from', like replacing 'x' with 'yx'
 	}
 }
+
+void Strings::trim(std::string &str) {
+	str = "";
+}

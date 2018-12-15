@@ -2,6 +2,7 @@
 #define INI_HPP_
 
 #include "Item.hpp"
+#include <Logger.hpp>
 #include <map>
 
 namespace cfg {
@@ -20,6 +21,7 @@ namespace cfg {
 		static void getKeyValue(const std::string &line, std::string &dstKey, std::string &dstValue);
 
 	public:
+		Logger log; ///< Error logger. Use Ini::log.setLoggingLevel to change verbosity
 		const IniSection &operator[](const std::string &section) const {
 			return config.at(section);
 		}
@@ -60,5 +62,3 @@ namespace cfg {
 		bool saveToFile(const std::string &filename);
 	};
 }
-
-#endif

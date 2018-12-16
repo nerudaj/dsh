@@ -30,6 +30,7 @@ int main() {
 		new TestLoadValidIni("tests/test0.ini"),
 		new TestLoadInvalidIni("tests/test1.ini"),
 		new TestLoadInvalidIni("tests/test2.ini"),
+		new TestLoadInvalidIni("tests/test4.ini"),
 		new TestValidIniData("tests/test0.ini", {
 			{ "root", {
 				{ "key1", "value1" }

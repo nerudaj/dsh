@@ -40,6 +40,11 @@ int main() {
 				{ "key4", "false" }
 			}}
 		}),
+		new TestValidIniData("tests/test3.ini", {
+			{ "root", {
+				{ "key1", "" }
+			}}
+		})
 	};
 
 	int cnt = 1;

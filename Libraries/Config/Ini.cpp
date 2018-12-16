@@ -9,7 +9,7 @@ bool Ini::isSectionHeader(const std::string &line) {
 }
 
 bool Ini::isKeyValuePair(const std::string &line) {
-	return std::regex_match (line, std::regex(".+=.+"));
+	return std::regex_match (line, std::regex(".+=.*"));
 }
 
 void Ini::getSectionIdentifier(const std::string &line, std::string &dst) {

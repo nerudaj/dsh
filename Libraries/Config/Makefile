@@ -19,7 +19,7 @@ Csv.o: Csv.cpp Csv.hpp
 	$(CC) $(CFLAGS) -fPIC $^ -c
 
 $(LIBNAME): Ini.o Args.o Item.o Csv.o 
-	$(CC) $(CFLAGS) -shared $(LIBS) $^ -o $@
+	$(CC) $(CFLAGS) -shared $(LIBS) $^ -o $@ -Wl,--out-implib,libconfig.lib
 
 test: $(LIBNAME) testrunner.exe run_test
 
@@ -31,10 +31,11 @@ run_test:
 	testrunner
 
 clean:
-	del $(LIBNAME) *.o *.gch testrunner.exe
+	del $(LIBNAME) libconfig.lib *.o *.gch testrunner.exe
 
 install:
 	copy /y $(LIBNAME) $(INSTALLDIR)
+	 copy /y libconfig.lib $(INSTALLDIR)
 	copy /y Config.hpp $(INSTALLDIR)
 	copy /y Ini.hpp $(INSTALLDIR)
 	copy /y Args.hpp $(INSTALLDIR)

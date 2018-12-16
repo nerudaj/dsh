@@ -22,6 +22,7 @@ bool Makegen::generateMakefile(const std::string &infile, const std::string &out
 		Strings::split(';', config["Modules"]["installheaders"].asString(), installheaders);
 		Strings::split(';', config["Project"]["libs"].asString(), libs);
 		Strings::split(';', config["Project"]["staticlibs"].asString(), statics);
+		std::string projectName = config["Project"]["name"].asString();
 		
 		save << "CC=g++\n";
 		save << "INSTALLDIR=C:\\tools\\utils\n";
@@ -47,11 +48,11 @@ bool Makegen::generateMakefile(const std::string &infile, const std::string &out
 		
 		if (isLibrary) {
 			name = "LIBNAME";
-			save << name << "=lib" << config["Project"]["name"].asString() << ".dll\n\n";
+			save << name << "=lib" << projectName << ".dll\n\n";
 		}
 		else {
 			name = "BINNAME";
-			save << name << "=" << config["Project"]["name"].asString() << ".exe\n\n";
+			save << name << "=" << projectName << ".exe\n\n";
 		}
 		
 		save << "all: $(" << name << ")\n\n";
@@ -90,7 +91,7 @@ bool Makegen::generateMakefile(const std::string &infile, const std::string &out
 			if (hasStaticDeps) save << "$(STATICS) ";
 			
 			// Finalize
-			save << "$^ -o $@\n\n";
+			save << "$^ -o $@ -Wl,--out-implib,lib" << config["Project"]["name"].asString() << ".lib\n\n";
 			
 			// OUTPUT: $(CC) $(CFLAGS) [-shared] $(LIBS) [$(STATICS)] $^ -o $@
 		}
@@ -107,13 +108,21 @@ bool Makegen::generateMakefile(const std::string &infile, const std::string &out
 		}
 
 		// Create clean and install targets
-		save << "clean:\n\tdel $(" << name << ") *.o *.gch testrunner.exe\n\n";
+		save << "clean:\n\tdel $(" << name << ") ";
+		
+		if (isLibrary) {
+			save << "lib" << projectName << ".lib";
+		}
+		
+		save << " *.o *.gch testrunner.exe\n\n";
 
 		if (config["Project"]["install"].asBool()) {
 			save << "install:\n";
 			save << "\tcopy /y $(" << name << ") $(INSTALLDIR)\n";
 
 			if (isLibrary) {
+				save << "\t copy /y lib" << config["Project"]["name"].asString() << ".lib $(INSTALLDIR)\n";
+				
 				for (auto header : installheaders) {
 					save << "\tcopy /y " << header << ".hpp $(INSTALLDIR)\n";
 				}

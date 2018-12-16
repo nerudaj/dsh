@@ -1,4 +1,5 @@
 CC=g++
+INSTALLDIR=C:\tools\utils
 CFLAGS=-std=gnu++14 -Wall -Wextra -pedantic -I$(INSTALLDIR)
 LIBNAME=Buffer.hpp
 

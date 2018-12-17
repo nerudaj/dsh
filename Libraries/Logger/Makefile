@@ -10,11 +10,12 @@ Logger.o: Logger.cpp Logger.hpp
 	$(CC) $(CFLAGS) -fPIC $^ -c
 
 $(LIBNAME): Logger.o 
-	$(CC) $(CFLAGS) -shared $(LIBS) $^ -o $@
+	$(CC) $(CFLAGS) -shared $(LIBS) $^ -o $@ -Wl,--out-implib,liblogger.lib
 
 clean:
-	del $(LIBNAME) *.o *.gch
+	del $(LIBNAME) liblogger.lib *.o *.gch testrunner.exe
 
 install:
 	copy /y $(LIBNAME) $(INSTALLDIR)
+	 copy /y liblogger.lib $(INSTALLDIR)
 	copy /y Logger.hpp $(INSTALLDIR)

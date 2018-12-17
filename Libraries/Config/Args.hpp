@@ -1,5 +1,4 @@
-#ifndef ARGS_HPP_
-#define ARGS_HPP_
+#pragma once
 
 #include <iostream>
 #include <map>
@@ -121,5 +120,3 @@ namespace cfg {
 		const std::vector<std::string> &getPositionalArguments() const { return positionals; }
 	};
 }
-
-#endif

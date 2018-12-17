@@ -1,5 +1,4 @@
-#ifndef ITEM_HPP_
-#define ITEM_HPP_
+#pragma once
 
 #include <string>
 #include <iostream>
@@ -60,5 +59,3 @@ namespace cfg {
 		~Item();
 	};
 }
-
-#endif

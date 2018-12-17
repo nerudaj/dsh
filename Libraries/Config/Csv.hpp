@@ -1,5 +1,4 @@
-#ifndef CFG_CSV_HPP_
-#define CFG_CSV_HPP_
+#pragma once
 
 #include "Config.hpp"
 #include <vector>
@@ -110,5 +109,3 @@ namespace cfg {
 		Csv();
 	};
 }
-
-#endif

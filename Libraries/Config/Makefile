@@ -6,16 +6,16 @@ LIBNAME=libconfig.dll
 
 all: $(LIBNAME)
 
-Ini.o: Ini.cpp Ini.hpp
+Ini.o: Ini.cpp
 	$(CC) $(CFLAGS) -fPIC $^ -c
 
-Args.o: Args.cpp Args.hpp
+Args.o: Args.cpp
 	$(CC) $(CFLAGS) -fPIC $^ -c
 
-Item.o: Item.cpp Item.hpp
+Item.o: Item.cpp
 	$(CC) $(CFLAGS) -fPIC $^ -c
 
-Csv.o: Csv.cpp Csv.hpp
+Csv.o: Csv.cpp
 	$(CC) $(CFLAGS) -fPIC $^ -c
 
 $(LIBNAME): Ini.o Args.o Item.o Csv.o 

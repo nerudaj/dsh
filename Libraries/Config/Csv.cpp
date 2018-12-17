@@ -212,6 +212,17 @@ void Csv::setHeaders(const std::vector<cfg::Item> &headers) {
 	Csv::headers = headers;
 }
 
+void Csv::resize(unsigned rowCount, unsigned colCount) {
+	unsigned currentSize = size();
+	rows.resize(rowCount);
+	
+	if (colCount > 0) {
+		for (unsigned i = currentSize; i < size(); i++) {
+			rows[i].resize(colCount, Item());
+		}
+	}
+}
+
 Csv::Csv() {
 	log.setLoggingLevel(3);
 }

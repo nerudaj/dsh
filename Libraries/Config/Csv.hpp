@@ -93,6 +93,22 @@ namespace cfg {
 		 */
 		unsigned size() const { return rows.size(); }
 		
+		/**
+		 *  \brief Resize CSV database
+		 *  
+		 *  \param [in] rowCount New number of rows
+		 *  \param [in] colCount New number of columns (default: 0)
+		 *  
+		 *  \details This function will change number of rows (and 
+		 *  possibly columns) in csv database. If rowCount is bigger
+		 *  than current size, old rows are left unchanged and new 
+		 *  rows are added.
+		 *  
+		 *  If colCount is not zero, new rows will be resized to 
+		 *  accomodate that many columns.
+		 */
+		void resize(unsigned rowCount, unsigned colCount = 0);
+		
 		// Overloading
 		const std::vector<cfg::Item> &operator[](unsigned i) const { return rows[i]; }
 		

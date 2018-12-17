@@ -3,6 +3,9 @@
  *  \author			doomista
  */
 
+#include <algorithm> 
+#include <cctype>
+#include <locale>
 #include "Strings.hpp"
 
 using std::size_t;
@@ -44,6 +47,20 @@ void Strings::replaceAll(std::string &str, const std::string &from, const std::s
 	}
 }
 
+static inline void ltrim(std::string &s) {
+    s.erase(s.begin(), std::find_if(s.begin(), s.end(), [](int ch) {
+        return !std::isspace(ch);
+    }));
+}
+
+// trim from end (in place)
+static inline void rtrim(std::string &s) {
+    s.erase(std::find_if(s.rbegin(), s.rend(), [](int ch) {
+        return !std::isspace(ch);
+    }).base(), s.end());
+}
+
 void Strings::trim(std::string &str) {
-	str = "";
+	ltrim(str);
+	rtrim(str);
 }

@@ -5,6 +5,8 @@
 #include <Config.hpp>
 #include <Logger.hpp>
 
+Logger log;
+
 struct RuleForStatic {
 	std::regex findFunction;
 	std::regex findName;
@@ -65,6 +67,7 @@ void printHelp(const std::string &progname) {
 		{"-h", "Prints this text"},
 		{"-o", "Set the name of output file. Default: concat.min.js"},
 		{"-v", "Set verbosity level (1, 2, 3 or 4). Default: 2"},
+		{"-H", "Set name of hint file. Default: hints.txt"}
 	};
 	
 	for (auto row : rows) {
@@ -75,10 +78,81 @@ void printHelp(const std::string &progname) {
 	std::cout << "Details: This program will load all files specified as positional arguments, concatenates them and perform several optimizations normal minifier cannot do.\nNamely it will minify names of all methods and global variables that have 'static'; written before their definitions. Please note that you must not have two identical identifiers in different namespaces with only one of them being static (minified will be both).\nSecond optimization relies on existence of function ID in your code. Any DOM id that is wrapped into call to ID function will be minified and calls to ID will be removed, as well as the function itself.\n\n";
 }
 
+std::string loadSourceCodes(const std::vector<std::string> &filenames) {
+	std::string file;
+	for (auto filename : filenames) {
+		//try {
+			std::ifstream load(filename, std::ios::binary);
+			
+			// Get size of file
+			load.seekg(0, std::ios::end);
+			std::size_t len = load.tellg();
+			load.seekg(0, std::ios::beg);
+			
+			log.debug("Loading file", "Allocating buffer");
+			
+			// Allocate buffer
+			char *buf = new char[len];
+			
+			// Read buffer and add it to file
+			load.read(buf, len);
+			
+			log.debug("Loading file", "Allocating string");
+			
+			file += std::string(buf, len);
+			
+			delete[] buf;
+			
+			file += ';'; // This will prevent invalid char in code
+			
+			load.close();
+			load.clear();
+		/*}
+		catch (std::exception &e) {
+			std::cerr << e.what() << "\n";
+			return 1;
+		}*/
+	}
+	
+	log.debug("Loading done", "Concatenated size: " + std::to_string(file.size()));
+	
+	return file;
+}
+
+std::vector<std::string> loadHints(const std::string &filename) {
+	std::vector<std::string> result;
+	
+	std::ifstream load(filename);
+	
+	std::string buffer;
+	while (load >> buffer) {
+		result.push_back(buffer);
+	}
+	
+	load.close();
+	load.clear();
+	
+	return result;
+}
+
+void obfuscateStatics() {}
+
+void obfuscateIdStrings() {}
+
+void obfuscateEnumStrings(){}
+
+void obfuscateHinted(const std::vector<std::string> &hints, std::string &file) {
+	std::string obfuscatedId = "a";
+	
+	for (auto hint : hints) {
+		replaceAll(file, hint, "i" + obfuscatedId);
+		permutateObfuscatedId(obfuscatedId);
+	}
+}
+
 int main(int argc, char *argv[]) {
 	cfg::Args args;
-	Logger log;
-	args.setupArguments("ho:v:");
+	args.setupArguments("ho:v:H:");
 
 	if (!args.parse(argc, argv)) {
 		printHelp(argv[0]);
@@ -105,43 +179,7 @@ int main(int argc, char *argv[]) {
 		return 0;
 	}
 
-	// Load files and concatenate into single result
-	std::string file;
-	for (auto filename : filenames) {
-		try {
-			std::ifstream load(filename, std::ios::binary);
-			
-			// Get size of file
-			load.seekg(0, std::ios::end);
-			std::size_t len = load.tellg();
-			load.seekg(0, std::ios::beg);
-			
-			log.debug("Loading file", "Allocating buffer");
-			
-			// Allocate buffer
-			char *buf = new char[len];
-			
-			// Read buffer and add it to file
-			load.read(buf, len);
-			
-			log.debug("Loading file", "Allocating string");
-			
-			file += std::string(buf, len);
-			
-			delete[] buf;
-			
-			file += ';'; // This will prevent invalid char in code
-			
-			load.close();
-			load.clear();
-		}
-		catch (std::exception &e) {
-			std::cerr << e.what() << "\n";
-			return 1;
-		}
-	}
-	
-	log.debug("Loading done", "Concatenated size: " + std::to_string(file.size()));
+	auto file = loadSourceCodes(filenames);
 	
 	std::smatch found;
 	
@@ -225,6 +263,15 @@ int main(int argc, char *argv[]) {
 		replaceAll(file, "ENUM('" + id.first + "')", std::to_string(id.second));
 	}
 	replaceAll(file, "function ENUM(id) {return id;}", "");
+	
+	replaceAll(file, "'static';", "");
+	
+	if (args.isSet('H')) {
+		auto hintfile = args.getArgumentValue('H').asString();
+		auto hints = loadHints(hintfile);
+
+		obfuscateHinted(hints, file);
+	}
 	
 	log.debug("Loading done", "Minified size: " + std::to_string(file.size()));
 	

@@ -32,9 +32,10 @@
 *.app
 
 # Cmake
+Libraries/Bitmap/build
+Libraries/Config/build
 Libraries/Logger/build
 Libraries/Strings/build
-Libraries/Config/build
 
 # =========================
 # Operating System Files

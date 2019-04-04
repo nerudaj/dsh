@@ -34,6 +34,7 @@
 # Cmake
 Libraries/Logger/build
 Libraries/Strings/build
+Libraries/Config/build
 
 # =========================
 # Operating System Files

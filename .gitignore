@@ -31,6 +31,13 @@
 *.out
 *.app
 
+# Cmake
+Libraries/Bitmap/build
+Libraries/Config/build
+Libraries/LevelD/build
+Libraries/Logger/build
+Libraries/Strings/build
+
 # =========================
 # Operating System Files
 # =========================

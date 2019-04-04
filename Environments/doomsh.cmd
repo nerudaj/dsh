@@ -15,6 +15,7 @@ doskey ssh="/tools/various/putty.exe" -ssh $*
 doskey scp="/tools/various/pscp.exe" $*
 
 
-set PATH=%PATH%;/tools/mingw/bin;/tools/doxygen;/tools/various;/tools/python3;/tools/miktex/miktex/bin/x64/;/tools/utils
+set PATH=%PATH%;/tools/mingw/bin;/tools/doxygen;/tools/various/tools/python3;/tools/miktex/miktex/bin/x64/;
+set PATH=%PATH%;/tools/utils/bin;/tools/utils/lib;/tools/utils/include
 
 @echo on

@@ -31,6 +31,9 @@
 *.out
 *.app
 
+# Cmake
+Libraries/Logger/build
+
 # =========================
 # Operating System Files
 # =========================

@@ -10,6 +10,7 @@ doskey make=mingw32-make $*
 doskey mv=move $*
 doskey cp=copy $*
 doskey diff=fc $*
+doskey cmake+=cmake.exe -G "MinGW Makefiles" $*
 
 doskey ssh="/tools/various/putty.exe" -ssh $*
 doskey scp="/tools/various/pscp.exe" $*

@@ -1,0 +1,13 @@
+cmake_minimum_required (VERSION 3.4)
+project (logger)
+
+# Export all symbols in dynamic library
+set (CMAKE_INSTALL_PREFIX /tools/utils)
+
+# Add library
+add_library(logger logger.cpp)
+target_include_directories (logger PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+
+# Install
+install(TARGETS logger DESTINATION lib)
+install(FILES logger.hpp DESTINATION include)

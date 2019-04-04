@@ -1,5 +1,12 @@
 #include "ParserModule.hpp"
 #include <stdexcept>
+#include <iostream>
+#include <cassert>
+
+ParserModule *ParserModule::getModule(const std::string &name) {
+    if (name == "MESH") return new ParserModuleMesh();
+    return NULL;
+}
 
 void ParserModuleMesh::parse(const std::vector<uint8_t> &data, LevelD &leveld) const {
     if (data.size() < 8) {
@@ -22,16 +29,17 @@ void ParserModuleMesh::parse(const std::vector<uint8_t> &data, LevelD &leveld) c
     const uint16_t COL_BITS = 0x8000;
 
     uint16_t *dt = (uint16_t*)(data.data() + 8);
-    for (unsigned i = 0, p = 0; i < data.size(); i += 2, p++) {
-        leveld.mesh.tiles[p] = dt[i] & MSH_BITS;
-        leveld.mesh.collisions[p] = bool(dt[i] & COL_BITS);
+    for (unsigned i = 8, p = 0; i < data.size(); i += 2, p++) {
+        leveld.mesh.tiles[p] = dt[p] & MSH_BITS;
+        leveld.mesh.collisions[p] = bool(dt[p] & COL_BITS);
     }
 }
 
 std::vector<uint8_t> ParserModuleMesh::deparse(const LevelD &leveld) const {
-    std::vector<uint8_t> result(16 + leveld.mesh.tiles.size() * 2, 0);
+    std::vector<uint8_t> result(4 * sizeof(uint32_t) + leveld.mesh.tiles.size() * sizeof(uint16_t), 0);
+
     uint32_t *header = (uint32_t*)result.data();
-    uint16_t *data =   (uint16_t*)result.data() + 16;
+    uint16_t *data =   (uint16_t*)(result.data() + 4 * sizeof(uint32_t));
 
     header[0] = *((uint32_t*)(std::string("MESH").data()));
     header[1] = result.size() - 8; // size and identification is not part of this field

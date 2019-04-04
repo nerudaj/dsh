@@ -4,18 +4,19 @@
 #include <cstdint>
 #include <vector>
 
-struct LevelD {
+/**
+ *  \brief Class representing LevelD file in memory
+ */
+class LevelD {
+public:
     struct {
         uint32_t              width;
         uint32_t              height;
         std::vector<uint16_t> tiles;
         std::vector<bool>     collisions;
     } mesh;
-};
 
-class LevelDHandler {
-public:
-    static LevelD loadFile(const std::string &filename);
+    void loadFromFile(const std::string &filename);
 
-    static void saveFile(const std::string &filename, const LevelD &level);
+    void saveToFile(const std::string &filename) const;
 };

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../LevelDHandler.hpp"
+#include "../LevelD.hpp"
 
 #include <vector>
 #include <string>
@@ -16,12 +16,7 @@ public:
 
 class ParserModuleMesh : public ParserModule {
 public:
-    void parse(const std::vector<uint8_t> &data, LevelD &leveld) const;
+    virtual void parse(const std::vector<uint8_t> &data, LevelD &leveld) const final override;
 
-    std::vector<uint8_t> deparse(const LevelD &leveld) const;
+    virtual std::vector<uint8_t> deparse(const LevelD &leveld) const final override;
 };
-
-ParserModule *ParserModule::getModule(const std::string &name) {
-    if (name == "MESH") return new ParserModuleMesh();
-    return NULL;
-}

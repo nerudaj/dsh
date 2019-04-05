@@ -65,6 +65,9 @@ public:
 	void setLoggingLevel(int level);
 	
 	Logger();
+	Logger(int logLevel) {
+		setLoggingLevel(logLevel);
+	}
 };
 
 #endif

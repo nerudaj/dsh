@@ -3,10 +3,9 @@
 #include <Config.hpp>
 
 int main(int argc, char *argv[]) {
-    Logger log;
+    Logger log(1);
 
-    cfg::Args args;
-    args.setupArguments("v:");
+    cfg::Args args("v:");
     if (!args.parse(argc, argv)) {
         log.error("Main", "Argument parsing error!");
         return 1;

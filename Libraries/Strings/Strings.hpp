@@ -38,6 +38,8 @@ public:
 		trim(str);
 		return str;
 	}
+
+	static bool isPrefixOf(const std::string &str, const std::string &ofWhat);
 };
 
 #endif

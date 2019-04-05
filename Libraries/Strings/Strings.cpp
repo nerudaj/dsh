@@ -6,6 +6,7 @@
 #include <algorithm> 
 #include <cctype>
 #include <locale>
+#include <algorithm>
 #include "Strings.hpp"
 
 using std::size_t;
@@ -63,4 +64,11 @@ static inline void rtrim(std::string &s) {
 void Strings::trim(std::string &str) {
 	ltrim(str);
 	rtrim(str);
+}
+
+bool Strings::isPrefixOf(const std::string &str, const std::string &ofWhat) {
+	if (str.size() > ofWhat.size()) return false;
+	
+	auto res = std::mismatch(str.begin(), str.end(), ofWhat.end());
+	return res.first == str.end();
 }

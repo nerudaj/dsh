@@ -21,6 +21,9 @@ int main(int argc, char *argv[]) {
     level.mesh = {
         3, 2, { 0, 1, 2, 3, 4, 5 }, { 0, 0, 1, 1, 0, 0 }
     };
+    level.players = {
+        {10, 20, 0}, {20, 30, 10}
+    };
 
     log.debug("Main", "LevelD object created");
 
@@ -52,15 +55,42 @@ int main(int argc, char *argv[]) {
         log.error("Main", "mesh.tiles.size mismatch!");
     }
 
-    if (level.mesh.collisions.size() == in.mesh.collisions.size()) {
-        for (unsigned i = 0; i < level.mesh.collisions.size(); i++) {
-            if (level.mesh.collisions[i] != in.mesh.collisions[i]) {
-                log.error("Main", "mesh.collisions[" + std::to_string(i) + "] mismatch!");
-                log.debug("Main", "ref: " + std::to_string(level.mesh.collisions[i]) + ", out: " + std::to_string(in.mesh.collisions[i]));
+    log.info("Main", "mesh.tiles comparison done");
+
+    if (level.mesh.blocks.size() == in.mesh.blocks.size()) {
+        for (unsigned i = 0; i < level.mesh.blocks.size(); i++) {
+            if (level.mesh.blocks[i] != in.mesh.blocks[i]) {
+                log.error("Main", "mesh.blocks[" + std::to_string(i) + "] mismatch!");
+                log.debug("Main", "ref: " + std::to_string(level.mesh.blocks[i]) + ", out: " + std::to_string(in.mesh.blocks[i]));
             }
         }
     }
     else {
-        log.error("Main", "mesh.collisions.size mismatch!");
+        log.error("Main", "mesh.blocks.size mismatch!");
     }
+
+    log.info("Main", "mesh.blocks comparison done");
+
+    if (level.players.size() == in.players.size()) {
+        for (unsigned i = 0; i < level.players.size(); i++) {
+            if (level.players[i].x != in.players[i].x) {
+                log.error("Main", "players[" + std::to_string(i) + "].x mismatch!");
+                log.debug("Main", "ref: " + std::to_string(level.players[i].x) + ", out: " + std::to_string(in.players[i].x));
+            }
+            if (level.players[i].y != in.players[i].y) {
+                log.error("Main", "players[" + std::to_string(i) + "].y mismatch!");
+                log.debug("Main", "ref: " + std::to_string(level.players[i].y) + ", out: " + std::to_string(in.players[i].y));
+            }
+            if (level.players[i].flags != in.players[i].flags) {
+                log.error("Main", "players[" + std::to_string(i) + "].flags mismatch!");
+                log.debug("Main", "ref: " + std::to_string(level.players[i].flags) + ", out: " + std::to_string(in.players[i].flags));
+            }
+        }
+    }
+    else {
+        log.error("Main", "players.size mismatch!");
+        log.debug("Main", "ref: " + std::to_string(level.players.size()) + ", out: " + std::to_string(in.players.size()));
+    }
+
+    log.info("Main", "players comparison done");
 }

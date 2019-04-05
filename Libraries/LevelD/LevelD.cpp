@@ -1,5 +1,5 @@
 #include "LevelD.hpp"
-#include "ParserModules/ParserModule.hpp"
+#include "ParserModules/Top.hpp"
 #include <fstream>
 #include <stdexcept>
 #include <iostream>
@@ -40,10 +40,11 @@ void LevelD::loadFromFile(const string &filename) {
     // Load submodules
     unsigned loaded = 6; // loaded 6 bytes so far
     while (loaded < fsize) {
-        std::cerr << "Loop\n";
         // Create parser module
         load.read((char*)identity.data(), identity.size());
         if (load.eof()) break; // Loop ends OK
+
+        std::cerr << identity << std::endl;
 
         ParserModule *module = ParserModule::getModule(identity);
 
@@ -78,10 +79,19 @@ void LevelD::saveToFile(const string &filename) const {
     save.write((char*)(&VERSION), sizeof(VERSION));
 
     // Save data of each supported module
-    auto *module = ParserModule::getModule("MESH");
-    auto mesh = module->deparse(*this);
-    save.write((char*)(mesh.data()), mesh.size());
-    delete module;
+    if (mesh.width * mesh.height != 0) {
+        auto *module = ParserModule::getModule("MESH");
+        auto mesh = module->deparse(*this);
+        save.write((char*)(mesh.data()), mesh.size());
+        delete module;
+    }
+
+    if (!players.empty()) {
+        auto *module = ParserModule::getModule("PLAS");
+        auto plas = module->deparse(*this);
+        save.write((char*)(plas.data()), plas.size());
+        delete module;
+    }
 
     save.close();
     save.clear();

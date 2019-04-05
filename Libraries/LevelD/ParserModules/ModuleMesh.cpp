@@ -1,12 +1,7 @@
-#include "ParserModule.hpp"
+#include "Top.hpp"
 #include <stdexcept>
 #include <iostream>
 #include <cassert>
-
-ParserModule *ParserModule::getModule(const std::string &name) {
-    if (name == "MESH") return new ParserModuleMesh();
-    return NULL;
-}
 
 void ParserModuleMesh::parse(const std::vector<uint8_t> &data, LevelD &leveld) const {
     if (data.size() < 8) {
@@ -23,7 +18,7 @@ void ParserModuleMesh::parse(const std::vector<uint8_t> &data, LevelD &leveld) c
     }
 
     leveld.mesh.tiles.resize(size, 0);
-    leveld.mesh.collisions.resize(size, 0);
+    leveld.mesh.blocks.resize(size, 0);
 
     const uint16_t MSH_BITS = 0x7fff;
     const uint16_t COL_BITS = 0x8000;
@@ -31,7 +26,7 @@ void ParserModuleMesh::parse(const std::vector<uint8_t> &data, LevelD &leveld) c
     uint16_t *dt = (uint16_t*)(data.data() + 8);
     for (unsigned i = 8, p = 0; i < data.size(); i += 2, p++) {
         leveld.mesh.tiles[p] = dt[p] & MSH_BITS;
-        leveld.mesh.collisions[p] = bool(dt[p] & COL_BITS);
+        leveld.mesh.blocks[p] = bool(dt[p] & COL_BITS);
     }
 }
 
@@ -47,7 +42,7 @@ std::vector<uint8_t> ParserModuleMesh::deparse(const LevelD &leveld) const {
     header[3] = leveld.mesh.height;
 
     for (unsigned i = 0; i < leveld.mesh.tiles.size(); i++) {
-        uint16_t colbit = leveld.mesh.collisions[i] << 15;
+        uint16_t colbit = leveld.mesh.blocks[i] << 15;
         data[i] = leveld.mesh.tiles[i] | colbit;
     }
 

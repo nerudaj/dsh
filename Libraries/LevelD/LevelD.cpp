@@ -93,6 +93,12 @@ void LevelD::saveToFile(const string &filename) const {
         delete module;
     }
 
+    // Always export metadata
+    auto *module = ParserModule::getModule("META");
+    auto meta = module->deparse(*this);
+    save.write((char*)(meta.data()), meta.size());
+    delete module;
+
     save.close();
     save.clear();
 }

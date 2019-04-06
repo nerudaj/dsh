@@ -27,3 +27,10 @@ public:
 
     virtual std::vector<uint8_t> deparse(const LevelD &leveld) const final override;
 };
+
+class ParserModuleMetadata : public ParserModule {
+public:
+    virtual void parse(const std::vector<uint8_t> &data, LevelD &leveld) const final override;
+
+    virtual std::vector<uint8_t> deparse(const LevelD &leveld) const final override;
+};

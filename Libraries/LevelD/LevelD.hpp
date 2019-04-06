@@ -26,6 +26,12 @@ public:
 
     std::vector<Player> players;
 
+    struct {
+        std::string author;
+        std::string description;
+        uint64_t    timestamp;
+    } metadata;
+
     /**
      *  \brief Clear contents of the object
      *

@@ -19,6 +19,7 @@ public:
         uint64_t    timestamp;   // Timestamp of level creation
 
         Metadata() : timestamp(0) {}
+		Metadata(std::string author, std::string description, uint64_t timestamp) : author(author), description(description), timestamp(timestamp) {}
     };
 
     /**

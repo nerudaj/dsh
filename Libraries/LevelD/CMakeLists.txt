@@ -1,7 +1,7 @@
 cmake_minimum_required (VERSION 3.4)
 project (leveld)
 
-set (CMAKE_INSTALL_PREFIX C:\\tools\\utils)
+set (CMAKE_INSTALL_PREFIX /tools/utils)
 
 include_directories(/tools/utils/include)
 
@@ -24,5 +24,5 @@ find_library(CFG_LIB NAMES config)
 TARGET_LINK_LIBRARIES(testrunner ${LOG_LIB} ${PROJECT_NAME} ${CFG_LIB})
 
 # Install
-# install(TARGETS ${PROJECT_NAME} DESTINATION lib)
-# install(FILES LevelDHandler.hpp DESTINATION include)
+install(TARGETS ${PROJECT_NAME} DESTINATION lib)
+install(FILES LevelD.hpp DESTINATION include)

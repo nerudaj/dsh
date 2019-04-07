@@ -8,9 +8,11 @@ include_directories(/tools/utils/include)
 # Add library
 add_library(${PROJECT_NAME}
 					LevelD.cpp
-					ParserModules/Top.cpp
-					ParserModules/ModuleMesh.cpp
-					ParserModules/ModulePlayers.cpp
+					Bytestream/BytestreamIn.cpp
+					Bytestream/BytestreamOut.cpp
+					Modules/ModuleMetadata.cpp
+					Modules/ModuleMesh.cpp
+					Modules/ModulePlayers.cpp
 )
 target_include_directories (${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 

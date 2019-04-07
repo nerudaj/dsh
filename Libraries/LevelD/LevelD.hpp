@@ -3,34 +3,45 @@
 #include <string>
 #include <cstdint>
 #include <vector>
+#include <ctime>
 
 /**
  *  \brief Class representing LevelD file in memory
  */
 class LevelD {
 public:
-    #pragma pack(push, 2)
-    struct Player {
-        uint32_t x;
-        uint32_t y;
-        uint16_t flags;
+    /**
+     *  \brief Section representing metadata
+     */
+    struct Metadata {
+        std::string author;      // Name of the author (up to 255 symbols)
+        std::string description; // Description of level (up to 255 symbols)
+        uint64_t    timestamp;   // Timestamp of level creation
+
+        Metadata() : timestamp(0) {}
     };
-    #pragma pack(pop)
 
-    struct {
-        uint32_t              width;      ///< Number of tiles on X axis
-        uint32_t              height;     ///< Number of tiles on Y axis
-        std::vector<uint16_t> tiles;      ///< Indices of tiles. tiles.size() == width * height
-        std::vector<bool>     blocks;     ///< Whether tile at tiles[i] is blocking or not
-    } mesh; ///< Environment of the level
+    /**
+     *  \brief Section representing player
+     */
+    struct Player {
+        uint32_t x, y;  // Coordinates on map
+        uint16_t flags; // Flags for player
+    };
 
-    std::vector<Player> players;
+    /**
+     *  \brief Section representing level mesh
+     */
+    struct Mesh {
+        uint32_t width;               // Number of tiles on X axis
+        uint32_t height;              // Number of tiles on Y axis
+        std::vector<uint16_t> tiles;  // Index number of tiles on map
+        std::vector<bool>     blocks; // Whether tile on index i is blocking
+    };
 
-    struct {
-        std::string author;
-        std::string description;
-        uint64_t    timestamp;
-    } metadata;
+    Metadata            metadata; // Level has metadata (always there)
+    Mesh                mesh;     // Level has mesh (always there)
+    std::vector<Player> players;  // Level can have players (only if non-empty)
 
     /**
      *  \brief Clear contents of the object

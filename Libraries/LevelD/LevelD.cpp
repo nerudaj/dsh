@@ -11,9 +11,10 @@ using std::vector;
 using std::string;
 
 Module *getModule(uint32_t identity) {
-    if (identity == LVLD_METADATA_CODE) return new ModuleMetadata;
-    else if (identity == LVLD_MESH_CODE) return new ModuleMesh;
+    if (identity == LVLD_METADATA_CODE)     return new ModuleMetadata;
+    else if (identity == LVLD_MESH_CODE)    return new ModuleMesh;
     else if (identity == LVLD_PLAYERS_CODE) return new ModulePlayers;
+    else if (identity == LVLD_ITEMS_CODE)   return new ModuleItems;
 
     throw std::runtime_error("Unsupported identity code!");
     return NULL;
@@ -55,6 +56,12 @@ void LevelD::saveToFile(const string &filename) const {
     if (!players.empty()) {
         ModulePlayers plrsmod;
         plrsmod.serialize(bout, *this);
+    }
+
+    // Sometimes save items
+    if (!items.empty()) {
+        ModuleItems itemmod;
+        itemmod.serialize(bout, *this);
     }
 
     bout.close();

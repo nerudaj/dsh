@@ -13,6 +13,7 @@ add_library(${PROJECT_NAME}
 					Modules/ModuleMetadata.cpp
 					Modules/ModuleMesh.cpp
 					Modules/ModulePlayers.cpp
+					Modules/ModuleItems.cpp
 )
 target_include_directories (${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 

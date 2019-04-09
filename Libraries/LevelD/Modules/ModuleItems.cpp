@@ -1,7 +1,6 @@
 #include "Top.hpp"
 
 void ModuleItems::serialize(BytestreamOut &bout, const LevelD &lvld) const {
-    bout << LVLD_ITEMS_CODE;
     bout << uint32_t(lvld.items.size());
 
     for (auto &item : lvld.items) {

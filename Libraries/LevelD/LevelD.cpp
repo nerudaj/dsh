@@ -45,24 +45,29 @@ void LevelD::saveToFile(const string &filename) const {
     bout << VERSION;
 
     ModuleMetadata metamod;
+    bout << LVLD_METADATA_CODE;
     metamod.serialize(bout, *this);
 
     if (!mesh.empty()) {
+        bout << LVLD_MESH_CODE;
         ModuleMesh meshmod;
         meshmod.serialize(bout, *this);
     }
 
     if (!players.empty()) {
+        bout << LVLD_PLAYERS_CODE;
         ModulePlayers plrsmod;
         plrsmod.serialize(bout, *this);
     }
 
     if (!items.empty()) {
+        bout << LVLD_ITEMS_CODE;
         ModuleItems itemmod;
         itemmod.serialize(bout, *this);
     }
 
     if (!npcs.empty()) {
+        bout << LVLD_NPCS_CODE;
         ModuleNpcs npcmod;
         npcmod.serialize(bout, *this);
     }

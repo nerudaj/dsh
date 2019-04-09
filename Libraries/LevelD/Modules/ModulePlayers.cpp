@@ -1,7 +1,6 @@
 #include "Top.hpp"
 
 void ModulePlayers::serialize(BytestreamOut &bout, const LevelD &lvld) const {
-    bout << LVLD_PLAYERS_CODE;
     bout << uint32_t(lvld.players.size());
 
     for (auto &player : lvld.players) {

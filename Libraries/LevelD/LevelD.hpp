@@ -54,7 +54,7 @@ public:
     Mesh      mesh;     // Level can have mesh (only if non-empty)
     Players   players;  // Level can have players (only if non-empty)
     Items     items;    // Level can have items (only if non-empty)
-    Npcs      npcs;
+    Npcs      npcs;     // Level can have NPCs
 
     /**
      *  \brief Clear contents of the object

@@ -1,7 +1,6 @@
 #include "Top.hpp"
 
 void ModuleMesh::serialize(BytestreamOut &bout, const LevelD &lvld) const {
-    bout << LVLD_MESH_CODE;
     bout << lvld.mesh.width;
 
     std::vector<uint16_t> dataout(lvld.mesh.width * lvld.mesh.height);

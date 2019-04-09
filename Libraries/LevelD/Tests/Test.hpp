@@ -35,3 +35,13 @@ public:
     virtual std::string name() const final override { return "TestMesh"; }
     TestMesh(const LevelD &ref) : ref(ref) {}
 };
+
+class TestPlayers : public Test {
+protected:
+    LevelD ref;
+
+public:
+    virtual void run() final override;
+    virtual std::string name() const final override { return "TestPlayers"; }
+    TestPlayers(const LevelD &ref) : ref(ref) {}
+};

@@ -13,7 +13,7 @@ void ModulePlayers::deserialize(BytestreamIn &bin, LevelD &lvld) const {
     uint32_t size;
     bin >> size;
 
-    std::vector<LevelD::Actor> players(size);
+    LevelD::Players players(size);
     for (auto &player : players) {
         bin >> player.x >> player.y >> player.flags;
     }

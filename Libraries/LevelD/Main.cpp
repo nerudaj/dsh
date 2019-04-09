@@ -12,9 +12,13 @@ void assume(bool cond, const std::string &str) {
 int main(int argc, char *argv[]) {
     vector<Test*> tests = {
         new TestMetadata({}),
-        new TestMetadata({{"map01", "Hangar", "doomista", "dsc", 10}, {/*mesh*/}, {/*players*/}, {/*items*/}}),
+        new TestMetadata({{"map01", "Hangar", "doomista", "dsc", 10}, {}, {}, {}}),
         new TestMesh({}),
         new TestMesh({{}, {2, 2, {1, 2, 3, 4}, {1, 0, 0, 1}}, {}, {}}),
+        new TestPlayers({}),
+        new TestPlayers({{}, {}, {
+            {1, 2, 0}, {10, 20, 30}, {244, 300, 10}
+        }, {}})
     };
 
     unsigned success = 0, failure = 0, cnt = 0;

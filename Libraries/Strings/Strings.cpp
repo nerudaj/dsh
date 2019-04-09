@@ -7,6 +7,7 @@
 #include <cctype>
 #include <locale>
 #include <algorithm>
+#include <ciso646>
 #include "Strings.hpp"
 
 using std::size_t;

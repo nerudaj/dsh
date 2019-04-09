@@ -2,6 +2,7 @@ cmake_minimum_required (VERSION 3.4)
 project (leveld)
 
 set (CMAKE_INSTALL_PREFIX /tools/utils)
+set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++14")
 
 include_directories(/tools/utils/include)
 
@@ -18,7 +19,11 @@ add_library(${PROJECT_NAME}
 target_include_directories (${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
 # Add testrunner
-add_executable(testrunner Main.cpp)
+add_executable(testrunner
+					Main.cpp
+					Tests/TestMetadata.cpp
+					Tests/TestMesh.cpp
+)
 
 find_library(LOG_LIB NAMES logger)
 find_library(CFG_LIB NAMES config)

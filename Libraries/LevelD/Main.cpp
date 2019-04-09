@@ -18,6 +18,10 @@ int main(int argc, char *argv[]) {
         new TestPlayers({}),
         new TestPlayers({{}, {}, {
             {1, 2, 0}, {10, 20, 30}, {244, 300, 10}
+        }, {}}),
+        new TestItems({}),
+        new TestItems({{}, {}, {
+            {1, 2, 0}, {10, 20, 30}, {244, 300, 10}
         }, {}})
     };
 

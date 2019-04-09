@@ -65,3 +65,13 @@ public:
     virtual std::string name() const final override { return "TestNpcs"; }
     TestNpcs(const LevelD &ref) : ref(ref) {}
 };
+
+class TestAll : public Test {
+protected:
+    LevelD ref;
+
+public:
+    virtual void run() final override;
+    virtual std::string name() const final override { return "TestAll"; }
+    TestAll(const LevelD &ref) : ref(ref) {}
+};

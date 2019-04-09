@@ -40,7 +40,22 @@ int main(int argc, char *argv[]) {
         new TestNpcs({}),
         new TestNpcs({{}, {}, {}, {}, {
             {1, 2, 0}, {10, 20, 30}, {244, 300, 10}
-        }})
+        }}),
+        new TestAll({
+            { "MAP01", "Entryway", "doomista", "First level of the game", 1554812963 },
+            { 4, 4,
+                { 1, 2, 2, 3, 
+                  2, 0, 0, 2, 
+                  2, 0, 0, 2, 
+                  4, 2, 2, 5 }, 
+                { 1, 1, 1, 1, 
+                  1, 0, 0, 1, 
+                  1, 0, 0, 1, 
+                  1, 1, 1, 1} },
+            { {64, 128, 0} },
+            { {192, 192, 1} },
+            { {128, 64, 10}, {192, 192, 1} }
+        })
     };
 
     unsigned success = 0, failure = 0, cnt = 0;

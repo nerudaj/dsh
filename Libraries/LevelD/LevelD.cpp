@@ -46,9 +46,10 @@ void LevelD::saveToFile(const string &filename) const {
     ModuleMetadata metamod;
     metamod.serialize(bout, *this);
 
-    // Always save mesh
-    ModuleMesh meshmod;
-    meshmod.serialize(bout, *this);
+    if (!mesh.empty()) {
+        ModuleMesh meshmod;
+        meshmod.serialize(bout, *this);
+    }
 
     // Sometimes save players
     if (!players.empty()) {

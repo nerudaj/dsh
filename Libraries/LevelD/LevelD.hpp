@@ -14,20 +14,14 @@ public:
      *  \brief Section representing metadata
      */
     struct Metadata {
+        std::string id;          // Id of the level
+        std::string name;        // Name of the level
         std::string author;      // Name of the author (up to 255 symbols)
         std::string description; // Description of level (up to 255 symbols)
         uint64_t    timestamp;   // Timestamp of level creation
 
         Metadata() : timestamp(0) {}
-		Metadata(std::string author, std::string description, uint64_t timestamp) : author(author), description(description), timestamp(timestamp) {}
-    };
-
-    /**
-     *  \brief Section representing player
-     */
-    struct Player {
-        uint32_t x, y;  // Coordinates on map
-        uint16_t flags; // Flags for player
+        Metadata(std::string id, std::string name, std::string author, std::string description, uint64_t timestamp) : id(id), name(name), author(author), description(description), timestamp(timestamp) {}
     };
 
     /**
@@ -38,11 +32,25 @@ public:
         uint32_t height;              // Number of tiles on Y axis
         std::vector<uint16_t> tiles;  // Index number of tiles on map
         std::vector<bool>     blocks; // Whether tile on index i is blocking
+
+        bool empty() const { return width == 0 || height == 0; }
+
+        Mesh() : width(0), height(0) {}
+        Mesh(uint32_t width, uint32_t height, const std::vector<uint16_t> &tiles, const std::vector<bool> &blocks) : width(width), height(height), tiles(tiles), blocks(blocks) {}
+    };
+
+    /**
+     *  \brief Section representing actor - anything with coordinates and flags
+     */
+    struct Actor {
+        uint32_t x, y;  // Coordinates on map
+        uint16_t flags; // Behavioral flags for actor
     };
 
     Metadata            metadata; // Level has metadata (always there)
-    Mesh                mesh;     // Level has mesh (always there)
-    std::vector<Player> players;  // Level can have players (only if non-empty)
+    Mesh                mesh;     // Level can have mesh (only if non-empty)
+    std::vector<Actor>  players;  // Level can have players (only if non-empty)
+    std::vector<Actor>  items;    // Level can have items (only if non-empty)
 
     /**
      *  \brief Clear contents of the object
@@ -76,4 +84,7 @@ public:
      *  during the process.
      */
     void saveToFile(const std::string &filename) const;
+
+    LevelD() {}
+    LevelD(const LevelD::Metadata &meta, const LevelD::Mesh &mesh, const std::vector<LevelD::Actor> &players, const std::vector<LevelD::Actor> &items) : metadata(meta), mesh(mesh), players(players), items(items) {}
 };

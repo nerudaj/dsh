@@ -50,11 +50,18 @@ public:
     typedef std::vector<Actor> Items;
     typedef std::vector<Actor> Npcs;
 
+    struct Event {
+        uint32_t id;                     // Identifier of event
+        std::vector<uint32_t> arguments; // Optional arguments of event
+    };
+    typedef std::vector<Event> Events;
+
     Metadata  metadata; // Level has metadata (always there)
     Mesh      mesh;     // Level can have mesh (only if non-empty)
     Players   players;  // Level can have players (only if non-empty)
     Items     items;    // Level can have items (only if non-empty)
     Npcs      npcs;     // Level can have NPCs
+    Events    events;
 
     /**
      *  \brief Clear contents of the object
@@ -90,5 +97,5 @@ public:
     void saveToFile(const std::string &filename) const;
 
     LevelD() {}
-    LevelD(const LevelD::Metadata &meta, const LevelD::Mesh &mesh, const Players &players, const Items &items, const Npcs &npcs) : metadata(meta), mesh(mesh), players(players), items(items), npcs(npcs) {}
+    LevelD(const LevelD::Metadata &meta, const LevelD::Mesh &mesh, const Players &players, const Items &items, const Npcs &npcs, const Events &events) : metadata(meta), mesh(mesh), players(players), items(items), npcs(npcs), events(events) {}
 };

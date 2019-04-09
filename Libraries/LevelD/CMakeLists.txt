@@ -26,6 +26,7 @@ add_executable(testrunner
 					Tests/TestMesh.cpp
 					Tests/TestPlayers.cpp
 					Tests/TestItems.cpp
+					Tests/TestNpcs.cpp
 )
 
 find_library(LOG_LIB NAMES logger)

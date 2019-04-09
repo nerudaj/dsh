@@ -48,12 +48,13 @@ public:
     };
     typedef std::vector<Actor> Players;
     typedef std::vector<Actor> Items;
-    typedef std::vector<Actor> NPCs;
+    typedef std::vector<Actor> Npcs;
 
     Metadata  metadata; // Level has metadata (always there)
     Mesh      mesh;     // Level can have mesh (only if non-empty)
     Players   players;  // Level can have players (only if non-empty)
     Items     items;    // Level can have items (only if non-empty)
+    Npcs      npcs;
 
     /**
      *  \brief Clear contents of the object
@@ -89,5 +90,5 @@ public:
     void saveToFile(const std::string &filename) const;
 
     LevelD() {}
-    LevelD(const LevelD::Metadata &meta, const LevelD::Mesh &mesh, const Players &players, const Items &items) : metadata(meta), mesh(mesh), players(players), items(items) {}
+    LevelD(const LevelD::Metadata &meta, const LevelD::Mesh &mesh, const Players &players, const Items &items, const Npcs &npcs) : metadata(meta), mesh(mesh), players(players), items(items), npcs(npcs) {}
 };

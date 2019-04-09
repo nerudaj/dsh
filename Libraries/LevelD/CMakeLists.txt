@@ -15,6 +15,7 @@ add_library(${PROJECT_NAME}
 					Modules/ModuleMesh.cpp
 					Modules/ModulePlayers.cpp
 					Modules/ModuleItems.cpp
+					Modules/ModuleNpcs.cpp
 )
 target_include_directories (${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 

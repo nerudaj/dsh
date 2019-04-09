@@ -15,6 +15,7 @@ Module *getModule(uint32_t identity) {
     else if (identity == LVLD_MESH_CODE)    return new ModuleMesh;
     else if (identity == LVLD_PLAYERS_CODE) return new ModulePlayers;
     else if (identity == LVLD_ITEMS_CODE)   return new ModuleItems;
+    else if (identity == LVLD_NPCS_CODE)    return new ModuleNpcs;
 
     throw std::runtime_error("Unsupported identity code!");
     return NULL;
@@ -43,7 +44,6 @@ void LevelD::saveToFile(const string &filename) const {
     BytestreamOut bout(filename);
     bout << VERSION;
 
-    // Always save metadata
     ModuleMetadata metamod;
     metamod.serialize(bout, *this);
 
@@ -52,16 +52,19 @@ void LevelD::saveToFile(const string &filename) const {
         meshmod.serialize(bout, *this);
     }
 
-    // Sometimes save players
     if (!players.empty()) {
         ModulePlayers plrsmod;
         plrsmod.serialize(bout, *this);
     }
 
-    // Sometimes save items
     if (!items.empty()) {
         ModuleItems itemmod;
         itemmod.serialize(bout, *this);
+    }
+
+    if (!npcs.empty()) {
+        ModuleNpcs npcmod;
+        npcmod.serialize(bout, *this);
     }
 
     bout.close();

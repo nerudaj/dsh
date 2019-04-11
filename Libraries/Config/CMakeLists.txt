@@ -3,6 +3,10 @@ project (config)
 
 include_directories(/tools/utils/include)
 
+if (NOT CMAKE_DEBUG_POSTFIX)
+	set(CMAKE_DEBUG_POSTFIX "-d")
+endif()
+
 # Add library
 add_library(config Args.cpp Csv.cpp Ini.cpp Item.cpp)
 target_include_directories (config PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})

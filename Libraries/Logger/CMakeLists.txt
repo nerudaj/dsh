@@ -4,6 +4,10 @@ project (logger)
 # Export all symbols in dynamic library
 set (CMAKE_INSTALL_PREFIX /tools/utils)
 
+if (NOT CMAKE_DEBUG_POSTFIX)
+	set(CMAKE_DEBUG_POSTFIX "-d")
+endif()
+
 # Add library
 add_library(logger logger.cpp)
 target_include_directories (logger PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})

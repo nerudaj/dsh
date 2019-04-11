@@ -4,6 +4,10 @@ project (strings)
 # Export all symbols in dynamic library
 set (CMAKE_INSTALL_PREFIX /tools/utils)
 
+if (NOT CMAKE_DEBUG_POSTFIX)
+	set(CMAKE_DEBUG_POSTFIX "-d")
+endif()
+
 # Add library
 add_library(strings Strings.cpp)
 target_include_directories (strings PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})

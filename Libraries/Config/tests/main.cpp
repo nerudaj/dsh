@@ -27,6 +27,25 @@ int main() {
 		new TestValidCSVData("tests/test4.csv", {
 			{"aaa", "bbb", "cc\"c"}, { "ddd", "eee", "fff" }
 		}),
+		new TestLoadValidIni("tests/test0.ini"),
+		new TestLoadInvalidIni("tests/test1.ini"),
+		new TestLoadInvalidIni("tests/test2.ini"),
+		new TestLoadInvalidIni("tests/test4.ini"),
+		new TestValidIniData("tests/test0.ini", {
+			{ "root", {
+				{ "key1", "value1" }
+			}},
+			{ "section", {
+				{ "key2", "value2"},
+				{ "key3", "10" },
+				{ "key4", "false" }
+			}}
+		}),
+		new TestValidIniData("tests/test3.ini", {
+			{ "root", {
+				{ "key1", "" }
+			}}
+		})
 	};
 
 	int cnt = 1;

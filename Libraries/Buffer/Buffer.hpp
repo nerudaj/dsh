@@ -176,7 +176,7 @@ public:
 	 * your program is initializing.
 	 */
 	void resize(std::size_t maxSize) {
-		if (dataCapacity <= maxSize) throw std::bad_array_new_length;
+		if (dataCapacity <= maxSize) throw std::bad_array_new_length();
 
 		// Upscaling buffer
 		if (data) {
@@ -190,7 +190,7 @@ public:
 			}
 
 			// Allocate new pointers
-			for (unsigned i = dataCapacity; i < MaxSize; i++) {
+			for (unsigned i = dataCapacity; i < maxSize; i++) {
 				newData[i] = new T;
 				if (newData[i] == NULL) throw std::bad_alloc();
 			}

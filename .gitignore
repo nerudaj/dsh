@@ -31,6 +31,19 @@
 *.out
 *.app
 
+# Cmake
+Libraries/Bitmap/build
+Libraries/Config/build
+Libraries/Config/vsbuild
+Libraries/LevelD/build
+Libraries/LevelD/vsbuild
+Libraries/LevelD/Bytestream/build
+Libraries/Logger/build
+Libraries/Logger/vsbuild
+Libraries/Strings/build
+Libraries/Strings/vsbuild
+Utilities/jsbloat/build
+
 # =========================
 # Operating System Files
 # =========================
@@ -57,3 +70,5 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+
+dsh.code-workspace

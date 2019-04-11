@@ -1,5 +1,4 @@
-#ifndef ARGS_HPP_
-#define ARGS_HPP_
+#pragma once
 
 #include <iostream>
 #include <map>
@@ -119,7 +118,10 @@ namespace cfg {
 		 *  \pre \ref parse was called
 		 */
 		const std::vector<std::string> &getPositionalArguments() const { return positionals; }
+
+		Args() {}
+		Args(const std::string &argarray) {
+			setupArguments(argarray);
+		}
 	};
 }
-
-#endif

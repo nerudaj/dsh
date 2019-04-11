@@ -1,18 +1,50 @@
-#ifndef INI_HPP_
-#define INI_HPP_
+/**
+ *  \file Ini.hpp
+ *  
+ *  \author Jakub Neruda
+ *  
+ *  \brief Class for parsing INI files
+ */
+
+#pragma once
 
 #include "Item.hpp"
+#include <Logger.hpp>
 #include <map>
 
 namespace cfg {
+	/**
+	 *  \brief Section of an ini file
+	 */
 	class IniSection : public std::map<std::string, Item> {
 	public:
+		/**
+		 *  \brief Test whether key is present in section
+		 *  
+		 *  \param [in] key Key to test
+		 *  \return TRUE if key is present in section
+		 */
 		bool hasKey(const std::string &key) { return find(key) != end(); }
 	};
 
+	/**
+	 *  \brief Simple class for loading and exporting ini files
+	 *  
+	 *  \details An ini file looks like this:
+	 *  key=value
+	 *  
+	 *  [section]
+	 *  key2=value2
+	 *  
+	 *  You can have any number of key=value lines and section headers. Every key=value pair
+	 *  belongs to closest section declaration. key=value pairs with no section declarations
+	 *  belong to section 'root'.
+	 *  
+	 *  Ini object allows you to retrieve sections and you can search those for key=value pairs.
+	 */
 	class Ini {
 	protected:
-		std::map<std::string, IniSection> config;
+		std::map<std::string, IniSection> config; ///< Data of ini file
 
 		static bool isSectionHeader(const std::string &line);
 		static bool isKeyValuePair(const std::string &line);
@@ -20,6 +52,11 @@ namespace cfg {
 		static void getKeyValue(const std::string &line, std::string &dstKey, std::string &dstValue);
 
 	public:
+		Logger log; ///< Error logger. Use Ini::log.setLoggingLevel to change verbosity
+	
+		/**
+		 *  \brief Access section of ini file
+		 */
 		const IniSection &operator[](const std::string &section) const {
 			return config.at(section);
 		}
@@ -60,5 +97,3 @@ namespace cfg {
 		bool saveToFile(const std::string &filename);
 	};
 }
-
-#endif

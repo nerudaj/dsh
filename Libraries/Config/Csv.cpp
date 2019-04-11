@@ -183,10 +183,45 @@ bool Csv::loadFromFile(const std::string &filename, int flags, char delimiter, c
 	return true;
 }
 
-/*bool Csv::saveToFile(const std::string &filename, char delimiter, char newline, char quote) {
+void writeVectorOfCsvItems(std::ofstream &save, std::vector<cfg::Item> &row, char delimiter, char newline, char quote) {
+	for (unsigned i = 0; i < row.size(); i++) {
+		bool doQuote = false;
+		std::string toWrite = row[i].asString();
+
+		// Turn quotes to double quotes
+		if (toWrite.find(quote) != std::string::npos) {
+			doQuote = true;
+			Strings::replaceAll(toWrite, std::string(1, quote), std::string(1, quote) + std::string(1, quote));
+		}
+
+		doQuote |= (toWrite.find(delimiter) != std::string::npos);
+		doQuote |= (toWrite.find(newline) != std::string::npos);
+
+		if (doQuote) {
+			toWrite = std::string(1, quote) + toWrite + std::string(1, quote);
+		}
+
+		save << toWrite;
+		if (i < row.size() - 1) save << delimiter;
+	}
+
+	save << newline;
+}
+
+bool Csv::saveToFile(const std::string &filename, char delimiter, char newline, char quote) {
 	try {
-		log.error("Csv::saveToFile", "Not implemented");
-		return false;
+		std::ofstream save (filename);
+
+		if (!headers.empty()) {
+			writeVectorOfCsvItems(save, headers, delimiter, newline, quote);
+		}
+		
+		for (auto row : rows) {
+			writeVectorOfCsvItems(save, row, delimiter, newline, quote);
+		}
+
+		save.close();
+		save.clear();
 	}
 	catch (std::exception &e) {
 		log.error("Csv::saveToFile", "Exception: " + std::string(e.what()));
@@ -194,7 +229,7 @@ bool Csv::loadFromFile(const std::string &filename, int flags, char delimiter, c
 	}
 	
 	return true;
-}*/
+}
 
 std::size_t Csv::headerID(const std::string &name) {
 	for (std::size_t i = 0; i < headers.size(); i++) {
@@ -208,8 +243,18 @@ std::size_t Csv::headerID(const std::string &name) {
 }
 
 void Csv::setHeaders(const std::vector<cfg::Item> &headers) {
-	log.info("Csv::setHeaders", "TODO this");
 	Csv::headers = headers;
+}
+
+void Csv::resize(unsigned rowCount, unsigned colCount) {
+	unsigned currentSize = size();
+	rows.resize(rowCount);
+	
+	if (colCount > 0) {
+		for (unsigned i = currentSize; i < size(); i++) {
+			rows[i].resize(colCount, Item());
+		}
+	}
 }
 
 Csv::Csv() {

@@ -1,8 +1,8 @@
-#ifndef ITEM_HPP_
-#define ITEM_HPP_
+#pragma once
 
 #include <string>
 #include <iostream>
+#include <ciso646>
 
 namespace cfg {
 	/**
@@ -60,5 +60,3 @@ namespace cfg {
 		~Item();
 	};
 }
-
-#endif

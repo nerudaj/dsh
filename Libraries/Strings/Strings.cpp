@@ -3,6 +3,11 @@
  *  \author			doomista
  */
 
+#include <algorithm> 
+#include <cctype>
+#include <locale>
+#include <algorithm>
+#include <ciso646>
 #include "Strings.hpp"
 
 using std::size_t;
@@ -42,4 +47,29 @@ void Strings::replaceAll(std::string &str, const std::string &from, const std::s
 		str.replace(start_pos, from.length(), to);
 		start_pos += to.length(); // In case 'to' contains 'from', like replacing 'x' with 'yx'
 	}
+}
+
+static inline void ltrim(std::string &s) {
+    s.erase(s.begin(), std::find_if(s.begin(), s.end(), [](int ch) {
+        return !std::isspace(ch);
+    }));
+}
+
+// trim from end (in place)
+static inline void rtrim(std::string &s) {
+    s.erase(std::find_if(s.rbegin(), s.rend(), [](int ch) {
+        return !std::isspace(ch);
+    }).base(), s.end());
+}
+
+void Strings::trim(std::string &str) {
+	ltrim(str);
+	rtrim(str);
+}
+
+bool Strings::isPrefixOf(const std::string &str, const std::string &ofWhat) {
+	if (str.size() > ofWhat.size()) return false;
+	
+	auto res = std::mismatch(str.begin(), str.end(), ofWhat.end());
+	return res.first == str.end();
 }

@@ -2,6 +2,7 @@
 #define LOGGER_HPP_
 
 #include <iostream>
+#include <string>
 
 /**
  *  \brief Simple class for logging events
@@ -65,6 +66,9 @@ public:
 	void setLoggingLevel(int level);
 	
 	Logger();
+	Logger(int logLevel) {
+		setLoggingLevel(logLevel);
+	}
 };
 
 #endif

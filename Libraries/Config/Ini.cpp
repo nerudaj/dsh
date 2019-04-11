@@ -9,7 +9,7 @@ bool Ini::isSectionHeader(const std::string &line) {
 }
 
 bool Ini::isKeyValuePair(const std::string &line) {
-	return std::regex_match (line, std::regex(".+=.+"));
+	return std::regex_match (line, std::regex(".+=.*"));
 }
 
 void Ini::getSectionIdentifier(const std::string &line, std::string &dst) {
@@ -27,7 +27,7 @@ bool Ini::loadFromFile(const std::string &filename) {
 	std::ifstream load(filename);
 	
 	if (!load.good()) {
-		std::cerr << "Ini::loadFromFile(...) - Could not open file " << filename << ".\n";
+		log.error("Ini::loadFromFile(...)", "Could not open file " + filename);
 		return false;
 	}
 	
@@ -41,6 +41,10 @@ bool Ini::loadFromFile(const std::string &filename) {
 		else if (isKeyValuePair(line)) {
 			getKeyValue(line, key, value);
 			config[section][key] = value;
+		}
+		else if (not line.empty()) {
+			log.error("Ini::loadFromFile(...)", "Invalid line " + line);
+			return false;
 		}
 	}
 	
@@ -68,7 +72,7 @@ bool Ini::saveToFile(const std::string &filename) {
 	std::ofstream save (filename);
 	
 	if (!save.good()) {
-		std::cerr << "Ini::saveToFile(...) - Could not open file " << filename << ".\n";
+		log.error("Ini::saveToFile(...)", "Could not open file " + filename);
 		return false;
 	}
 	

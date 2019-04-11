@@ -4,6 +4,9 @@
 #include <vector>
 #include "../Config.hpp"
 
+using std::string;
+using std::map;
+
 /**
  *  \brief Base class for deriving test cases from
  */
@@ -48,7 +51,7 @@ protected:
 public:
 	virtual void run() final override {
 		cfg::Csv csv;
-		assume(csv.loadFromFile(data, int(cfg::Csv::Flags::NoHeaders)), "CSV did not loaded file " + data + " correctly");
+		assume(csv.loadFromFile(data, int(cfg::Csv::Flags::NoHeaders)), "CSV did not load file " + data + " correctly");
 		assume(csv.size() == 2, "Number of rows should have been 2");
 
 		int cnt = 0;
@@ -73,7 +76,7 @@ protected:
 public:
 	virtual void run() final override {
 		cfg::Csv csv;
-		assume(csv.loadFromFile(data, int(cfg::Csv::Flags::NoHeaders)), "CSV did not loaded file " + data + " correctly");
+		assume(csv.loadFromFile(data, int(cfg::Csv::Flags::NoHeaders)), "CSV did not load file " + data + " correctly");
 		
 		assume(csv.size() == refValues.size(), "Number of rows in csv does not match referenceValues");
 		
@@ -91,4 +94,72 @@ public:
 	}
 
 	TestValidCSVData(const std::string &filename, const std::vector<std::vector<std::string>> &correctValues) : refValues(correctValues) { data = filename; }
+};
+
+class TestLoadValidIni : public TestCase {
+protected:
+	string path;
+	
+public:
+	virtual void run() final override {
+		cfg::Ini ini;
+		assume(ini.loadFromFile(path), "INI did not load file " + path);
+	}
+	
+	virtual string name() const final override {
+		return "TestLoadValidIni";
+	}
+	
+	TestLoadValidIni(const string &filename) : path(filename) {}
+};
+
+class TestLoadInvalidIni : public TestCase {
+protected:
+	string path;
+	
+public:
+	virtual void run() final override {
+		cfg::Ini ini;
+		ini.log.setLoggingLevel(0);
+		
+		assume(!ini.loadFromFile(path), "INI loaded broken file " + path);
+	}
+	
+	virtual string name() const final override {
+		return "TestLoadInvalidIni";
+	}
+	
+	TestLoadInvalidIni(const string &filename) : path(filename) {}
+};
+
+class TestValidIniData : public TestCase {
+protected:
+	string path;
+	map<string, map<string, string>> ref;
+	
+public:
+	virtual void run() final override {
+		cfg::Ini ini;
+		ini.loadFromFile(path);
+		
+		for (auto item : ref) {
+			assume(ini.hasSection(item.first), "Section " + item.first + " is not present in INI");
+			
+			for (auto keyval : item.second) {
+				assume(ini[item.first].hasKey(keyval.first), 
+					"Key " + keyval.first + " is not present in section " + item.first + " in INI"
+				);
+				assume(ini[item.first][keyval.first].asString() == keyval.second,
+					"INI[" + item.first + "][" + keyval.first + "] does not match reference " + 
+					keyval.second + ", has " + ini[item.first][keyval.first].asString() + " instead"
+				);
+			}
+		}
+	}
+	
+	virtual string name() const final override {
+		return "TestValidIniData";
+	}
+	
+	TestValidIniData(const string &filename, const map<string, map<string, string>> &refout) : path(filename), ref(refout) {}
 };

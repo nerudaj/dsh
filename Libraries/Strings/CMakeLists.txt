@@ -9,9 +9,14 @@ if (NOT CMAKE_DEBUG_POSTFIX)
 endif()
 
 # Add library
-add_library(strings Strings.cpp)
-target_include_directories (strings PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+add_library(${PROJECT_NAME} Strings.cpp)
+target_include_directories (${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
 # Install
-install(TARGETS strings DESTINATION lib)
+install(TARGETS ${PROJECT_NAME} DESTINATION lib)
 install(FILES Strings.hpp DESTINATION include)
+
+# Add testrunner
+include_directories(/tools/utils/include)
+add_executable(testrunner tests/Main.cpp)
+target_link_libraries(testrunner ${PROJECT_NAME})

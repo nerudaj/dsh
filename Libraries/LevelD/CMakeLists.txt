@@ -3,6 +3,8 @@ project (leveld)
 
 include_directories(/tools/utils/include)
 
+set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++14")
+
 # Add library
 add_library(${PROJECT_NAME}
 					LevelDHandler.cpp

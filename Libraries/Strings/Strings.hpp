@@ -12,15 +12,19 @@
 
 class Strings {
 public:
+	static void split(const char delimiter, const std::string &src, std::vector<std::string> &dst);
+
 	/**
 	 *  \brief Splits the string src by delimiter and stores resulting array of strings to dst
 	 *  
 	 *  \details dst is always cleared at the start of the function. Multiple delimiters one
 	 *  after each other are treated as one.
 	 */
-	static std::vector<std::string> split(const char delimiter, const std::string &src);
-	
-	static void split(const char delimiter, const std::string &src, std::vector<std::string> &dst);
+	static std::vector<std::string> split(const char delimiter, const std::string &src) {
+		std::vector<std::string> result;
+		split(delimiter, src, result);
+		return result;
+	}
 	
 	/**
 	 *  \brief Replaces all occurences of from with to in str

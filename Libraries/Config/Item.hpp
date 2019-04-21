@@ -2,6 +2,7 @@
 
 #include <string>
 #include <iostream>
+#include <ciso646>
 
 namespace cfg {
 	/**

@@ -6,6 +6,10 @@ set (CMAKE_INSTALL_PREFIX /tools/utils)
 
 include_directories(/tools/utils/include)
 
+if (NOT CMAKE_DEBUG_POSTFIX)
+	set(CMAKE_DEBUG_POSTFIX "-d")
+endif()
+
 # Add library
 add_library(${PROJECT_NAME} Args.cpp Csv.cpp Ini.cpp Item.cpp)
 target_include_directories (${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})

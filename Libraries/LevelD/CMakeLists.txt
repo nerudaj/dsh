@@ -6,6 +6,8 @@ set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++14")
 
 include_directories(/tools/utils/include)
 
+set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++14")
+
 # Add library
 add_library(${PROJECT_NAME}
 					LevelD.cpp

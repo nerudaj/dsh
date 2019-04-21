@@ -34,10 +34,16 @@
 # Cmake
 Libraries/Bitmap/build
 Libraries/Config/build
+Libraries/Config/vsbuild
 Libraries/LevelD/build
+Libraries/LevelD/vsbuild
 Libraries/LevelD/Bytestream/build
 Libraries/Logger/build
+Libraries/Logger/vsbuild
 Libraries/Strings/build
+Libraries/Strings/vsbuild
+Libraries/Testrunner/build
+Utilities/jsbloat/build
 
 # =========================
 # Operating System Files

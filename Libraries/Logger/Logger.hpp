@@ -2,6 +2,7 @@
 #define LOGGER_HPP_
 
 #include <iostream>
+#include <string>
 
 /**
  *  \brief Simple class for logging events

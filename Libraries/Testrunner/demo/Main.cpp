@@ -1,4 +1,4 @@
-#include "Test.hpp"
+#include <Test.hpp>
 #include <vector>
 
 class TestAssertTrue : public Test {

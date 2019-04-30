@@ -55,15 +55,15 @@ public:
  *  \return Throws an exception with message \p m if \p code
  *  did not throw an exception of type \p exc
  */
-#define assertException(code,exc,m) //\\
-{ //\\
-	bool exceptionHappened = false; //\\
-	try { //\\
-		code; //\\
-	} catch (exc &e) { //\\
-		exceptionHappened = true; //\\
-	} //\\
-	if (!exceptionHappened) throw std::runtime_error(m); //\\
+#define assertException(code,exc,m) \
+{ \
+	bool exceptionHappened = false; \
+	try { \
+		code; \
+	} catch (exc &e) { \
+		exceptionHappened = true; \
+	} \
+	if (!exceptionHappened) throw std::runtime_error(m); \
 }
 
 /**
@@ -74,15 +74,15 @@ public:
  *  \return Throws an exception with message \p m if \p code
  *  threw an exception of type \p exc
  */
-#define assertNotException(code,m) //\\
-{ //\\
-	bool exceptionHappened = false; //\\
-	try { //\\
-		code; //\\
-	} catch (...) { //\\
-		exceptionHappened = true; //\\
-	} //\\
-	if (exceptionHappened) throw std::runtime_error(m); //\\
+#define assertNotException(code,m) \
+{ \
+	bool exceptionHappened = false; \
+	try { \
+		code; \
+	} catch (...) { \
+		exceptionHappened = true; \
+	} \
+	if (exceptionHappened) throw std::runtime_error(m); \
 }
 
 class Testrunner {

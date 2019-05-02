@@ -29,60 +29,109 @@ public:
 };
 
 /**
- *  \brief Expect condition to be true
+ * \brief Expect condition to be true
  *  
- *  \param [in] c Condition to evaluate
- *  \param [in] m Descriptive message for exception
- *  \return Throws an exception if condition is false
+ * \param[in]  c  Condition to evaluate
+ *
+ * Throws an exception if condition is false
  */
-#define assertTrue(c,m) if (!(c)) throw std::runtime_error(m);
+#define assertTrue(c) if (!(c)) throw std::runtime_error("Assertion failed: " + std::string(#c) + " is false (expected true).");
 
 /**
- *  \brief Expect condition to be false
+ * \brief Expect condition to be false
  *  
- *  \param [in] c Condition to evaluate
- *  \param [in] m Descriptive message for exception
- *  \return Throws an exception if condition is true
+ * \param[in]  c  Condition to evaluate
+ * 
+ * Throws an exception if condition is true
  */
-#define assertFalse(c,m) if (c) throw std::runtime_error(m);
+#define assertFalse(c) if (c) throw std::runtime_error("Assertion failed: " + std::string(#c) + " is true (expected false).");
+
+/**
+ * \brief Expect two values to have the same value
+ *
+ * \param[in]  a    First value to compare
+ * \param[in]  b    Second value to compare
+ * \param[in] aStr  Parameter \p a serialized to string
+ * \param[in] bStr  Parameter \p b serialized to string
+ *
+ * Parameters \p a and \p b must be comparable using != operator.
+ * Throws an exception if parameters have different values from 
+ * each other.
+ */
+#define assertEqual(a,b,aStr,bStr) if ((a) != (b)) throw std::runtime_error("Assertion failed: " + std::string(#a) + " == " + #b + ".\n" + std::string(#a) + " = " + aStr + "\n" + std::string(#b) + " = " + bStr);
+
+/**
+ * \brief Expect two values to have different values
+ *
+ * \param[in]  a    First value to compare
+ * \param[in]  b    Second value to compare
+ * \param[in] aStr  Parameter \p a serialized to string
+ * \param[in] bStr  Parameter \p b serialized to string
+ *
+ * Parameters \p a and \p b must be comparable using == operator.
+ * Throws an exception if parameters have the same value.
+ */
+#define assertNotEqual(a,b,aStr,bStr) if ((a) == (b)) throw std::runtime_error("Assertion failed: " + std::string(#a) + " != " + #b + ".\n" + std::string(#a) + " = " + aStr + "\n" + std::string(#b) + " = " + bStr);
+
+/**
+ * \brief Print loop control variable if assertion fails
+ *
+ * \param[in]  asrt        Assertion to evaluate
+ * \param[in]  controlVar  Control variable of a loop. Must be 
+ * serializable to string using std::to_string
+ *
+ * If \p asrt fails and throws the exception, then inLoop
+ * catches that exception, adds value of \p controlVar to
+ * it and then rethrows.
+ *
+ * \code inLoop(assertTrue(predicate[i]), i); \endcode
+ */
+#define inLoop(asrt,controlVar) {\
+	try { \
+		asrt; \
+	} catch (std::runtime_error &e) { \
+		throw std::runtime_error(std::string(e.what()) + "\n(loop control) " + std::string(#controlVar) + " = " + std::to_string(controlVar)); \
+	} \
+}
 
 /**
  *  \brief Expect code to throw specific exception
  *  
- *  \param [in] code Code to execute
- *  \param [in] exc Expected exception
- *  \param [in] m Descriptive message for output exception
- *  \return Throws an exception with message \p m if \p code
- *  did not throw an exception of type \p exc
+ *  \param[in] code Code to execute
+ *  \param[in] exc Expected exception
+ *
+ * Throws an exception if exception was either not
+ * thrown or different than expected exception was
+ * thrown.
  */
-#define assertException(code,exc,m) \
+#define assertException(code,exc) \
 { \
 	bool exceptionHappened = false; \
 	try { \
 		code; \
 	} catch (exc &e) { \
 		exceptionHappened = true; \
+	} catch (std::exception &e) { \
+		std::runtime_error("Assertion failed: Incorrect exception was thrown\nMessage = " + std::string(e.what())); \
 	} \
-	if (!exceptionHappened) throw std::runtime_error(m); \
+	if (!exceptionHappened) throw std::runtime_error("Assertion failed: Exception " + std::string(#exc) + " was not thrown."); \
 }
 
 /**
- *  \brief Expect code to not throw any exception
+ * \brief Expect code to not throw any exception
  *  
- *  \param [in] code Code to execute
- *  \param [in] m Descriptive message for output exception
- *  \return Throws an exception with message \p m if \p code
- *  threw an exception of type \p exc
+ * \param[in]  code  Code to execute
+ *
+ * Throws an exception if the \p code did not throw
+ * any exception.
  */
-#define assertNotException(code,m) \
+#define assertNotException(code) \
 { \
-	bool exceptionHappened = false; \
 	try { \
 		code; \
-	} catch (...) { \
-		exceptionHappened = true; \
+	} catch (std::exception &e) { \
+		throw std::runtime_error("Assertion failed: An exception was thrown\nMessage = " + std::string(e.what())); \
 	} \
-	if (exceptionHappened) throw std::runtime_error(m); \
 }
 
 class Testrunner {
@@ -97,6 +146,29 @@ private:
 		std::cout << failed << " tests failed." << std::endl;
 	}
 	
+	/**
+	 *  \brief Bind vector of testcases to testrunner
+	 *  
+	 *  All testcases will be properly dealocated either by calling
+	 *  \ref clear() or by Testrunner's dtor.
+	 */
+	void initializeTestVector(const std::vector<Test*> &testcases) {
+		Testrunner::testcases = testcases;
+	}
+	
+	/**
+	 *  \brief Properly deallocate vector of testcases
+	 *  
+	 *  After call to this function, new vector of testcases
+	 *  can be bind using \ref initializeTestVector
+	 */
+	void clear() {
+		for (auto test : testcases) {
+			delete test;
+		}
+		testcases.clear();
+	}
+	
 public:
 	Testrunner(const std::vector<Test*> &testcases) {
 		initializeTestVector(testcases);
@@ -107,35 +179,12 @@ public:
 	}
 	
 	/**
-	 *  \brief Bind vector of testcases to testrunner
-	 *  
-	 *  \details All testcases will be properly dealocated either by calling
-	 *  \ref clear() or by Testrunner's dtor.
-	 */
-	void initializeTestVector(const std::vector<Test*> &testcases) {
-		Testrunner::testcases = testcases;
-	}
-	
-	/**
-	 *  \brief Properly deallocate vector of testcases
-	 *  
-	 *  \details After call to this function, new vector of testcases
-	 *  can be bind using \ref initializeTestVector
-	 */
-	void clear() {
-		for (auto test : testcases) {
-			delete test;
-		}
-		testcases.clear();
-	}
-	
-	/**
 	 *  \brief Evaluate whole vector of test cases
 	 *  
-	 *  \param [in] printSummary Whether brief summary of testing should be printed
+	 *  \param[in]  printSummary  Whether brief summary of testing should be printed
 	 *  \return Number of failed tests
 	 *  
-	 *  \details For each test, its index number and name will be printed, then the
+	 *  For each test, its index number and name will be printed, then the
 	 *  run() method of that test is executed. If it fails (throws an exception),
 	 *  message of this exception will be printed.
 	 */
@@ -149,7 +198,7 @@ public:
 				succeeded++;
 			}
 			catch (std::exception &e) {
-				std::cout << "[ERROR]: " << e.what() << std::endl;
+				std::cout << "[ERROR]: " << e.what() << std::endl << std::endl;
 				failed++;
 			}
 			

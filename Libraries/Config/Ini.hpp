@@ -24,7 +24,7 @@ namespace cfg {
 		 *  \param [in] key Key to test
 		 *  \return TRUE if key is present in section
 		 */
-		bool hasKey(const std::string &key) { return find(key) != end(); }
+		bool hasKey(const std::string &key) const { return find(key) != end(); }
 	};
 
 	/**

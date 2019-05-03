@@ -34,7 +34,7 @@ namespace cfg {
 		/**
 		 *  \brief Get boolean interpretation of value
 		 */
-		bool asBool() const { return !(value == "0" or value == "false" or value == "False" or value == "FALSE"); }
+		bool asBool() const { return !(value == "0" or value == "0.000000" or value == "false" or value == "False" or value == "FALSE" or value.empty()); }
 
 		Item &operator=(const char *value);
 		Item &operator=(const std::string &value);
@@ -49,6 +49,7 @@ namespace cfg {
 		bool operator==(const int value) const { return asInt() == value; }
 		bool operator==(const long value) const { return asInt() == value; }
 		bool operator==(const float value) const { return asFloat() == value; }
+		bool operator==(const Item &other) const { return value == other.value; }
 
 		Item();
 		Item(const char *value);

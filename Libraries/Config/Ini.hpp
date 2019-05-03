@@ -62,8 +62,7 @@ namespace cfg {
 		}
 
 		IniSection &operator[](const std::string &section) {
-			auto &tmp = config[section];
-			return tmp;
+			return config[section];
 		}
 
 		/**

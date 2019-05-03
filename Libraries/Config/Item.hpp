@@ -50,6 +50,14 @@ namespace cfg {
 		bool operator==(const long value) const { return asInt() == value; }
 		bool operator==(const float value) const { return asFloat() == value; }
 		bool operator==(const Item &other) const { return value == other.value; }
+		
+		bool operator!=(const char *value) const { return !(*this == value); }
+		bool operator!=(const std::string &value) const { return !(*this == value); }
+		bool operator!=(const bool value) const { return !(*this == value); }
+		bool operator!=(const int value) const { return !(*this == value); }
+		bool operator!=(const long value) const { return !(*this == value); }
+		bool operator!=(const float value) const { return !(*this == value); }
+		bool operator!=(const Item &other) const { return value != other.value; }
 
 		Item();
 		Item(const char *value);

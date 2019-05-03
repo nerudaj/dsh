@@ -16,16 +16,10 @@ public:
 	virtual void run() final override {
 		auto out = Strings::split(delim, in);
 
-		assertTrue(ref.size() == out.size(), 
-			"Size mismatch! Ref " + tostr(ref.size()) + 
-			", out = " + tostr(out.size())
-		);
+		assertEqual(ref.size(), out.size(), tostr(ref.size()), tostr(out.size()));
 
 		for (unsigned i = 0; i < out.size(); i++) {
-			assertTrue(ref[i] == out[i],
-				"Value mismatch at index " + tostr(i) + "! Ref = " + ref[i] + 
-				", out = " + out[i]
-			);
+			inLoop(assertEqual(ref[i], out[i], ref[i], out[i]), i);
 		}
 	}
 
@@ -47,9 +41,7 @@ public:
 	virtual void run() final override {
 		auto out = Strings::replaceAllCopy(in, from, to);
 
-		assertTrue(out == ref, 
-			"Value mismatch!, Ref = " + ref + ", out = " + out
-		);
+		assertEqual(ref, out, ref, out);
 	}
 
 	virtual string name() const final override {
@@ -68,9 +60,7 @@ public:
 	virtual void run() final override {
 		auto out = Strings::trimCopy(in);
 
-		assertTrue(out == ref, 
-			"Value mismatch!, Ref = " + ref + ", out = " + out
-		);
+		assertEqual(ref, out, ref, out);
 	}
 
 	virtual string name() const final override {
@@ -87,9 +77,7 @@ private:
 
 public:
 	virtual void run() final override {
-		assertTrue(Strings::isPrefixOf(prefix, str), 
-			"Not prefix of!"
-		);
+		assertTrue(Strings::isPrefixOf(prefix, str));
 	}
 
 	virtual string name() const final override {
@@ -106,9 +94,7 @@ private:
 
 public:
 	virtual void run() final override {
-		assertFalse(Strings::isPrefixOf(prefix, str), 
-			"Is prefix of!"
-		);
+		assertFalse(Strings::isPrefixOf(prefix, str));
 	}
 
 	virtual string name() const final override {

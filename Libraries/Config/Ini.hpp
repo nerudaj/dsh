@@ -25,6 +25,9 @@ namespace cfg {
 		 *  \return TRUE if key is present in section
 		 */
 		bool hasKey(const std::string &key) const { return find(key) != end(); }
+		
+		IniSection() {}
+		IniSection(const std::map<std::string, Item> &map) : std::map<std::string, Item>(map) {}
 	};
 
 	/**

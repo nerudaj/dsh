@@ -266,6 +266,24 @@ public:
 	ArgsParseTest(const string &setup, const vector<const char*> &inArgs) : setup(setup), inArgs(inArgs) {}
 };
 
+class ArgsParseFailTest : public Test {
+private:
+	string setup;
+	vector<const char*> inArgs;
+
+public:
+	virtual void run() final override {
+		cfg::Args args(setup);
+		args.setLoggingLevel(0);
+
+		assertFalse(args.parse(inArgs.size(), inArgs.data()));
+	}
+
+	virtual string name() const final override {
+		return "ArgsParseFailTest(" + setup + ", " + std::to_string(inArgs.size()) + ")";
+	}
+
+	ArgsParseFailTest(const string &setup, const vector<const char*> &inArgs) : setup(setup), inArgs(inArgs) {}
 };
 
 int main() {
@@ -432,6 +450,10 @@ int main() {
 		new ArgsParseTest("m!", {"progname", "-m", "value"}),
 		new ArgsParseTest("m!vc:", {"progname", "-m", "value"}),
 		new ArgsParseTest("m!vc:", {"progname", "-m", "value", "-c", "value2"}),
+		// ArgsParseFailTest
+		new ArgsParseFailTest("c:", {"progname", "-c"}),
+		new ArgsParseFailTest("m!", {"progname"}),
+		new ArgsParseFailTest("h", {"progname", "-c"})
 	});
 
 	return runner.evaluateTestcases(true);

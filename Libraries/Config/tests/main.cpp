@@ -228,6 +228,25 @@ public:
 	ArgsSetupArgumentsTest(const string &setup) : setup(setup) {}
 };
 
+class ArgsSetupArgumentsFailTest : public Test {
+private:
+	string setup;
+
+public:
+	virtual void run() final override {
+		cfg::Args args;
+		args.setLoggingLevel(0);
+
+		assertFalse(args.setupArguments(setup));
+	}
+
+	virtual string name() const final override {
+		return "ArgsSetupArgumentsFailTest(" + setup + ")";
+	}
+
+	ArgsSetupArgumentsFailTest(const string &setup) : setup(setup) {}
+};
+
 };
 
 int main() {
@@ -383,6 +402,9 @@ int main() {
 		new ArgsSetupArgumentsTest("h:g:"),
 		new ArgsSetupArgumentsTest("h!g!"),
 		new ArgsSetupArgumentsTest("hg:i!"),
+		// ArgsSetupArgumentsFailTest
+		new ArgsSetupArgumentsFailTest("h?"),
+		new ArgsSetupArgumentsFailTest(""),
 	});
 
 	return runner.evaluateTestcases(true);

@@ -1,9 +1,13 @@
 #include <iostream>
 #include <Test.hpp>
+#include <cstdio>
 #include "../Config.hpp"
 #include <typeinfo>
+#include <fstream>
+#include <vector>
 
 using std::string;
+using std::vector;
 
 template<typename T>
 class ItemInitTest : public Test {
@@ -141,6 +145,69 @@ public:
 	}
 
 	IniLoadFromFileFailTest(const std::string &filename) : filename(filename) {}
+};
+
+string loadFile(const string &filename) {
+	string result;
+
+	try {
+		std::ifstream load(filename);
+
+		load.seekg(0, load.end);
+		unsigned size = load.tellg();
+		load.seekg(0, load.beg);
+
+		result.resize(size);
+		load.read((char*)(result.data()), size);
+
+		load.close();
+		load.clear();
+	} catch (std::exception &e) {
+		throw std::runtime_error(string(e.what()));
+	}
+
+	return result;
+}
+
+void compareFiles(const string &ref, const string &file) {
+	auto fileRef = loadFile(ref);
+	auto fileTest = loadFile(file);
+
+	assertEqual(fileRef.size(), fileTest.size(), 
+		std::to_string(fileRef.size()), std::to_string(fileTest.size())
+	);
+	for (unsigned i = 0; i < fileRef.size(); i++) {
+		inLoop(assertEqual(
+			fileRef[i], fileTest[i], fileRef[i], fileTest[i]
+		), i);
+	}
+}
+
+class IniSaveToFileTest : public Test {
+private:
+	string filename;
+
+public:
+	virtual void run() final override {
+		cfg::Ini ini;
+		assertTrue(ini.loadFromFile(filename));
+
+		assertTrue(ini.saveToFile(filename + ".test"));
+
+		assertException({
+			compareFiles(filename, filename + ".test");
+		}, std::runtime_error);
+	}
+
+	virtual string name() const final override {
+		return "IniSaveToFileTest(" + filename + ")";
+	}
+
+	IniSaveToFileTest(const string &filename) : filename(filename) {}
+
+	~IniSaveToFileTest() {
+		remove(string(filename + ".test").c_str());
+	}
 };
 
 };
@@ -287,6 +354,9 @@ int main() {
 		new IniLoadFromFileFailTest("../tests/iniFail0.ini"),
 		new IniLoadFromFileFailTest("../tests/iniFail1.ini"),
 		new IniLoadFromFileFailTest("../tests/iniFail2.ini"),
+		// IniSaveToFileTest
+		new IniSaveToFileTest("../tests/iniOk0.ini"),
+		new IniSaveToFileTest("../tests/iniOk1.ini"),
 	});
 
 	return runner.evaluateTestcases(true);

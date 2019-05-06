@@ -210,6 +210,24 @@ public:
 	}
 };
 
+class ArgsSetupArgumentsTest : public Test {
+private:
+	string setup;
+
+public:
+	virtual void run() final override {
+		cfg::Args args;
+
+		assertTrue(args.setupArguments(setup));
+	}
+
+	virtual string name() const final override {
+		return "ArgsSetupArgumentsTest(" + setup + ")";
+	}
+
+	ArgsSetupArgumentsTest(const string &setup) : setup(setup) {}
+};
+
 };
 
 int main() {
@@ -357,6 +375,14 @@ int main() {
 		// IniSaveToFileTest
 		new IniSaveToFileTest("../tests/iniOk0.ini"),
 		new IniSaveToFileTest("../tests/iniOk1.ini"),
+		// ArgsSetupArgumentsTest
+		new ArgsSetupArgumentsTest("h"),
+		new ArgsSetupArgumentsTest("h:"),
+		new ArgsSetupArgumentsTest("h!"),
+		new ArgsSetupArgumentsTest("hg"),
+		new ArgsSetupArgumentsTest("h:g:"),
+		new ArgsSetupArgumentsTest("h!g!"),
+		new ArgsSetupArgumentsTest("hg:i!"),
 	});
 
 	return runner.evaluateTestcases(true);

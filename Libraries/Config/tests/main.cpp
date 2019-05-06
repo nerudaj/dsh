@@ -125,6 +125,24 @@ public:
 	IniLoadFromFileTest(const std::string &filename, const std::map<string, cfg::IniSection> &ref) : filename(filename), ref(ref) {}
 };
 
+class IniLoadFromFileFailTest : public Test {
+private:
+	string filename;
+
+public:
+	virtual void run() final override {
+		cfg::Ini ini;
+		ini.log.setLoggingLevel(0);
+		assertFalse(ini.loadFromFile(filename));
+	}
+
+	virtual string name() const {
+		return "IniLoadFromFileFailTest(" + filename + ")";
+	}
+
+	IniLoadFromFileFailTest(const std::string &filename) : filename(filename) {}
+};
+
 };
 
 int main() {
@@ -151,25 +169,6 @@ int main() {
 		}),
 		new TestValidCSVData("tests/test4.csv", {
 			{"aaa", "bbb", "cc\"c"}, { "ddd", "eee", "fff" }
-		}),
-		new TestLoadValidIni("tests/test0.ini"),
-		new TestLoadInvalidIni("tests/test1.ini"),
-		new TestLoadInvalidIni("tests/test2.ini"),
-		new TestLoadInvalidIni("tests/test4.ini"),
-		new TestValidIniData("tests/test0.ini", {
-			{ "root", {
-				{ "key1", "value1" }
-			}},
-			{ "section", {
-				{ "key2", "value2"},
-				{ "key3", "10" },
-				{ "key4", "false" }
-			}}
-		}),
-		new TestValidIniData("tests/test3.ini", {
-			{ "root", {
-				{ "key1", "" }
-			}}
 		})
 	};*/
 
@@ -285,6 +284,9 @@ int main() {
 				{"key", cfg::Item()}
 			})}
 		}),
+		new IniLoadFromFileFailTest("../tests/iniFail0.ini"),
+		new IniLoadFromFileFailTest("../tests/iniFail1.ini"),
+		new IniLoadFromFileFailTest("../tests/iniFail2.ini"),
 	});
 
 	return runner.evaluateTestcases(true);

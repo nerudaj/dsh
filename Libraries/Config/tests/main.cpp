@@ -122,7 +122,9 @@ public:
 		return "IniLoadFromFileTest(" + filename + ")";
 	}
 	
-	IniLoadFromFileTest(const std::map<string, cfg::IniSection> &ref) : ref(ref) {}
+	IniLoadFromFileTest(const std::string &filename, const std::map<string, cfg::IniSection> &ref) : filename(filename), ref(ref) {}
+};
+
 };
 
 int main() {
@@ -267,8 +269,22 @@ int main() {
 				{"key3", cfg::Item(false)},
 			})}
 		}),
-		// TODO: IniLoadFromFileTest
-		// TODO: IniSaveToFileTest
+		// IniLoadFromFileTest
+		new IniLoadFromFileTest("../tests/iniOk0.ini", {
+			{"root", cfg::IniSection({
+				{"key1", cfg::Item("value1")}
+			})},
+			{"section", cfg::IniSection({
+				{"key2", cfg::Item("value2")},
+				{"key3", cfg::Item(10)},
+				{"key4", cfg::Item("false")}
+			})}
+		}),
+		new IniLoadFromFileTest("../tests/iniOk1.ini", {
+			{"root", cfg::IniSection({
+				{"key", cfg::Item()}
+			})}
+		}),
 	});
 
 	return runner.evaluateTestcases(true);

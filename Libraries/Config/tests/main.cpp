@@ -247,6 +247,25 @@ public:
 	ArgsSetupArgumentsFailTest(const string &setup) : setup(setup) {}
 };
 
+class ArgsParseTest : public Test {
+private:
+	string setup;
+	vector<const char*> inArgs;
+
+public:
+	virtual void run() final override {
+		cfg::Args args(setup);
+
+		assertTrue(args.parse(inArgs.size(), inArgs.data()));
+	}
+
+	virtual string name() const final override {
+		return "ArgsParseTest(" + setup + ", " + std::to_string(inArgs.size()) + ")";
+	}
+
+	ArgsParseTest(const string &setup, const vector<const char*> &inArgs) : setup(setup), inArgs(inArgs) {}
+};
+
 };
 
 int main() {
@@ -405,6 +424,14 @@ int main() {
 		// ArgsSetupArgumentsFailTest
 		new ArgsSetupArgumentsFailTest("h?"),
 		new ArgsSetupArgumentsFailTest(""),
+		// ArgsParseTest
+		new ArgsParseTest("h", {"progname"}),
+		new ArgsParseTest("hc:", {"progname"}),
+		new ArgsParseTest("hc:", {"progname", "-h"}),
+		new ArgsParseTest("hc:", {"progname", "-c", "value"}),
+		new ArgsParseTest("m!", {"progname", "-m", "value"}),
+		new ArgsParseTest("m!vc:", {"progname", "-m", "value"}),
+		new ArgsParseTest("m!vc:", {"progname", "-m", "value", "-c", "value2"}),
 	});
 
 	return runner.evaluateTestcases(true);

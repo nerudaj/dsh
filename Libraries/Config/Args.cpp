@@ -15,7 +15,7 @@ bool Args::isOptionDefined(const std::string &opt) {
 	return arguments.find(opt) != arguments.end();
 }
 
-bool Args::parse(int argc, char *argv[]) {
+bool Args::parse(int argc, const char * const argv[]) {
 	positionals.clear();
 	
 	// Parse arguments

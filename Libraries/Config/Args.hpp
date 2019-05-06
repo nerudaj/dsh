@@ -55,7 +55,7 @@ namespace cfg {
 		 *  are arguments that have a format '-L' which are treated as regular
 		 *  arguments and are checked against setup rules.
 		 */
-		bool parse(int argc, char *argv[]);
+		bool parse(int argc, const char * const argv[]);
 		
 		/**
 		 *  \brief Setup how arguments will be parsed
@@ -118,6 +118,10 @@ namespace cfg {
 		 *  \pre \ref parse was called
 		 */
 		const std::vector<std::string> &getPositionalArguments() const { return positionals; }
+
+		void setLoggingLevel(unsigned i) {
+			logger.setLoggingLevel(i);
+		}
 
 		Args() {}
 		Args(const std::string &argarray) {

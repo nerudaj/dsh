@@ -9,8 +9,8 @@ if (NOT CMAKE_DEBUG_POSTFIX)
 endif()
 
 # Add library
-add_library(config Args.cpp Csv.cpp Ini.cpp Item.cpp)
-target_include_directories (config PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+add_library(${PROJECT_NAME} Args.cpp Csv.cpp Ini.cpp Item.cpp)
+target_include_directories (${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
 # Install
 install(TARGETS config DESTINATION lib)

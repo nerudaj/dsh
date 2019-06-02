@@ -286,6 +286,54 @@ public:
 	ArgsParseFailTest(const string &setup, const vector<const char*> &inArgs) : setup(setup), inArgs(inArgs) {}
 };
 
+class ArgsIsSetTest : public Test {
+private:
+	string setup;
+	vector<const char*> inArgs;
+	vector<char> queries;
+
+public:
+	virtual void run() final override {
+		cfg::Args args(setup);
+		
+		assertTrue(args.parse(inArgs.size(), inArgs.data()));
+
+		for (auto query : queries) {
+			assertTrue(args.isSet(query));
+		}
+	}
+
+	virtual string name() const final override {
+		return "ArgsIsSetTest(" + setup + ")";
+	}
+
+	ArgsIsSetTest(const string &setup, const vector<const char*> &inArgs, const vector<char> &queries) : setup(setup), inArgs(inArgs), queries(queries) {}
+};
+
+class ArgsIsSetFailTest : public Test {
+private:
+	string setup;
+	vector<const char*> inArgs;
+	vector<char> queries;
+
+public:
+	virtual void run() final override {
+		cfg::Args args(setup);
+		
+		assertTrue(args.parse(inArgs.size(), inArgs.data()));
+
+		for (auto query : queries) {
+			assertFalse(args.isSet(query));
+		}
+	}
+
+	virtual string name() const final override {
+		return "ArgsIsSetFailTest(" + setup + ")";
+	}
+
+	ArgsIsSetFailTest(const string &setup, const vector<const char*> &inArgs, const vector<char> &queries) : setup(setup), inArgs(inArgs), queries(queries) {}
+};
+
 int main() {
 	/*std::vector<TestCase*> cases = {
 		new TestLoadValidCSV("tests/test0.csv"),
@@ -453,8 +501,19 @@ int main() {
 		// ArgsParseFailTest
 		new ArgsParseFailTest("c:", {"progname", "-c"}),
 		new ArgsParseFailTest("m!", {"progname"}),
-		new ArgsParseFailTest("h", {"progname", "-c"})
+		new ArgsParseFailTest("h", {"progname", "-c"}),
+		// ArgsIsSetTest
+		new ArgsIsSetTest("h", {"progname", "-h"}, {'h'}),
+		new ArgsIsSetTest("hc:", {"progname", "-h"}, {'h'}),
+		new ArgsIsSetTest("hc:", {"progname", "-c", "value", "-h"}, {'h', 'c'}),
+		new ArgsIsSetTest("m!", {"progname", "-m", "value"}, {'m'}),
+		// ArgsIsSetFailTest
+		new ArgsIsSetFailTest("m!", {"progname", "-m", "value"}, {'h'}),
+		new ArgsIsSetFailTest("hc:", {"progname", "-c", "value", "-h"}, {'H', 'C'}),
+		// ArgsGetPositionalArgumentsTest
+		// ArgsGetArgValueTest
+		// ArgsGetArgValueFailTest
 	});
 
-	return runner.evaluateTestcases(true);
+	return runner.evaluateTestcases(true, true);
 }

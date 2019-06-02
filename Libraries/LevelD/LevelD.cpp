@@ -16,7 +16,7 @@ Module *getModule(uint32_t identity) {
     else if (identity == LVLD_PLAYERS_CODE) return new ModulePlayers;
     else if (identity == LVLD_ITEMS_CODE)   return new ModuleItems;
     else if (identity == LVLD_NPCS_CODE)    return new ModuleNpcs;
-    else if (identity == LVLD_EVENTS_CODE)  return new ModuleEvents;
+    /*else if (identity == LVLD_EVENTS_CODE)  return new ModuleEvents;*/
 
     throw std::runtime_error("Unsupported identity code!");
     return NULL;
@@ -73,11 +73,11 @@ void LevelD::saveToFile(const string &filename) const {
         npcmod.serialize(bout, *this);
     }
 
-    if (!events.empty()) {
+    /*if (!events.empty()) {
         bout << LVLD_EVENTS_CODE;
         ModuleEvents eventmod;
         eventmd.serialize(bout, *this);
-    } 
+    }*/ 
 
     bout.close();
 }

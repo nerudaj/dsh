@@ -50,4 +50,4 @@ class ModuleEvents : public Module {
 public:
     virtual void serialize(BytestreamOut &bout, const LevelD &lvld) const final override;
     virtual void deserialize(BytestreamIn &bin, LevelD &lvld) const final override;
-}
+};

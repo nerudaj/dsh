@@ -181,14 +181,15 @@ public:
 	/**
 	 *  \brief Evaluate whole vector of test cases
 	 *  
-	 *  \param[in]  printSummary  Whether brief summary of testing should be printed
+	 *  \param[in]  printSummary        Whether brief summary of testing should be printed
+	 *  \param[in]  breakAtFirstFailed  Whether tests should end on first failed. Summary won't be printed in that case
 	 *  \return Number of failed tests
 	 *  
 	 *  For each test, its index number and name will be printed, then the
 	 *  run() method of that test is executed. If it fails (throws an exception),
 	 *  message of this exception will be printed.
 	 */
-	int evaluateTestcases(bool printSummary) {
+	int evaluateTestcases(bool printSummary = true, bool breakAtFirstFailed = false) {
 		int testIndex = 1, succeeded = 0, failed = 0;
 		for (auto test : testcases) {
 			std::cout << "Test " << testIndex << "/" << testcases.size() << ": " << test->name() << std::endl;
@@ -200,6 +201,8 @@ public:
 			catch (std::exception &e) {
 				std::cout << "[ERROR]: " << e.what() << std::endl << std::endl;
 				failed++;
+				
+				if (breakAtFirstFailed) return 1;
 			}
 			
 			testIndex++;

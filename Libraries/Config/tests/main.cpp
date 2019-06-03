@@ -334,6 +334,32 @@ public:
 	ArgsIsSetFailTest(const string &setup, const vector<const char*> &inArgs, const vector<char> &queries) : setup(setup), inArgs(inArgs), queries(queries) {}
 };
 
+class ArgsGetPositionalArgsTest : public Test {
+private:
+	string setup;
+	vector<const char*> inArgs;
+	vector<string> ref;
+
+public:
+    virtual void run() final override {
+        cfg::Args args(setup);
+        assertTrue(args.parse(inArgs.size(), inArgs.data()));
+
+        auto out = args.getPositionalArguments();
+        assertEqual(out.size(), ref.size(), std::to_string(out.size()), std::to_string(ref.size()));
+
+        for (unsigned i = 0; i < out.size(); i++) {
+            inLoop(assertEqual(out[i], ref[i], out[i], ref[i]), i);
+        }
+    }
+
+    virtual string name() const final override {
+        return "ArgsGetPositionalArgsTest(" + setup + ")";
+    }
+
+    ArgsGetPositionalArgsTest(const string &setup, const vector<const char*> &inArgs, const vector<string> &ref) : setup(setup), inArgs(inArgs), ref(ref) {}
+};
+
 int main() {
 	/*std::vector<TestCase*> cases = {
 		new TestLoadValidCSV("tests/test0.csv"),
@@ -511,9 +537,14 @@ int main() {
 		new ArgsIsSetFailTest("m!", {"progname", "-m", "value"}, {'h'}),
 		new ArgsIsSetFailTest("hc:", {"progname", "-c", "value", "-h"}, {'H', 'C'}),
 		// ArgsGetPositionalArgumentsTest
+        new ArgsGetPositionalArgsTest("h", {"progname", "-h"}, {}),
+        new ArgsGetPositionalArgsTest("p", {"progname", "-p", "ehlo"}, {"ehlo"}),
+        new ArgsGetPositionalArgsTest("h:", {"progname", "-h", "ehlo"}, {}),
+        new ArgsGetPositionalArgsTest("h:", {"progname", "-h", "ehlo", "helo"}, {"helo"}),
+        new ArgsGetPositionalArgsTest("h:", {"progname", "helo", "-h", "ehlo"}, {"helo"}),
 		// ArgsGetArgValueTest
 		// ArgsGetArgValueFailTest
 	});
 
-	return runner.evaluateTestcases(true, true);
+	return runner.evaluateTestcases(true, false);
 }

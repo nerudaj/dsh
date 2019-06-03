@@ -118,6 +118,31 @@ public:
 }
 
 /**
+ *  \brief Expect code to throw specific exception
+ *  
+ *  \param[in] code Code to execture
+ *  \param[in] exp  Expected exception
+ *  \param[in] msg  Expected exception message
+ * 
+ *  Throws an exception if exception was either not
+ *  thrown or different than expected or with different
+ *  message than expected.
+ */
+#define assertExceptionWithMessage(code, exc, msg) \
+{ \
+    bool exceptionHappened = false; \
+    try { \
+        code; \
+    } catch (exc &e) { \
+        exceptionHappened = true; \
+        assertEqual(e.what(), msg, std::string(e.what()), msg); \
+    } catch (std::exception &e) { \
+        std::runtime_error("Assertion failed: Incorrect exception was thrown\nMessage = " + std::string(e.what())); \
+    } \
+    if (!exceptionHappened) throw std::runtime_error("Assertion failed: Exception " + std::string(#exc) + " was not thrown."); \
+} 
+
+/**
  * \brief Expect code to not throw any exception
  *  
  * \param[in]  code  Code to execute

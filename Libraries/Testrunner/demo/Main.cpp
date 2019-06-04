@@ -38,6 +38,21 @@ public:
 	}
 };
 
+class TestAssertExceptionWithMsg : public Test {
+public:
+	virtual void run() final override {
+		std::vector<int> array(10, 0);
+
+		assertExceptionWithMessage({
+			array.at(20); // Try changing it to 9
+		}, std::out_of_range, "vector::_M_range_check: __n (which is 20) >= this->size() (which is 10)");
+	}
+
+	virtual std::string name() const final override {
+		return "TestAssertExceptionWithMessage";
+	}
+};
+
 class TestAssertNotException : public Test {
 public:
 	virtual void run() final override {
@@ -104,6 +119,7 @@ int main() {
 		new TestAssertTrue(),
 		new TestAssertFalse(),
 		new TestAssertException(),
+		new TestAssertExceptionWithMsg(),
 		new TestAssertNotException(),
 		new TestAssertEqual(),
 		new TestAssertNotEqual(),

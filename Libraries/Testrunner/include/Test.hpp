@@ -122,7 +122,7 @@ public:
  *  
  *  \param[in] code Code to execture
  *  \param[in] exp  Expected exception
- *  \param[in] msg  Expected exception message
+ *  \param[in] msg  Expected exception message (std::string)
  * 
  *  Throws an exception if exception was either not
  *  thrown or different than expected or with different
@@ -135,7 +135,7 @@ public:
         code; \
     } catch (exc &e) { \
         exceptionHappened = true; \
-        assertEqual(e.what(), msg, std::string(e.what()), msg); \
+        assertEqual(std::string(e.what()), msg, std::string(e.what()), msg); \
     } catch (std::exception &e) { \
         std::runtime_error("Assertion failed: Incorrect exception was thrown\nMessage = " + std::string(e.what())); \
     } \

@@ -1,129 +1,126 @@
-#include <stdexcept>
-#include <string>
-#include <vector>
+#include <Test.hpp>
 #include "../Strings.hpp"
 
 using std::string;
 using std::vector;
-using std::cout;
-using std::endl;
 
-/**
- *  \brief Base class for deriving test cases from
- */
-class TestCase {
-public:
-	/**
-	 *  \brief Advanced replacement for assert
-	 *  
-	 *  \param [in] condition Result of bool operation
-	 *  \param [in] message Message that will be displayed if \p condition is false
-	 *  
-	 *  \details If condition is false, then an exception is thrown
-	 */
-	void assume(bool condition, const string &message) {
-		if (!condition) throw std::runtime_error(message);
-	}
+#define tostr(s) std::to_string(s)
 
-	/**
-	 *  \brief Main code of test
-	 *  
-	 *  \details Implement this function in your derived class - this is the main logic of your test. Use \ref assume whenever applicable.
-	 */
-	virtual void run() =0;
+class TestStringSplit : public Test {
+private:
+	char delim;
+	string in;
+	vector<string> ref;
 
-	/**
-	 *  \brief Get name of the test case
-	 *  
-	 *  \return Copy of name string
-	 *  
-	 *  \details Implement this function in your derived class. This function is used to make testing output more comprehensive. Usual format of this string is: NameOfTheClass(important,parameters)
-	 */
-	virtual string name() const = 0;
-
-	TestCase() {}
-	virtual ~TestCase() {}
-};
-
-class TestReplaceAll : public TestCase {
-protected:
-	string input, from, to;
-	string ref;
-	
 public:
 	virtual void run() final override {
-		Strings::replaceAll(input, from, to);
-		assume(input == ref, 
-			"Value mismatch, expected '" + ref + 
-			"' but got '" + input + "'"
-		);
+		auto out = Strings::split(delim, in);
+
+		assertEqual(ref.size(), out.size(), tostr(ref.size()), tostr(out.size()));
+
+		for (unsigned i = 0; i < out.size(); i++) {
+			inLoop(assertEqual(ref[i], out[i], ref[i], out[i]), i);
+		}
 	}
-	
+
 	virtual string name() const final override {
-		return "TestReplaceAll";
+		return "TestStringSplit";
 	}
-	
-	TestReplaceAll(const string &in, const string &fromstr, const string &tosstr, const string &refout) : input(in), from(fromstr), to(tosstr), ref(refout) {}
+
+	TestStringSplit(char delim, const string &in, const vector<string> &ref) : delim(delim), in(in), ref(ref) {}
 };
 
-class TestTrim : public TestCase {
-protected:
-	string input;
+class TestStringReplaceAll : public Test {
+private:
+	string in;
+	string from;
+	string to;
 	string ref;
 
 public:
 	virtual void run() final override {
-		Strings::trim(input);
-		assume(input == ref, 
-			"Value mismatch, expected '" + ref + 
-			"' but got '" + input + "'"
-		);
+		auto out = Strings::replaceAllCopy(in, from, to);
+
+		assertEqual(ref, out, ref, out);
 	}
-	
+
 	virtual string name() const final override {
-		return "TestTrim";
+		return "TestStringReplaceAll";
 	}
-	
-	TestTrim(const string &in, const string &refout) : input(in), ref(refout) {}
+
+	TestStringReplaceAll(const string &in, const string &from, const string &to, const string &ref) : in(in), from(from), to(to), ref(ref) {}
+};
+
+class TestStringTrim : public Test {
+private:
+	string in;
+	string ref;
+
+public:
+	virtual void run() final override {
+		auto out = Strings::trimCopy(in);
+
+		assertEqual(ref, out, ref, out);
+	}
+
+	virtual string name() const final override {
+		return "TestStringTrim";
+	}
+
+	TestStringTrim(const string &in, const string &ref) : in(in), ref(ref) {}
+};
+
+class TestStringIsPrefixOf : public Test {
+private:
+	string prefix;
+	string str;
+
+public:
+	virtual void run() final override {
+		assertTrue(Strings::isPrefixOf(prefix, str));
+	}
+
+	virtual string name() const final override {
+		return "TestStringIsPrefixOf";
+	}
+
+	TestStringIsPrefixOf(const string &prefix, const string &str) : prefix(prefix), str(str) {}
+};
+
+class TestStringIsNotPrefixOf : public Test {
+private:
+	string prefix;
+	string str;
+
+public:
+	virtual void run() final override {
+		assertFalse(Strings::isPrefixOf(prefix, str));
+	}
+
+	virtual string name() const final override {
+		return "TestStringIsNotPrefixOf";
+	}
+
+	TestStringIsNotPrefixOf(const string &prefix, const string &str) : prefix(prefix), str(str) {}
 };
 
 int main() {
-	vector<TestCase*> testcases = {
-		new TestReplaceAll("aaa", "", "", "aaa"),
-		new TestReplaceAll("", "a", "b", ""),
-		new TestReplaceAll("aaa", "a", "aa", "aaaaaa"),
-		new TestReplaceAll("abc", "bc", "aa", "aaa"),
-		new TestTrim("a", "a"),
-		new TestTrim(" a", "a"),
-		new TestTrim("a ", "a"),
-		new TestTrim(" a ", "a"),
-		new TestTrim(" \t\n\r\f\va \t\n\r\f\v", "a")
-	};
-	
-	int cnt = 1;
-	int failed = 0, succeeded = 0;
-	for (auto test : testcases) {
-		cout << "TEST " << cnt << "/" << testcases.size() << " - " << test->name() << endl;
-		
-		try {
-			test->run();
-			cout << "[OK]" << endl;
-			succeeded++;
-		}
-		catch (std::exception &e) {
-			cout << "[ERROR] " << e.what() << "\n";
-			failed++;
-		}
-		
-		delete test;
-		cnt++;
-	}
-	
-	cout << endl;
-	cout << "[SUMMARY]" << endl;
-	cout << testcases.size() << " tests were run." << endl;
-	cout << succeeded << " tests succeeded." << endl;
-	cout << failed << " tests failed." << endl;
-	
-	return failed;
+	Testrunner runner({
+		new TestStringSplit(';', "", {}),
+		new TestStringSplit(';', "lorem ipsum", {"lorem ipsum"}),
+		new TestStringSplit(' ', "lorem ipsum dolor sit amet", {"lorem", "ipsum", "dolor", "sit", "amet"}),
+		new TestStringReplaceAll("abc", "b", "", "ac"),
+		new TestStringReplaceAll("abc", "", "x", "abc"),
+		new TestStringReplaceAll("aaa", "a", "aa", "aaaaaa"),
+		new TestStringReplaceAll("abc", "b", "x", "axc"),
+		new TestStringTrim("abc", "abc"),
+		new TestStringTrim(" abc ", "abc"),
+		new TestStringTrim("\t\n \tabc", "abc"),
+		new TestStringTrim("abc\t\n \t", "abc"),
+		new TestStringIsPrefixOf("a", "aaa"),
+		new TestStringIsPrefixOf("abc", "abcdef"),
+		new TestStringIsNotPrefixOf("abc", "defabc")
+	});
+
+	return runner.evaluateTestcases(true);
 }

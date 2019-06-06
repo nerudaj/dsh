@@ -42,6 +42,7 @@ Libraries/Logger/build
 Libraries/Logger/vsbuild
 Libraries/Strings/build
 Libraries/Strings/vsbuild
+Libraries/Testrunner/build
 Utilities/jsbloat/build
 
 # =========================
@@ -72,3 +73,4 @@ $RECYCLE.BIN/
 *.lnk
 
 dsh.code-workspace
+.vscode

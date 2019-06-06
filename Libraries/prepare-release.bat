@@ -23,4 +23,13 @@ copy Config\vsbuild\Debug\config-d.lib dshlibs-%version%\lib
 copy Config\vsbuild\Release\config.lib dshlibs-%version%\lib
 robocopy Config dshlibs-%version%\include Config.hpp Args.hpp Item.hpp Csv.hpp Ini.hpp
 
+copy LevelD\build\libleveld.a dshlibs-%version%\lib
+copy LevelD\vsbuild\Debug\leveld-d.lib dshlibs-%version%\lib
+copy LevelD\vsbuild\Release\leveld.lib dshlibs-%version%\lib
+copy LevelD\LevelD.hpp dshlibs-%version%\include
+
+copy changelog.txt dshlibs-%version%
+
+pause
+
 @echo on

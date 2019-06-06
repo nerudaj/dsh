@@ -24,7 +24,10 @@ namespace cfg {
 		 *  \param [in] key Key to test
 		 *  \return TRUE if key is present in section
 		 */
-		bool hasKey(const std::string &key) { return find(key) != end(); }
+		bool hasKey(const std::string &key) const { return find(key) != end(); }
+		
+		IniSection() {}
+		IniSection(const std::map<std::string, Item> &map) : std::map<std::string, Item>(map) {}
 	};
 
 	/**
@@ -62,8 +65,7 @@ namespace cfg {
 		}
 
 		IniSection &operator[](const std::string &section) {
-			auto &tmp = config[section];
-			return tmp;
+			return config[section];
 		}
 
 		/**

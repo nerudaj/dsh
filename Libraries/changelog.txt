@@ -1,0 +1,4 @@
+v0.2.3
+	- added leveld library
+	- bugfixes in libconfig
+	- bugfixes in libstrings

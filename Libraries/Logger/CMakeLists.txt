@@ -1,7 +1,6 @@
 cmake_minimum_required (VERSION 3.4)
 project (logger)
 
-# Export all symbols in dynamic library
 set (CMAKE_INSTALL_PREFIX /tools/utils)
 
 if (NOT CMAKE_DEBUG_POSTFIX)

@@ -8,6 +8,10 @@ include_directories(/tools/utils/include)
 
 set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++14")
 
+if (NOT CMAKE_DEBUG_POSTFIX)
+	set(CMAKE_DEBUG_POSTFIX "-d")
+endif()
+
 # Add library
 add_library(${PROJECT_NAME}
 					LevelD.cpp

@@ -3,8 +3,9 @@
 echo Creating folder structure
 mkdir C:\tools
 mkdir C:\tools\bin
-mkdir C:\tools\include
-mkdir C:\tools\lib
+mkdir C:\tools\utils\bin
+mkdir C:\tools\utils\include
+mkdir C:\tools\utils\lib
 mkdir C:\tools\opt
 
 cd Environments

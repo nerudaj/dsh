@@ -18,4 +18,5 @@ install(FILES Config.hpp Args.hpp Csv.hpp Ini.hpp Item.hpp DESTINATION include)
 
 add_executable(testrunner tests/Main.cpp)
 find_library(LIB_LOG NAMES logger)
-target_link_libraries(testrunner ${PROJECT_NAME} ${LIB_LOG})
+find_library(LIB_STR NAMES strings)
+target_link_libraries(testrunner ${PROJECT_NAME} ${LIB_LOG} ${LIB_STR})

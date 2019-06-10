@@ -341,52 +341,169 @@ private:
 	vector<string> ref;
 
 public:
-    virtual void run() final override {
-        cfg::Args args(setup);
-        assertTrue(args.parse(inArgs.size(), inArgs.data()));
+	virtual void run() final override {
+		cfg::Args args(setup);
+		assertTrue(args.parse(inArgs.size(), inArgs.data()));
 
-        auto out = args.getPositionalArguments();
-        assertEqual(out.size(), ref.size(), std::to_string(out.size()), std::to_string(ref.size()));
+		auto out = args.getPositionalArguments();
+		assertEqual(out.size(), ref.size(), std::to_string(out.size()), std::to_string(ref.size()));
 
-        for (unsigned i = 0; i < out.size(); i++) {
-            inLoop(assertEqual(out[i], ref[i], out[i], ref[i]), i);
-        }
-    }
+		for (unsigned i = 0; i < out.size(); i++) {
+			inLoop(assertEqual(out[i], ref[i], out[i], ref[i]), i);
+		}
+	}
 
-    virtual string name() const final override {
-        return "ArgsGetPositionalArgsTest(" + setup + ")";
-    }
+	virtual string name() const final override {
+		return "ArgsGetPositionalArgsTest(" + setup + ")";
+	}
 
-    ArgsGetPositionalArgsTest(const string &setup, const vector<const char*> &inArgs, const vector<string> &ref) : setup(setup), inArgs(inArgs), ref(ref) {}
+	ArgsGetPositionalArgsTest(const string &setup, const vector<const char*> &inArgs, const vector<string> &ref) : setup(setup), inArgs(inArgs), ref(ref) {}
+};
+
+class ArgsGetArgValueTest : public Test {
+private:
+	string setup;
+	vector<const char*> inArgs;
+	char query;
+	cfg::Item ref;
+
+public:
+	virtual void run() final override {
+		cfg::Args args(setup);
+		assertTrue(args.parse(inArgs.size(), inArgs.data()));
+
+		assertTrue(args.isSet(query));
+		
+		auto item = args.getArgumentValue(query);
+		assertEqual(item, ref, item.asString(), ref.asString());
+	}
+
+	virtual string name() const final override {
+		return "ArgsGetArgValueTest(" + setup + ")";
+	}
+
+	ArgsGetArgValueTest(const string &setup, const vector<const char*> &inArgs, char query, const cfg::Item &ref) : setup(setup), inArgs(inArgs), query(query), ref(ref) {}
+};
+
+class ArgsGetArgValueFailTest : public Test {
+private:
+	string setup;
+	vector<const char*> inArgs;
+	char query;
+
+public:
+	virtual void run() final override {
+		cfg::Args args(setup);
+		assertTrue(args.parse(inArgs.size(), inArgs.data()));
+
+		assertFalse(args.isSet(query));
+	}
+
+	virtual string name() const final override {
+		return "ArgsGetArgValueFailTest(" + setup + ")";
+	}
+
+	ArgsGetArgValueFailTest(const string &setup, const vector<const char*> &inArgs, char query, const cfg::Item &ref) : setup(setup), inArgs(inArgs), query(query) {}
+};
+
+class CsvLoadFromFileTest : public Test {
+private:
+	string in;
+	vector<vector<cfg::Item>> ref;
+
+public:
+	virtual void run() final override {
+		auto out = cfg::Csv::loadFromFile(in);
+
+		assertEqual(out.size(), ref.size(), std::to_string(out.size()), std::to_string(ref.size()));
+		for (unsigned i = 0; i < out.size(); i++) {
+			inLoop(assertEqual(out[i].size(), ref[i].size(), std::to_string(out[i].size()), std::to_string(ref[i].size())), i);
+
+			for (unsigned p = 0; p < out[i].size(); p++) {
+				auto outi = out[i][p];
+				auto refi = ref[i][p];
+
+				inLoop(inLoop(assertEqual(outi, refi, outi.asString(), refi.asString()), p), i);
+			}
+		}
+	}
+
+	virtual string name() const final override {
+		return "CsvLoadFromFileTest(" + in + ")";
+	}
+
+	CsvLoadFromFileTest(const string &in, const vector<vector<cfg::Item>> &ref) : in(in), ref(ref) {}
+};
+
+class CsvLoadFromFileFailTest : public Test {
+private:
+	string in;
+	string ref;
+
+public:
+	virtual void run() final override {
+		assertExceptionWithMessage({
+			auto csv = cfg::Csv::loadFromFile(in);
+		}, cfg::CsvException, ref);
+	}
+
+	virtual string name() const final override {
+		return "CsvLoadFromFileFailTest(" + in + ")";
+	}
+
+	CsvLoadFromFileFailTest(const string &in, const string &ref) : in(in), ref(ref) {}
+};
+
+class CsvLoadFromFilePedanticTest : public Test {
+private:
+	string in;
+	vector<vector<cfg::Item>> ref;
+
+public:
+	virtual void run() final override {
+		auto out = cfg::Csv::loadFromFile(in, true);
+
+		assertEqual(out.size(), ref.size(), std::to_string(out.size()), std::to_string(ref.size()));
+		for (unsigned i = 0; i < out.size(); i++) {
+			inLoop(assertEqual(out[i].size(), ref[i].size(), std::to_string(out[i].size()), std::to_string(ref[i].size())), i);
+
+			for (unsigned p = 0; p < out[i].size(); p++) {
+				auto outi = out[i][p];
+				auto refi = ref[i][p];
+
+				inLoop(inLoop(assertEqual(outi, refi, outi.asString(), refi.asString()), p), i);
+			}
+		}
+	}
+
+	virtual string name() const final override {
+		return "CsvLoadFromFilePedanticTest(" + in + ")";
+	}
+
+	CsvLoadFromFilePedanticTest(const string &in, const vector<vector<cfg::Item>> &ref) : in(in), ref(ref) {}
+};
+
+class CsvLoadFromFilePedanticFailTest : public Test {
+private:
+	string in;
+	string ref;
+
+
+public:
+	virtual void run() final override {
+		assertExceptionWithMessage({
+			auto csv = cfg::Csv::loadFromFile(in, true);
+		}, cfg::CsvException, ref);
+	}
+
+	virtual string name() const final override {
+		return "CsvLoadFromFilePedanticFailTest(" + in + ")";
+	}
+
+	CsvLoadFromFilePedanticFailTest(const string &in, const string &ref) : in(in), ref(ref) {}
 };
 
 int main() {
-	/*std::vector<TestCase*> cases = {
-		new TestLoadValidCSV("tests/test0.csv"),
-		new TestLoadValidCSV("tests/test1.csv"),
-		new TestLoadValidCSV("tests/test2.csv"),
-		new TestLoadValidCSV("tests/test3.csv"),
-		new TestLoadValidCSV("tests/test4.csv"),
-		new TestLoadValidCSV("tests/test5.csv"),
-		new TestLoadValidCSV("tests/test6.csv"),
-		new TestLoadValidCSV("tests/test7.csv"),
-		new TestValidCSVData("tests/test0.csv", {
-			{"aaa", "bbb", "ccc"}, { "ddd", "eee", "fff" }
-		}),
-		new TestValidCSVData("tests/test1.csv", {
-			{"aaa", "bbb", "ccc"}, { "ddd", "eee", "fff" }
-		}),
-		new TestValidCSVData("tests/test2.csv", {
-			{"aaa", "bbb", "cc\nc"}, { "ddd", "eee", "fff" }
-		}),
-		new TestValidCSVData("tests/test3.csv", {
-			{"aaa", "bbb", "cc,c"}, { "ddd", "eee", "fff" }
-		}),
-		new TestValidCSVData("tests/test4.csv", {
-			{"aaa", "bbb", "cc\"c"}, { "ddd", "eee", "fff" }
-		})
-	};*/
-
 	Testrunner runner({
 		new ItemInitTest<const char*>(std::string("hello world").c_str(), "hello world"),
 		new ItemInitTest<std::string>("hello world", "hello world"),
@@ -537,13 +654,66 @@ int main() {
 		new ArgsIsSetFailTest("m!", {"progname", "-m", "value"}, {'h'}),
 		new ArgsIsSetFailTest("hc:", {"progname", "-c", "value", "-h"}, {'H', 'C'}),
 		// ArgsGetPositionalArgumentsTest
-        new ArgsGetPositionalArgsTest("h", {"progname", "-h"}, {}),
-        new ArgsGetPositionalArgsTest("p", {"progname", "-p", "ehlo"}, {"ehlo"}),
-        new ArgsGetPositionalArgsTest("h:", {"progname", "-h", "ehlo"}, {}),
-        new ArgsGetPositionalArgsTest("h:", {"progname", "-h", "ehlo", "helo"}, {"helo"}),
-        new ArgsGetPositionalArgsTest("h:", {"progname", "helo", "-h", "ehlo"}, {"helo"}),
+		new ArgsGetPositionalArgsTest("h", {"progname", "-h"}, {}),
+		new ArgsGetPositionalArgsTest("p", {"progname", "-p", "ehlo"}, {"ehlo"}),
+		new ArgsGetPositionalArgsTest("h:", {"progname", "-h", "ehlo"}, {}),
+		new ArgsGetPositionalArgsTest("h:", {"progname", "-h", "ehlo", "helo"}, {"helo"}),
+		new ArgsGetPositionalArgsTest("h:", {"progname", "helo", "-h", "ehlo"}, {"helo"}),
 		// ArgsGetArgValueTest
+		new ArgsGetArgValueTest("h:", {"progname", "-h", "10"}, 'h', 10),
+		new ArgsGetArgValueTest("d!", {"progname", "-d", "ehlo"}, 'd', "ehlo"),
 		// ArgsGetArgValueFailTest
+		new ArgsGetArgValueFailTest("h:", {"progname"}, 'h', 10),
+		// CsvLoadFromFileTest
+		new CsvLoadFromFileTest("../tests/test0.csv", {
+			{"aaa", "bbb", "ccc"}, {"ddd", "eee", "fff"}
+		}),
+		new CsvLoadFromFileTest("../tests/test1.csv", {
+			{"aaa", "bbb", "ccc"}, {"ddd", "eee", "fff"}
+		}),
+		new CsvLoadFromFileTest("../tests/test2.csv", {
+			{"aaa", "bbb", "cc\nc"}, {"ddd", "eee", "fff"}
+		}),
+		new CsvLoadFromFileTest("../tests/test3.csv", {
+			{"aaa", "bbb", "cc,c"}, {"ddd", "eee", "fff"}
+		}),
+		new CsvLoadFromFileTest("../tests/test4.csv", {
+			{"aaa", "bbb", "cc\"c"}, {"ddd", "eee", "fff"}
+		}),
+		new CsvLoadFromFileTest("../tests/test5.csv", {
+			{"aaa", "bbb", "ccc"}, {"ddd", "eee", "fff"}
+		}),
+		new CsvLoadFromFileTest("../tests/test6.csv", {
+			{"aaa", "bbb", "ccc"}, {"ddd", "eee"}
+		}),
+		new CsvLoadFromFileTest("../tests/test7.csv", {
+			{"aaa", "bbb", "ccc"}, {"ddd", "eee", "fff", "ggg"}
+		}),
+		// CsvLoadFromFileFailTest
+		new CsvLoadFromFileFailTest("../tests/test8.csv", "Invalid '\"' character at position: 6"),
+		new CsvLoadFromFileFailTest("../tests/test9.csv", "Invalid non-delimiter, non-newline character followed after closing quote at position: 9"),
+		// CsvLoadFromFilePedanticTest
+		new CsvLoadFromFilePedanticTest("../tests/test0.csv", {
+			{"aaa", "bbb", "ccc"}, {"ddd", "eee", "fff"}
+		}),
+		new CsvLoadFromFilePedanticTest("../tests/test1.csv", {
+			{"aaa", "bbb", "ccc"}, {"ddd", "eee", "fff"}
+		}),
+		new CsvLoadFromFilePedanticTest("../tests/test2.csv", {
+			{"aaa", "bbb", "cc\nc"}, {"ddd", "eee", "fff"}
+		}),
+		new CsvLoadFromFilePedanticTest("../tests/test3.csv", {
+			{"aaa", "bbb", "cc,c"}, {"ddd", "eee", "fff"}
+		}),
+		new CsvLoadFromFilePedanticTest("../tests/test4.csv", {
+			{"aaa", "bbb", "cc\"c"}, {"ddd", "eee", "fff"}
+		}),
+		new CsvLoadFromFilePedanticTest("../tests/test5.csv", {
+			{"aaa", "bbb", "ccc"}, {"ddd", "eee", "fff"}
+		}),
+		// CsvLoadFromFilePedanticFailTest
+		new CsvLoadFromFilePedanticFailTest("../tests/test6.csv", "loadFromFile: Rows do not have the same number of columns and pedantic flag has been set"),
+		new CsvLoadFromFilePedanticFailTest("../tests/test7.csv", "loadFromFile: Rows do not have the same number of columns and pedantic flag has been set"),
 	});
 
 	return runner.evaluateTestcases(true, false);

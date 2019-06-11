@@ -73,7 +73,7 @@ public:
 void compareIniToReferenceMap(const cfg::Ini &ini, const std::map<string, cfg::IniSection> &ref) {
 	for (auto &sec : ref) {
 		assertTrue(ini.hasSection(sec.first));
-		
+
 		auto &section = ini[sec.first];
 		for (auto &keyval : sec.second) {
 			assertTrue(section.hasKey(keyval.first));
@@ -406,6 +406,20 @@ public:
 	ArgsGetArgValueFailTest(const string &setup, const vector<const char*> &inArgs, char query, const cfg::Item &ref) : setup(setup), inArgs(inArgs), query(query) {}
 };
 
+void assertCsvsEqual(const vector<vector<cfg::Item>> &out, const vector<vector<cfg::Item>> &ref) {
+	assertEqual(out.size(), ref.size(), std::to_string(out.size()), std::to_string(ref.size()));
+	for (unsigned i = 0; i < out.size(); i++) {
+		inLoop(assertEqual(out[i].size(), ref[i].size(), std::to_string(out[i].size()), std::to_string(ref[i].size())), i);
+
+		for (unsigned p = 0; p < out[i].size(); p++) {
+			auto outi = out[i][p];
+			auto refi = ref[i][p];
+
+			inLoop(inLoop(assertEqual(outi, refi, outi.asString(), refi.asString()), p), i);
+		}
+	}
+}
+
 class CsvLoadFromFileTest : public Test {
 private:
 	string in;
@@ -413,19 +427,12 @@ private:
 
 public:
 	virtual void run() final override {
-		auto out = cfg::Csv::loadFromFile(in);
+		vector<vector<cfg::Item>> out;
+		assertNotException({
+			out = cfg::Csv::loadFromFile(in);
+		});
 
-		assertEqual(out.size(), ref.size(), std::to_string(out.size()), std::to_string(ref.size()));
-		for (unsigned i = 0; i < out.size(); i++) {
-			inLoop(assertEqual(out[i].size(), ref[i].size(), std::to_string(out[i].size()), std::to_string(ref[i].size())), i);
-
-			for (unsigned p = 0; p < out[i].size(); p++) {
-				auto outi = out[i][p];
-				auto refi = ref[i][p];
-
-				inLoop(inLoop(assertEqual(outi, refi, outi.asString(), refi.asString()), p), i);
-			}
-		}
+		assertCsvsEqual(out, ref);
 	}
 
 	virtual string name() const final override {
@@ -461,19 +468,12 @@ private:
 
 public:
 	virtual void run() final override {
-		auto out = cfg::Csv::loadFromFile(in, true);
+		vector<vector<cfg::Item>> out;
+		assertNotException({
+			out = cfg::Csv::loadFromFile(in, true);
+		});
 
-		assertEqual(out.size(), ref.size(), std::to_string(out.size()), std::to_string(ref.size()));
-		for (unsigned i = 0; i < out.size(); i++) {
-			inLoop(assertEqual(out[i].size(), ref[i].size(), std::to_string(out[i].size()), std::to_string(ref[i].size())), i);
-
-			for (unsigned p = 0; p < out[i].size(); p++) {
-				auto outi = out[i][p];
-				auto refi = ref[i][p];
-
-				inLoop(inLoop(assertEqual(outi, refi, outi.asString(), refi.asString()), p), i);
-			}
-		}
+		assertCsvsEqual(out, ref);
 	}
 
 	virtual string name() const final override {
@@ -501,6 +501,31 @@ public:
 	}
 
 	CsvLoadFromFilePedanticFailTest(const string &in, const string &ref) : in(in), ref(ref) {}
+};
+
+class CsvSaveToFileTest : public Test {
+private:
+	vector<vector<cfg::Item>> in;
+
+public:
+	virtual void run() final override {
+		assertNotException({
+			cfg::Csv::saveToFile(in, "tmp.csv");
+		});
+		
+		vector<vector<cfg::Item>> out;
+		assertNotException({
+			out = cfg::Csv::loadFromFile("tmp.csv", true);
+		});
+
+		assertCsvsEqual(out, in);
+	}
+
+	virtual string name() const final override {
+		return "CsvSaveToFileTest";
+	}
+
+	CsvSaveToFileTest(const vector<vector<cfg::Item>> &in) : in(in) {}
 };
 
 int main() {
@@ -681,7 +706,7 @@ int main() {
 			{"aaa", "bbb", "cc\"c"}, {"ddd", "eee", "fff"}
 		}),
 		new CsvLoadFromFileTest("../tests/test5.csv", {
-			{"aaa", "bbb", "ccc"}, {"ddd", "eee", "fff"}
+			{"aaa", "bbb", "ccc"}, {"ddd", "eee", "fff"},
 		}),
 		new CsvLoadFromFileTest("../tests/test6.csv", {
 			{"aaa", "bbb", "ccc"}, {"ddd", "eee"}
@@ -714,7 +739,12 @@ int main() {
 		// CsvLoadFromFilePedanticFailTest
 		new CsvLoadFromFilePedanticFailTest("../tests/test6.csv", "loadFromFile: Rows do not have the same number of columns and pedantic flag has been set"),
 		new CsvLoadFromFilePedanticFailTest("../tests/test7.csv", "loadFromFile: Rows do not have the same number of columns and pedantic flag has been set"),
+		// CsvSaveToFileTest
+		new CsvSaveToFileTest({{"aaa", "bbb", "ccc"}, {"ddd", "eee", "fff"}}),
+		new CsvSaveToFileTest({{"aaa", "bbb", "cc\nc"}, {"ddd", "eee", "fff"}}),
+		new CsvSaveToFileTest({{"aaa", "bbb", "cc,c"}, {"ddd", "eee", "fff"}}),
+		new CsvSaveToFileTest({{"aaa", "bbb", "cc\"c"}, {"ddd", "eee", "fff"}}),
 	});
 
-	return runner.evaluateTestcases(true, false);
+	return runner.evaluateTestcases(true, true);
 }

@@ -613,7 +613,7 @@ int main() {
 		}),
 		new IniLoadFromFileTest("../tests/iniOk1.ini", {
 			{"root", cfg::IniSection({
-				{"key", cfg::Item()}
+				{"key1", cfg::Item()}
 			})}
 		}),
 		new IniLoadFromFileFailTest("../tests/iniFail0.ini"),

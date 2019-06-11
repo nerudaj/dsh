@@ -145,6 +145,8 @@ std::vector<std::vector<Item>> Csv::loadFromFile(const std::string &filename, bo
 		throw CsvException("loadFromFile: error when loading file to memory: " + std::string(e.what()));
 	}
 	
+	Strings::replaceAll(file, "\r\n", "\n");
+
 	std::string::const_iterator fileItr = file.begin();
 	std::vector<Item> row;
 
@@ -193,7 +195,7 @@ void writeVectorOfCsvItems(std::ofstream &save, std::vector<cfg::Item> &row, cha
 
 void Csv::saveToFile(const std::vector<std::vector<Item>> &data, const std::string &filename, char delimiter, char newline, char quote) {
 	try {
-		std::ofstream save (filename);
+		std::ofstream save (filename, std::ios::binary);
 
 		for (auto row : data) {
 			writeVectorOfCsvItems(save, row, delimiter, newline, quote);

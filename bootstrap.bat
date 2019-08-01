@@ -30,7 +30,7 @@ cscript C:\tools\bin\unzip.vbs mingw.zip
 
 del mingw.zip
 cd bin
-mingw-get install mingw32-gcc-g++ mingw32-make mingw32-gdb mingw32-zlib
+mingw-get install mingw32-gcc-g++ mingw32-make mingw32-gdb mingw32-zlib libmingwex
 
 echo Installing cmake
 cd /tools/bin

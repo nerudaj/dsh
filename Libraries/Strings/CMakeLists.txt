@@ -4,7 +4,7 @@ project (strings)
 # Export all symbols in dynamic library
 set (CMAKE_INSTALL_PREFIX /tools)
 set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
-set (CMAKE_GENERATOR_PLATFORM x86)
+set (CMAKE_GENERATOR_PLATFORM x64)
 
 if (NOT CMAKE_DEBUG_POSTFIX)
 	set(CMAKE_DEBUG_POSTFIX "-d")

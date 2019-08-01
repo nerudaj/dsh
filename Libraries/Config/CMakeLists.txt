@@ -1,8 +1,9 @@
 cmake_minimum_required (VERSION 3.4)
 project (config)
 
-set (CMAKE_INSTALL_PREFIX /tools/utils)
-include_directories(/tools/utils/include)
+set (CMAKE_INSTALL_PREFIX /tools)
+include_directories(/tools/include)
+set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
 
 if (NOT CMAKE_DEBUG_POSTFIX)
 	set(CMAKE_DEBUG_POSTFIX "-d")

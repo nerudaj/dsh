@@ -1,7 +1,7 @@
 cmake_minimum_required (VERSION 3.4)
 project (logger)
 
-set (CMAKE_INSTALL_PREFIX /tools/utils)
+set (CMAKE_INSTALL_PREFIX /tools)
 
 if (NOT CMAKE_DEBUG_POSTFIX)
 	set(CMAKE_DEBUG_POSTFIX "-d")

@@ -1,12 +1,9 @@
 cmake_minimum_required (VERSION 3.4)
 project (leveld)
 
-set (CMAKE_INSTALL_PREFIX /tools/utils)
-set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++14")
-
-include_directories(/tools/utils/include)
-
-set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++14")
+set (CMAKE_INSTALL_PREFIX /tools)
+set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
+set (CMAKE_GENERATOR_PLATFORM x86)
 
 if (NOT CMAKE_DEBUG_POSTFIX)
 	set(CMAKE_DEBUG_POSTFIX "-d")

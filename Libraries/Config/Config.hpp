@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Item.hpp"
 #include "Ini.hpp"
 #include "Args.hpp"
 #include "Csv.hpp"
@@ -12,6 +13,11 @@ namespace cfg {
     class Exception : public std::runtime_error {
     public:
         Exception(const std::string &message) : std::runtime_error(message) {}
+    };
+
+    class IniException : public Exception {
+    public:
+		IniException(const std::string &message) : Exception(message) {}
     };
 
     /**

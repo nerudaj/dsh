@@ -20,5 +20,6 @@ set PATH=%PATH%;/tools/bin/doxygen
 set PATH=%PATH%;/tools/bin/python3
 set PATH=%PATH%;/tools/bin/putty/tools/python3
 set PATH=%PATH%;/tools/bin/miktex/miktex/bin/x64/
+set PATH=%PATH%;/tools/bin/cmake/bin
 
 @echo on

@@ -2,6 +2,15 @@ call /tools/doomsh.cmd
 
 @echo off
 
+echo Install testrunner
+cd Testrunner
+set rtn=test
+goto test-builddir
+:test
+mingw32-make
+mingw32-make install
+cd ../..
+
 echo Building libstrings
 cd Strings
 set rtn=strings
@@ -39,5 +48,6 @@ if not exist build (
 	cmake.exe -G "MinGW Makefiles" ..
 ) else (
 	cd build
+	cmake.exe -G "MinGW Makefiles" ..
 )
 goto %rtn%

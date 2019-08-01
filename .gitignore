@@ -43,6 +43,7 @@ Libraries/Logger/vsbuild
 Libraries/Strings/build
 Libraries/Strings/vsbuild
 Libraries/Testrunner/build
+Libraries/RELEASE
 Utilities/jsbloat/build
 
 # =========================

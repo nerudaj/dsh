@@ -221,7 +221,7 @@ public:
 	virtual void run() final override {
 		cfg::Args args;
 
-		assertTrue(args.setupArguments(setup));
+		assertNotException(args.setupArguments(setup));
 	}
 
 	virtual string name() const final override {
@@ -238,9 +238,8 @@ private:
 public:
 	virtual void run() final override {
 		cfg::Args args;
-		args.setLoggingLevel(0);
 
-		assertFalse(args.setupArguments(setup));
+		assertException(args.setupArguments(setup), cfg::ArgsException);
 	}
 
 	virtual string name() const final override {
@@ -259,7 +258,7 @@ public:
 	virtual void run() final override {
 		cfg::Args args(setup);
 
-		assertTrue(args.parse(inArgs.size(), inArgs.data()));
+		assertNotException(args.parse(inArgs.size(), inArgs.data()));
 	}
 
 	virtual string name() const final override {
@@ -277,9 +276,8 @@ private:
 public:
 	virtual void run() final override {
 		cfg::Args args(setup);
-		args.setLoggingLevel(0);
 
-		assertFalse(args.parse(inArgs.size(), inArgs.data()));
+		assertException(args.parse(inArgs.size(), inArgs.data()), cfg::ArgsException);
 	}
 
 	virtual string name() const final override {
@@ -299,7 +297,7 @@ public:
 	virtual void run() final override {
 		cfg::Args args(setup);
 		
-		assertTrue(args.parse(inArgs.size(), inArgs.data()));
+		assertNotException(args.parse(inArgs.size(), inArgs.data()));
 
 		for (auto query : queries) {
 			assertTrue(args.isSet(query));
@@ -323,7 +321,7 @@ public:
 	virtual void run() final override {
 		cfg::Args args(setup);
 		
-		assertTrue(args.parse(inArgs.size(), inArgs.data()));
+		assertNotException(args.parse(inArgs.size(), inArgs.data()));
 
 		for (auto query : queries) {
 			assertFalse(args.isSet(query));
@@ -346,7 +344,7 @@ private:
 public:
 	virtual void run() final override {
 		cfg::Args args(setup);
-		assertTrue(args.parse(inArgs.size(), inArgs.data()));
+		assertNotException(args.parse(inArgs.size(), inArgs.data()));
 
 		auto out = args.getPositionalArguments();
 		assertEqual(out.size(), ref.size(), std::to_string(out.size()), std::to_string(ref.size()));
@@ -373,7 +371,7 @@ private:
 public:
 	virtual void run() final override {
 		cfg::Args args(setup);
-		assertTrue(args.parse(inArgs.size(), inArgs.data()));
+		assertNotException(args.parse(inArgs.size(), inArgs.data()));
 
 		assertTrue(args.isSet(query));
 		
@@ -397,7 +395,7 @@ private:
 public:
 	virtual void run() final override {
 		cfg::Args args(setup);
-		assertTrue(args.parse(inArgs.size(), inArgs.data()));
+		assertNotException(args.parse(inArgs.size(), inArgs.data()));
 
 		assertFalse(args.isSet(query));
 	}

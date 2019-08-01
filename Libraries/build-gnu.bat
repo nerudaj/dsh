@@ -2,15 +2,6 @@ call /tools/doomsh.cmd
 
 @echo off
 
-echo Building liblogger
-cd Logger
-set rtn=logger
-goto test-builddir
-:logger
-mingw32-make
-mingw32-make install
-cd ../..
-
 echo Building libstrings
 cd Strings
 set rtn=strings

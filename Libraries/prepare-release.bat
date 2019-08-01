@@ -8,10 +8,6 @@ mkdir dshlibs-%version%\lib
 # TODO: docs
 
 echo Copying data
-copy Logger\build\liblogger.a dshlibs-%version%\lib
-copy Logger\vsbuild\Debug\logger-d.lib dshlibs-%version%\lib
-copy Logger\vsbuild\Release\logger.lib dshlibs-%version%\lib
-copy Logger\Logger.hpp dshlibs-%version%\include
 
 copy Strings\build\libstrings.a dshlibs-%version%\lib
 copy Strings\vsbuild\Debug\strings-d.lib dshlibs-%version%\lib

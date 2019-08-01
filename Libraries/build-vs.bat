@@ -1,17 +1,19 @@
 call /tools/doomsh.cmd
+call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\Tools\VsDevCmd.bat"
 
-#@echo off
-
-cd Logger
-set rtn=logger
-goto test-builddir
-:logger
-cd ../..
+@echo off
 
 cd Strings
 set rtn=strings
 goto test-builddir
 :strings
+cd ../..
+
+cd Strings/vsbuild
+devenv strings.sln /Build Debug
+copy Debug\strings-d.lib C:\tools\lib
+devenv strings.sln /Build Release
+copy Release\strings.lib C:\tools\lib
 cd ../..
 
 cd Config
@@ -20,14 +22,30 @@ goto test-builddir
 :config
 cd ../..
 
+cd Config/vsbuild
+devenv config.sln /Build Debug
+copy Debug\config-d.lib C:\tools\lib
+devenv config.sln /Build Release
+copy Release\config.lib C:\tools\lib
+cd ../..
+
+
 cd LevelD
 set rtn=leveld
 goto test-builddir
 :leveld
 cd ../..
 
+cd LevelD/vsbuild
+devenv leveld.sln /Build Debug
+copy Debug\leveld-d.lib C:\tools\lib
+devenv leveld.sln /Build Release
+copy Release\leveld.lib C:\tools\lib
+cd ../..
+
 pause
-goto build
+
+exit 0
 
 :test-builddir
 if not exist vsbuild (
@@ -36,29 +54,6 @@ if not exist vsbuild (
 	cmake.exe ..
 ) else (
 	cd vsbuild
+	cmake.exe ..
 )
 goto %rtn%
-
-:build
-call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\Tools\VsDevCmd.bat"
-
-cd Logger/vsbuild
-devenv logger.sln /Build Debug
-devenv logger.sln /Build Release
-cd ../..
-
-cd Strings/vsbuild
-devenv strings.sln /Build Debug
-devenv strings.sln /Build Release
-cd ../..
-
-cd Config/vsbuild
-devenv config.sln /Build Debug
-devenv config.sln /Build Release
-cd ../..
-
-cd LevelD/vsbuild
-devenv leveld.sln /Build Debug
-devenv leveld.sln /Build Release
-cd ../..
-

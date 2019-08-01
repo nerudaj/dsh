@@ -5,8 +5,6 @@
 #include <Logger.hpp>
 
 namespace cfg {
-	
-
 	class Csv {
 	public:
 		/**

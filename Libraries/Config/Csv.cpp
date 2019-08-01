@@ -1,6 +1,7 @@
 #include <fstream>
 #include <iostream>
 #include <string>
+#include <sstream>
 #include <Strings.hpp>
 #include "Csv.hpp"
 
@@ -123,21 +124,9 @@ std::vector<std::vector<Item>> Csv::loadFromFile(const std::string &filename, bo
 	try {
 		std::ifstream load(filename);
 
-		// Get size of file
-		load.seekg(0, load.end);
-		unsigned fsize = load.tellg();
-		load.seekg(0, load.beg);
-
-		// Allocate buffer
-		char *filebuf = new char[fsize];
-		if (filebuf == NULL) {
-			throw CsvException("loadFromFile: memory allocation failed");
-		}
-
-		// Read file into memory
-		load.read(filebuf, fsize);
-		file = std::string(filebuf, fsize);
-		delete[] filebuf;
+		std::stringstream strStream;
+	    strStream << load.rdbuf(); //read the file
+		file = strStream.str();
 
 		load.close();
 		load.clear();

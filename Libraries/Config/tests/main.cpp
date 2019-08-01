@@ -117,7 +117,9 @@ private:
 public:
 	virtual void run() final override {
 		cfg::Ini ini;
-		assertTrue(ini.loadFromFile(filename));
+		assertNotException({
+			ini.loadFromFile(filename);
+		});
 		
 		compareIniToReferenceMap(ini, ref);
 	}
@@ -136,8 +138,9 @@ private:
 public:
 	virtual void run() final override {
 		cfg::Ini ini;
-		ini.log.setLoggingLevel(0);
-		assertFalse(ini.loadFromFile(filename));
+		assertException({
+			ini.loadFromFile(filename);
+		}, cfg::IniException);
 	}
 
 	virtual string name() const {
@@ -190,13 +193,13 @@ private:
 public:
 	virtual void run() final override {
 		cfg::Ini ini;
-		assertTrue(ini.loadFromFile(filename));
+		assertNotException({ini.loadFromFile(filename);});
+		assertNotException({ini.saveToFile(filename + ".test");});
 
-		assertTrue(ini.saveToFile(filename + ".test"));
+		cfg::Ini ini2;
+		assertNotException({ini2.loadFromFile(filename + ".test");});
 
-		assertException({
-			compareFiles(filename, filename + ".test");
-		}, std::runtime_error);
+		// TODO: there should be a comparison of the two
 	}
 
 	virtual string name() const final override {

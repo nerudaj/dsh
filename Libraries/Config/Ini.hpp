@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include "Item.hpp"
+#include "Config.hpp"
 #include <Logger.hpp>
 #include <map>
 
@@ -55,8 +55,6 @@ namespace cfg {
 		static void getKeyValue(const std::string &line, std::string &dstKey, std::string &dstValue);
 
 	public:
-		Logger log; ///< Error logger. Use Ini::log.setLoggingLevel to change verbosity
-	
 		/**
 		 *  \brief Access section of ini file
 		 */
@@ -75,7 +73,9 @@ namespace cfg {
 		 *
 		 *  \return TRUE if yes
 		 */
-		bool hasSection(const std::string &section) const { return (config.find(section) != config.end()); }
+		bool hasSection(const std::string &section) const {
+			return (config.find(section) != config.end());
+		}
 
 		/**
 		 *  \brief Load config from file
@@ -87,7 +87,7 @@ namespace cfg {
 		 *  \details key=value pairs that don't belong to any section are contained
 		 *  withing section named 'root'
 		 */
-		bool loadFromFile(const std::string &filename);
+		void loadFromFile(const std::string &filename);
 		
 		/**
 		 *  \brief Save config to file
@@ -96,6 +96,6 @@ namespace cfg {
 		 *
 		 *  \return TRUE on success
 		 */
-		bool saveToFile(const std::string &filename);
+		void saveToFile(const std::string &filename);
 	};
 }

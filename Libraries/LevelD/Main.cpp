@@ -14,7 +14,9 @@ void printHelp(const std::string &programName);
 
 int main(int argc, char *argv[]) {
     cfg::Args args("hs");
-    if (!args.parse(argc, argv)) {
+    try {
+        args.parse(argc, argv);
+    } catch (...) {
         printHelp(argv[1]);
         return 1;
     }

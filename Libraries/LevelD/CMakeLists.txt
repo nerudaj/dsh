@@ -3,7 +3,9 @@ project (leveld)
 
 set (CMAKE_INSTALL_PREFIX /tools)
 set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
-set (CMAKE_GENERATOR_PLATFORM x86)
+set (CMAKE_GENERATOR_PLATFORM x64)
+
+include_directories(/tools/include)
 
 if (NOT CMAKE_DEBUG_POSTFIX)
 	set(CMAKE_DEBUG_POSTFIX "-d")
@@ -33,9 +35,8 @@ add_executable(testrunner
 					Tests/TestAll.cpp
 )
 
-find_library(LOG_LIB NAMES logger)
 find_library(CFG_LIB NAMES config)
-TARGET_LINK_LIBRARIES(testrunner ${LOG_LIB} ${PROJECT_NAME} ${CFG_LIB})
+TARGET_LINK_LIBRARIES(testrunner ${PROJECT_NAME} ${CFG_LIB})
 
 # Install
 install(TARGETS ${PROJECT_NAME} DESTINATION lib)

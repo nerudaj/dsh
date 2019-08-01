@@ -15,6 +15,11 @@ namespace cfg {
         Exception(const std::string &message) : std::runtime_error(message) {}
     };
 
+    class ArgsException : public Exception {
+    public:
+		ArgsException(const std::string &message) : Exception(message) {}
+    };
+
     class IniException : public Exception {
     public:
 		IniException(const std::string &message) : Exception(message) {}

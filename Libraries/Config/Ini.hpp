@@ -9,7 +9,6 @@
 #pragma once
 
 #include "Config.hpp"
-#include <Logger.hpp>
 #include <map>
 
 namespace cfg {

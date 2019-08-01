@@ -2,7 +2,6 @@
 
 #include "Config.hpp"
 #include <vector>
-#include <Logger.hpp>
 
 namespace cfg {
 	class Csv {

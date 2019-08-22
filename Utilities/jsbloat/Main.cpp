@@ -3,7 +3,27 @@
 #include <regex>
 #include <unordered_map>
 #include <Config.hpp>
-#include <Logger.hpp>
+
+class Logger {
+public:
+	void error(const std::string &module, const std::string &msg) {
+		std::cerr << "ERROR: " << module << ": " << msg << std::endl;
+	}
+
+	void warning(const std::string &module, const std::string &msg) {
+		std::cerr << "WARNING: " << module << ": " << msg << std::endl;
+	}
+
+	void info(const std::string &module, const std::string &msg) {
+		std::cout << "INFO: " << module << ": " << msg << std::endl;
+	}
+
+	void debug(const std::string &module, const std::string &msg) {
+		std::cout << "DEBUG: " << module << ": " << msg << std::endl;
+	}
+
+	void setLoggingLevel(int i) {}
+};
 
 Logger log;
 
@@ -154,7 +174,10 @@ int main(int argc, char *argv[]) {
 	cfg::Args args;
 	args.setupArguments("ho:v:H:");
 
-	if (!args.parse(argc, argv)) {
+	try {
+		args.parse(argc, argv);
+	}
+	catch (...) {
 		printHelp(argv[0]);
 		return 1;
 	}

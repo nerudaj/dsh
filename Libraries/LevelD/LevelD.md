@@ -5,7 +5,11 @@ This file contains comprehensive documentation of LevelD file format and how is 
 ## Table of Contents
 
  * [Introduction](#introduction)
+ * [META block](#meta-block)
  * [MESH block](#mesh-block)
+ * [PLAS block](#plas-block)
+ * [NPCS block](#npcs-block)
+ * [ITEM block](#item-block)
 
 ## Introduction
 

@@ -6,10 +6,10 @@ echo Making release folders
 mkdir RELEASE
 mkdir RELEASE\dshlibs-%version%-mingw8\include
 mkdir RELEASE\dshlibs-%version%-mingw8\lib
+mkdir RELEASE\dshlibs-%version%-mingw8\docs
 mkdir RELEASE\dshlibs-%version%-vs2019-x64\include
 mkdir RELEASE\dshlibs-%version%-vs2019-x64\lib
-
-pause
+mkdir RELEASE\dshlibs-%version%-vs2019-x64\docs
 
 echo Copying data
 
@@ -30,6 +30,10 @@ copy LevelD\vsbuild\Debug\leveld-d.lib RELEASE\dshlibs-%version%-vs2019-x64\lib
 copy LevelD\vsbuild\Release\leveld.lib RELEASE\dshlibs-%version%-vs2019-x64\lib
 copy LevelD\LevelD.hpp RELEASE\dshlibs-%version%-mingw8\include
 copy LevelD\LevelD.hpp RELEASE\dshlibs-%version%-vs2019-x64\include
+
+rem Copy LevelD docs
+copy LevelD\LevelD.md RELEASE\dshlibs-%version%-mingw8\docs
+copy LevelD\LevelD.md RELEASE\dshlibs-%version%-vs2019-x64\docs
 
 copy changelog.txt RELEASE\dshlibs-%version%-mingw8
 copy changelog.txt RELEASE\dshlibs-%version%-vs2019-x64

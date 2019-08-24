@@ -35,13 +35,21 @@ Every .lvd file **must** start with 4B big endian number denoting version of Lev
 
 After these initial parsing must proceed in following steps:
  1. Read next 4 bytes of data. This is the block *ID*
- 2. Read next 4 bytes of data. This is the block *size*
- 3. Read next *size* bytes of data. This is the block *contents*
- 4. Parse *contents* using appropriate block parser based on *ID*
+ 2. Then proceed with parser specific for that block based on *ID*
+
+#### Strings
+
+When this specification states something is stored as a string, that this is stored first as a 1B number stating how many characters that string has (string cannot be longer than 255 characters, ignoring null terminating character) and then that many characters follow.
 
 ## META block
 
-TODO
+Meta block parsing follows these steps:
+
+ 1. Read 8B of data - *timestamp*
+ 2. Read a string of data - *id* of the level
+ 3. Read a string of data - *name* of the level
+ 4. Read a string of data - *author* of the level
+ 5. Read a string of data - brief *description* of the level
 
 ## MESH block
 

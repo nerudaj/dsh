@@ -17,6 +17,20 @@ The LevelD file format is an universal storage for game level data. It provides 
 
 The LevelD file format (.lvd for short) is build around the idea of modules or blocks of data that can be provided independently on each other. LevelD structure is meant to be serialized as a binary file, as effectively as possible.
 
+### LevelD C++ Structure
+
+Declaration of this structure is particulary messy, due to many sub-structures being introduced, but when using it, you only need to care about following members:
+
+ * metadata
+ * mesh
+ * players
+ * npcs
+ * items
+
+Each of these members is represented by a single block in the .lvd file. If a member is not initialized, it's block won't be serialized into .lvd file and vice versa.
+
+### Parsing
+
 Every .lvd file **must** start with 4B big endian number denoting version of LevelD specification. This number denotes which blocks are supported. This specification will clearly denote which version of LevelD parser each block requires.
 
 After these initial parsing must proceed in following steps:

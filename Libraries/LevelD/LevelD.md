@@ -76,7 +76,15 @@ The *tiles* vector says what type of a tile is at index [x, y]. Indexing formula
 
 ## PLAS block
 
-TODO
+Players block is for storing spawn positions of players in level.
+
+Parsing follows these steps:
+
+ 1. Read 4B of data - *count* of player spawns
+ 2. N times do this:
+    a. Read 4B of data - *x* coordinate of current player spawn
+    b. Read 4B of data - *y* coordinate of current player spawn
+    c. Read 2B of data - *flags* affecting current player spawn
 
 ## NPCS block
 

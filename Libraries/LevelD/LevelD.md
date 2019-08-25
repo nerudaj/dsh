@@ -41,7 +41,13 @@ After these initial parsing must proceed in following steps:
 
 When this specification states something is stored as a string, that this is stored first as a 1B number stating how many characters that string has (string cannot be longer than 255 characters, ignoring null terminating character) and then that many characters follow.
 
+#### Vectors
+
+When this specification states something is stored as a vector of XB numbers, it means first there are 4B of data specifiying *length* of the vector and then X * *length* bytes of data containing the desired vector.
+
 ## META block
+
+This block represents metadata of the level.
 
 Meta block parsing follows these steps:
 
@@ -53,7 +59,20 @@ Meta block parsing follows these steps:
 
 ## MESH block
 
-TODO
+Mesh block represents the level mesh - how it looks and where the collisions are. This block only supports tile based maps with only simple (on/off) collisions.
+
+Parsing follows these steps:
+
+ 1. Read 4B of data - *width* of map
+ 2. Read vector of 2B data - *data* of map
+ 3. *height* of the map is computed as |*data*| / *width*
+ 4. Split *data* into two vectors - *tiles* and *blocks*
+ 5. You obtain *tiles* by taking bottom 15bits from each field of *data*
+ 6. You obtain *blocks* by taking top 1bit from each field of *data*
+
+The *blocks* vector basically says whether a tile at index [x, y] is impassable or not. You can index into blocks using this formula: `y * *width* + x`
+
+The *tiles* vector says what type of a tile is at index [x, y]. Indexing formula is the same as for *blocks*.
 
 ## PLAS block
 

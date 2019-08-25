@@ -88,8 +88,12 @@ Parsing follows these steps:
 
 ## NPCS block
 
-TODO
+NPCs block is for storing spawn positions of non-players in level.
+
+Parsing is identical to parsing of PLAS block.
 
 ## ITEM block
 
-TODO
+Item block is for storing spawn positions of items in level.
+
+Parsing is identical to parsing of PLAS and NPCS block.

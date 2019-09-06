@@ -1,3 +1,7 @@
+vX.X.X
+	- added docs for LevelD format
+	- added id field to LevelD actor objects
+
 v0.5.3
 	- rewritten cfg::Csv
 	- removed liblogger

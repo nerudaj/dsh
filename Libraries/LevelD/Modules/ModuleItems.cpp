@@ -4,7 +4,7 @@ void ModuleItems::serialize(BytestreamOut &bout, const LevelD &lvld) const {
     bout << uint32_t(lvld.items.size());
 
     for (auto &item : lvld.items) {
-        bout << item.x << item.y << item.flags;
+        bout << item.id << item.x << item.y << item.flags;
     }
 }
 
@@ -14,7 +14,7 @@ void ModuleItems::deserialize(BytestreamIn &bin, LevelD &lvld) const {
 
     LevelD::Items items(size);
     for (auto &item : items) {
-        bin >> item.x >> item.y >> item.flags;
+        bin >> item.id >> item.x >> item.y >> item.flags;
     }
 
     lvld.items = items;

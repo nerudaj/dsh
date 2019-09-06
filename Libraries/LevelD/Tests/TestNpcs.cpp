@@ -14,6 +14,11 @@ void TestNpcs::run() {
     );
 
     for (unsigned i = 0; i < refn.size(); i++) {
+		assume(refn[i].id == outn[i].id,
+			"ID value mismatch at index " + tostr(i) + "! Ref = " +
+			tostr(refn[i].id) + ", out = " + tostr(outn[i].id)
+		);
+
         assume(refn[i].x == outn[i].x,
             "X value mismatch at index " + tostr(i) + "! Ref = " + 
             tostr(refn[i].x) + ", out = " + tostr(outn[i].x)

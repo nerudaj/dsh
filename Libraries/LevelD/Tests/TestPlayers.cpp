@@ -14,6 +14,11 @@ void TestPlayers::run() {
     );
 
     for (unsigned i = 0; i < refp.size(); i++) {
+		assume(refp[i].id == outp[i].id,
+			"ID value mismatch at index " + tostr(i) + "! Ref = " +
+			tostr(refp[i].id) + ", out = " + tostr(outp[i].id)
+		);
+
         assume(refp[i].x == outp[i].x,
             "X value mismatch at index " + tostr(i) + "! Ref = " + 
             tostr(refp[i].x) + ", out = " + tostr(outp[i].x)

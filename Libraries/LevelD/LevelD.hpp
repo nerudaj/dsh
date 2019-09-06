@@ -43,6 +43,7 @@ public:
      *  \brief Section representing actor - anything with coordinates and flags
      */
     struct Actor {
+        uint32_t id;    // Identifier of actor
         uint32_t x, y;  // Coordinates on map
         uint16_t flags; // Behavioral flags for actor
     };

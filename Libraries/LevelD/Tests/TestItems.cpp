@@ -14,6 +14,11 @@ void TestItems::run() {
     );
 
     for (unsigned i = 0; i < refi.size(); i++) {
+		assume(refi[i].id == outi[i].id,
+			"ID value mismatch at index " + tostr(i) + "! Ref = " +
+			tostr(refi[i].id) + ", out = " + tostr(outi[i].id)
+		);
+
         assume(refi[i].x == outi[i].x,
             "X value mismatch at index " + tostr(i) + "! Ref = " + 
             tostr(refi[i].x) + ", out = " + tostr(outi[i].x)

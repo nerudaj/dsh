@@ -4,7 +4,7 @@ void ModulePlayers::serialize(BytestreamOut &bout, const LevelD &lvld) const {
     bout << uint32_t(lvld.players.size());
 
     for (auto &player : lvld.players) {
-        bout << player.x << player.y << player.flags;
+        bout << player.id << player.x << player.y << player.flags;
     }
 }
 
@@ -14,7 +14,7 @@ void ModulePlayers::deserialize(BytestreamIn &bin, LevelD &lvld) const {
 
     LevelD::Players players(size);
     for (auto &player : players) {
-        bin >> player.x >> player.y >> player.flags;
+        bin >> player.id >> player.x >> player.y >> player.flags;
     }
 
     lvld.players = players;

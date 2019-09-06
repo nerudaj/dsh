@@ -5,7 +5,7 @@
 #include <stdexcept>
 #include <iostream>
 
-const uint16_t VERSION = 0;
+const uint16_t VERSION = 1;
 
 using std::vector;
 using std::string;

@@ -82,7 +82,7 @@ Parsing follows these steps:
 
  1. Read 4B of data - *count* of player spawns
  2. N times do this:
-    a. Read 4B of data - *id* of the actor
+    a. Read 4B of data - *id* of the actor (from LevelD version 1)
     b. Read 4B of data - *x* coordinate of current player spawn
     c. Read 4B of data - *y* coordinate of current player spawn
     d. Read 2B of data - *flags* affecting current player spawn

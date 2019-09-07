@@ -1,4 +1,4 @@
-vX.X.X
+v0.6.1
 	- added docs for LevelD format
 	- added id field to LevelD actor objects
 

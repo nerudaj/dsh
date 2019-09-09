@@ -1,6 +1,7 @@
-vX.X.X
+v0.6.2
 	- added docs for LevelD format
 	- added id field to LevelD actor objects
+	- VS libraries are also build in C++17
 
 v0.5.3
 	- rewritten cfg::Csv

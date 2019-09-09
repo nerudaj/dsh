@@ -17,6 +17,7 @@ There is currently script suite in development dedicated to automatic building o
 
  * purge.bat - Deletes all `build` and `vsbuild` folders from served libraries
  * build-gnu.bat - Creates a `build` folder for all served libraries, configures it for mingw-g++ and builds and installs the library
+ * build-vs.bat - Create a `vsbuild` folder for all server libraries, configures it for Visual Studio and builds it both release and debug mode. Install is also performed
  * prepare-release - Assumes that VS versions of libraries were build manually, creates a release folder with release file structure, copies changelog into it and also all needed headers and library files
 
 ## Testrunners

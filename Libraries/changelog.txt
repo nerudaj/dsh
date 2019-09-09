@@ -1,0 +1,13 @@
+vX.X.X
+	- added docs for LevelD format
+	- added id field to LevelD actor objects
+
+v0.5.3
+	- rewritten cfg::Csv
+	- removed liblogger
+	- libraries compiled in x64 where possible
+
+v0.2.3
+	- added leveld library
+	- bugfixes in libconfig
+	- bugfixes in libstrings

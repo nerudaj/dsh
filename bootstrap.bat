@@ -3,8 +3,9 @@
 echo Creating folder structure
 mkdir C:\tools
 mkdir C:\tools\bin
-mkdir C:\tools\include
-mkdir C:\tools\lib
+mkdir C:\tools\utils\bin
+mkdir C:\tools\utils\include
+mkdir C:\tools\utils\lib
 mkdir C:\tools\opt
 
 cd Environments
@@ -29,7 +30,7 @@ cscript C:\tools\bin\unzip.vbs mingw.zip
 
 del mingw.zip
 cd bin
-mingw-get install mingw32-gcc-g++ mingw32-make mingw32-gdb mingw32-zlib
+mingw-get install mingw32-gcc-g++ mingw32-make mingw32-gdb mingw32-zlib libmingwex
 
 echo Installing cmake
 cd /tools/bin

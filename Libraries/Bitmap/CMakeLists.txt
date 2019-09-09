@@ -1,6 +1,9 @@
 cmake_minimum_required (VERSION 3.4)
 project (bitmap)
 
+# Export all symbols in dynamic library
+set (CMAKE_INSTALL_PREFIX /tools/utils)
+
 include_directories(/tools/utils/include)
 
 # Add library

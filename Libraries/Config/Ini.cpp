@@ -22,13 +22,12 @@ void Ini::getKeyValue(const std::string &line, std::string &dstKey, std::string 
 	dstValue = line.substr(delimiterPosition + 1, line.length() - delimiterPosition - 1);
 }
 
-bool Ini::loadFromFile(const std::string &filename) {
-	config.clear();
+void Ini::loadFromFile(const std::string &filename) {
+	std::map<std::string, IniSection> result;
 	std::ifstream load(filename);
 	
 	if (!load.good()) {
-		log.error("Ini::loadFromFile(...)", "Could not open file " + filename);
-		return false;
+		throw cfg::IniException("loadFromFile(...): Could not open file " + filename);
 	}
 	
 	std::string line;
@@ -40,18 +39,17 @@ bool Ini::loadFromFile(const std::string &filename) {
 		}
 		else if (isKeyValuePair(line)) {
 			getKeyValue(line, key, value);
-			config[section][key] = value;
+			result[section][key] = value;
 		}
 		else if (not line.empty()) {
-			log.error("Ini::loadFromFile(...)", "Invalid line " + line);
-			return false;
+			throw cfg::IniException("Ini::loadFromFile(...): Invalid line " + line);
 		}
 	}
 	
 	load.close();
 	load.clear();
-	
-	return true;
+
+	config = result;
 }
 
 template<typename T>
@@ -68,12 +66,11 @@ std::vector<std::string> getSortedMapKeys(const std::map<std::string, T> &map) {
 	return result;
 }
 
-bool Ini::saveToFile(const std::string &filename) {
+void Ini::saveToFile(const std::string &filename) {
 	std::ofstream save (filename);
 	
 	if (!save.good()) {
-		log.error("Ini::saveToFile(...)", "Could not open file " + filename);
-		return false;
+		throw cfg::IniException("Ini::saveToFile(...): Could not open file " + filename);
 	}
 	
 	auto headerKeys = getSortedMapKeys(config);
@@ -90,6 +87,4 @@ bool Ini::saveToFile(const std::string &filename) {
 	
 	save.close();
 	save.clear();
-	
-	return true;
 }

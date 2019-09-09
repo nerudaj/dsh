@@ -3,9 +3,8 @@
 #include <iostream>
 #include <map>
 #include <vector>
-#include <Logger.hpp>
 
-#include "Item.hpp"
+#include "Config.hpp"
 
 namespace cfg {
 	/**
@@ -38,7 +37,6 @@ namespace cfg {
 		 *  \return TRUE if is
 		 */
 		bool isOptionDefined(const std::string &opt); ///< Whether option is stored in arguments
-		Logger logger;
 		
 	public:
 		/**
@@ -55,7 +53,7 @@ namespace cfg {
 		 *  are arguments that have a format '-L' which are treated as regular
 		 *  arguments and are checked against setup rules.
 		 */
-		bool parse(int argc, char *argv[]);
+		void parse(int argc, const char * const argv[]);
 		
 		/**
 		 *  \brief Setup how arguments will be parsed
@@ -74,7 +72,7 @@ namespace cfg {
 		 *  program [-h] [-g <value>] <-i <value>> where [] denotes optional
 		 *  items and <> denotes mandatory items.
 		 */
-		bool setupArguments(const std::string &argarray);
+		void setupArguments(const std::string &argarray);
 		
 		/**
 		 *  \brief Test if an argument was set during parsing

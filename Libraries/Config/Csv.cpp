@@ -1,9 +1,12 @@
 #include <fstream>
+#include <iostream>
 #include <string>
+#include <sstream>
 #include <Strings.hpp>
 #include "Csv.hpp"
 
 using cfg::Csv;
+using cfg::Item;
 
 enum class ParserMode {
 	Start,
@@ -18,7 +21,7 @@ struct ParserSettings {
 	char newline;
 };
 
-bool parseToken(const std::string &file, std::string::const_iterator &itr, std::string &token, int flags, ParserSettings settings) {
+bool parseToken(const std::string &file, std::string::const_iterator &itr, std::string &token, ParserSettings settings) {
 	ParserMode mode = ParserMode::Start;
 
 	auto first = itr;
@@ -59,7 +62,7 @@ bool parseToken(const std::string &file, std::string::const_iterator &itr, std::
 				rtncode = false;
 			}
 			else if (*itr == settings.quote) {
-				throw std::runtime_error("Invalid '" + std::string(1, settings.quote) + "' character at position: " + std::to_string(itr - file.begin()));
+				throw cfg::CsvException("Invalid '" + std::string(1, settings.quote) + "' character at position: " + std::to_string(itr - file.begin()));
 			}
 			break;
 			
@@ -77,7 +80,7 @@ bool parseToken(const std::string &file, std::string::const_iterator &itr, std::
 				mode = ParserMode::Quoted;
 			}
 			else {
-				throw std::runtime_error("Invalid non-delimiter, non-newline character followed after closing quote at position: " + std::to_string(itr - file.begin()));
+				throw cfg::CsvException("Invalid non-delimiter, non-newline character followed after closing quote at position: " + std::to_string(itr - file.begin()));
 			}
 			break;
 		}
@@ -90,7 +93,7 @@ bool parseToken(const std::string &file, std::string::const_iterator &itr, std::
 	return rtncode;
 }
 
-bool parseLine(const std::string &file, std::string::const_iterator &itr, std::vector<cfg::Item> &row, int flags, ParserSettings settings) {
+bool parseLine(const std::string &file, std::string::const_iterator &itr, std::vector<cfg::Item> &row, ParserSettings settings) {
 	if (itr == file.end()) return false; // Parsing ended
 
 	row.clear();
@@ -100,7 +103,7 @@ bool parseLine(const std::string &file, std::string::const_iterator &itr, std::v
 	// Read tokens until line end
 	bool rtn;
 	do {
-		rtn = parseToken(file, itr, token, flags, settings);
+		rtn = parseToken(file, itr, token, settings);
 		
 		if (token[0] == token.back() && token[0] == settings.quote) {
 			token = token.substr(1, token.size() - 2);
@@ -113,74 +116,45 @@ bool parseLine(const std::string &file, std::string::const_iterator &itr, std::v
 	return true;
 }
 
-bool Csv::loadFromFile(const std::string &filename, int flags, char delimiter, char newline, char quote) noexcept {
+std::vector<std::vector<Item>> Csv::loadFromFile(const std::string &filename, bool pedantic, char delimiter, char newline, char quote) {
+	std::vector<std::vector<Item>> result;
 	std::string file;
-	std::vector<cfg::Item> row;
-
-	if (flags & int(Flags::ResetHeaders)) {
-		headers.clear();
-	}
 	
 	// Load file into memory
 	try {
 		std::ifstream load(filename);
 
-		// Get size of file
-		load.seekg(0, load.end);
-		unsigned fsize = load.tellg();
-		load.seekg(0, load.beg);
-
-		log.debug("Csv::loadFromFile", "File size is " + std::to_string(fsize) + " bytes.");
-
-		// Allocate buffer
-		char *filebuf = new char[fsize];
-		if (filebuf == NULL) throw std::bad_alloc();
-
-		// Read file into memory
-		load.read(filebuf, fsize);
-		file = std::string(filebuf, fsize);
-		delete[] filebuf;
+		std::stringstream strStream;
+	    strStream << load.rdbuf(); //read the file
+		file = strStream.str();
 
 		load.close();
 		load.clear();
-	}
-	catch (std::exception &e) {
-		log.error("Csv::loadFromFile", "Exception: " + std::string(e.what()));
-		return false;
+	} catch (std::exception &e) {
+		throw CsvException("loadFromFile: error when loading file to memory: " + std::string(e.what()));
 	}
 	
-	// Parse file
-	std::string::const_iterator fileItr = file.begin();
-	
-	// Process headers
-	if (!(flags & std::size_t(Csv::Flags::NoHeaders))) {
-		parseLine(file, fileItr, row, flags, {delimiter, quote, newline});
-		headers = row;
-	}
-	
-	// Process body
-	while (parseLine(file, fileItr, row, flags, {delimiter, quote, newline})) {
-		if (!rows.empty() && !(flags & int(Flags::NoRowFit))) {
-			std::size_t columnCount = headers.empty() ? rows[0].size() : headers.size();
-			
-			if (columnCount != row.size()) {
-				log.debug("Csv::loadFromFile", "Row has bad number of rows. Adjusting...");
-				
-				if (flags & int(Flags::Pedantic)) {
-					log.error("Csv::loadFromFile", "Row " + std::to_string(rows.size() - 1) + " does not have exactly " + std::to_string(columnCount) + " columns");
-					return false;
-				}
+	Strings::replaceAll(file, "\r\n", "\n");
 
-				// If we are not pedantic, adjust row size to fit
-				while (columnCount > row.size()) row.push_back(Item());
-				while (columnCount < row.size()) row.pop_back();
+	std::string::const_iterator fileItr = file.begin();
+	std::vector<Item> row;
+
+	// Parse file, line by line
+	while (parseLine(file, fileItr, row, {delimiter, quote, newline})) {
+		if (pedantic && not result.empty()) {
+			if (row.size() != result.begin()->size()) {
+				throw CsvException("loadFromFile: Rows do not have the same number of columns and pedantic flag has been set");
 			}
 		}
 
-		rows.push_back(row);
+		try {
+			result.push_back(row);
+		} catch (std::exception &e) {
+			throw CsvException("loadFromFile: memory allocation failed: " + std::string(e.what()));
+		}
 	}
 	
-	return true;
+	return result;
 }
 
 void writeVectorOfCsvItems(std::ofstream &save, std::vector<cfg::Item> &row, char delimiter, char newline, char quote) {
@@ -208,15 +182,11 @@ void writeVectorOfCsvItems(std::ofstream &save, std::vector<cfg::Item> &row, cha
 	save << newline;
 }
 
-bool Csv::saveToFile(const std::string &filename, char delimiter, char newline, char quote) {
+void Csv::saveToFile(const std::vector<std::vector<Item>> &data, const std::string &filename, char delimiter, char newline, char quote) {
 	try {
-		std::ofstream save (filename);
+		std::ofstream save (filename, std::ios::binary);
 
-		if (!headers.empty()) {
-			writeVectorOfCsvItems(save, headers, delimiter, newline, quote);
-		}
-		
-		for (auto row : rows) {
+		for (auto row : data) {
 			writeVectorOfCsvItems(save, row, delimiter, newline, quote);
 		}
 
@@ -224,39 +194,6 @@ bool Csv::saveToFile(const std::string &filename, char delimiter, char newline, 
 		save.clear();
 	}
 	catch (std::exception &e) {
-		log.error("Csv::saveToFile", "Exception: " + std::string(e.what()));
-		return false;
+		throw CsvException("saveToFIle: error: " + std::string(e.what()));
 	}
-	
-	return true;
-}
-
-std::size_t Csv::headerID(const std::string &name) {
-	for (std::size_t i = 0; i < headers.size(); i++) {
-		if (headers[i].asString() == name) {
-			return i;
-		}
-	}
-	
-	throw std::out_of_range("Header " + name + " is not available");
-	return -1; // Never happens
-}
-
-void Csv::setHeaders(const std::vector<cfg::Item> &headers) {
-	Csv::headers = headers;
-}
-
-void Csv::resize(unsigned rowCount, unsigned colCount) {
-	unsigned currentSize = size();
-	rows.resize(rowCount);
-	
-	if (colCount > 0) {
-		for (unsigned i = currentSize; i < size(); i++) {
-			rows[i].resize(colCount, Item());
-		}
-	}
-}
-
-Csv::Csv() {
-	log.setLoggingLevel(3);
 }

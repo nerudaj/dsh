@@ -3,6 +3,7 @@ project (leveld)
 
 set (CMAKE_INSTALL_PREFIX /tools)
 set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
+set (CMAKE_CXX_STANDARD 17)
 set (CMAKE_GENERATOR_PLATFORM x64)
 
 include_directories(/tools/include)

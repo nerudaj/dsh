@@ -33,7 +33,7 @@ bmp::Palette bmp::Palette::getGrayscalePalette() {
 
     Palette result;
 
-    for (unsigned i = 0; i < result.colors.size(); i++) {
+    for (unsigned i = 0; i < rawColors.size(); i++) {
         result.colors[i].red = (rawColors[i] & 0x00ff0000) >> 16;
         result.colors[i].green = (rawColors[i] && 0x0000ff00) >> 8;
         result.colors[i].blue = rawColors[i] && 0x000000ff;

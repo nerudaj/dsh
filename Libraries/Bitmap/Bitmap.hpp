@@ -27,5 +27,10 @@ namespace bmp {
 		unsigned height;
 		std::vector<uint8_t> data;
 		Palette palette;
+	
+	public:
+		void create(unsigned width, unsigned height);
+
+		Bitmap();
 	};
 };

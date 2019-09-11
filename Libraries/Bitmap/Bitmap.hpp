@@ -9,6 +9,8 @@ namespace bmp {
 		uint8_t green;
 		uint8_t blue;
 
+		Color() : red(0), green(0), blue(0) {}
+
 		/**
 		 *  \brief Grayscale constructor for Color
 		 */

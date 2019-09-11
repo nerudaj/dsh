@@ -2,6 +2,7 @@
 
 #include <cstdint>
 #include <vector>
+#include <string>
 
 namespace bmp {
 	struct Color {
@@ -58,6 +59,8 @@ namespace bmp {
 		 *  setPalette will thus change the color of the canvas
 		 */
 		void create(unsigned width, unsigned height);
+
+		void saveToFile(const std::string &filename) const;
 
 		/**
 		 *  \brief Initializes the object

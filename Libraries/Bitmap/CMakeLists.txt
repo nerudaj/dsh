@@ -7,7 +7,7 @@ set (CMAKE_INSTALL_PREFIX /tools/utils)
 include_directories(/tools/utils/include)
 
 # Add library
-add_library(${PROJECT_NAME} Bitmap.cpp)
+add_library(${PROJECT_NAME} Bitmap.cpp Palette.cpp)
 target_include_directories (${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
 # Install

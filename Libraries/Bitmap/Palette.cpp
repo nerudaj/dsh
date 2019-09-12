@@ -1,6 +1,6 @@
 #include "Bitmap.hpp"
 
-bmp::Palette bmp::Palette::getGrayscalePalette() {
+bmp::Palette bmp::Palette::getUnixPalette() {
     // From https://stackoverflow.com/questions/17583020/how-to-generate-256-color-palette-for-linux-terminal-in-html-jquery
 	std::vector<uint32_t> rawColors = {
 		0x00000000, 0x00808080, 0x00800000, 0x00ff0000, 0x00008000, 0x0000ff00, 0x00808000, 0x00ffff00, 0x00000080, 0x000000ff, 
@@ -42,7 +42,7 @@ bmp::Palette bmp::Palette::getGrayscalePalette() {
     return result;
 }
 
-bmp::Palette bmp::Palette::getUnixPalette() {
+bmp::Palette bmp::Palette::getGrayscalePalette() {
     Palette result;
 
     for (int i = 0; i < 256; i++) {

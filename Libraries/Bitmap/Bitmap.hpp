@@ -67,8 +67,25 @@ namespace bmp {
 		 */
 		void saveToFile(const std::string &filename) const;
 
+		/**
+		 *  \brief Set the value of pixel
+		 * 
+		 *  \param[in]  x      X coordinate of pixel
+		 *  \param[in]  y      Y coordinate of pixel
+		 *  \param[in]  value  Index to color palette
+		 */
 		void setPixel(unsigned x, unsigned y, uint8_t value) {
 			data[x * width + y] = value;
+		}
+
+		/**
+		 *  \brief Get value of a pixel (index to color palette)
+		 * 
+		 *  \param[in]  x      X coordinate of pixel
+		 *  \param[in]  y      Y coordinate of pixel
+		 */
+		uint8_t getPixel(unsigned x, unsigned y) const {
+			return data[x * width + y];
 		}
 
 		/**

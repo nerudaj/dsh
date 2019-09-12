@@ -60,7 +60,16 @@ namespace bmp {
 		 */
 		void create(unsigned width, unsigned height);
 
+		/**
+		 *  \brief Store bitmap to file
+		 * 
+		 *  \param[in]  filename  Name of the output file
+		 */
 		void saveToFile(const std::string &filename) const;
+
+		void setPixel(unsigned x, unsigned y, uint8_t value) {
+			data[x * width + y] = value;
+		}
 
 		/**
 		 *  \brief Initializes the object

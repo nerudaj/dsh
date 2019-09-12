@@ -11,20 +11,20 @@ void bmp::Bitmap::create(unsigned width, unsigned height) {
 }
 
 void bmp::Bitmap::saveToFile(const std::string &filename) const {
-    raw::BmpHeader bmpHeader(width * height);
-    raw::DibHeader dibHeader(width, height);
+	raw::BmpHeader bmpHeader(width * height);
+	raw::DibHeader dibHeader(width, height);
 	
 	try {
 		std::ofstream save(filename, std::ios::binary);
-		
+
 		save.write((char*)(&bmpHeader), sizeof(raw::BmpHeader));
 		save.write((char*)(&dibHeader), sizeof(raw::DibHeader));
-		
+
 		for (auto &color : palette.colors) {
-            raw::Color rawColor(color);
+			raw::Color rawColor(color);
 			save.write((char*)(&rawColor), sizeof(raw::Color));
 		}
-		
+
 		for (uint32_t cnt = 0, y = height - 1; cnt < height; cnt++, y--) {
 			for (uint32_t x = 0; x < width; x++) {
 				save.write((char*)(&data[x * width + y]), 1);
@@ -36,7 +36,7 @@ void bmp::Bitmap::saveToFile(const std::string &filename) const {
 				}
 			}
 		}
-		
+
 		save.close();
 		save.clear();
 	}

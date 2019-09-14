@@ -46,7 +46,7 @@ namespace bmp {
 		unsigned height;
 		std::vector<uint8_t> data;
 		Palette palette;
-	
+
 	public:
 		/**
 		 *  \brief Create empty bitmap canvas
@@ -75,7 +75,7 @@ namespace bmp {
 		 *  \param[in]  value  Index to color palette
 		 */
 		void setPixel(unsigned x, unsigned y, uint8_t value) {
-			data[x * width + y] = value;
+			data[y * width + x] = value;
 		}
 
 		/**
@@ -85,7 +85,7 @@ namespace bmp {
 		 *  \param[in]  y      Y coordinate of pixel
 		 */
 		uint8_t getPixel(unsigned x, unsigned y) const {
-			return data[x * width + y];
+			return data[y * width + x];
 		}
 
 		/**

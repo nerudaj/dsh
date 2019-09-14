@@ -27,7 +27,7 @@ void bmp::Bitmap::saveToFile(const std::string &filename) const {
 
 		for (uint32_t cnt = 0, y = height - 1; cnt < height; cnt++, y--) {
 			for (uint32_t x = 0; x < width; x++) {
-				save.write((char*)(&data[x * width + y]), 1);
+				save.write((char*)(&data[y * width + x]), 1);
 			}
 			
 			if (width % 4 != 0) {

@@ -88,6 +88,13 @@ namespace bmp {
 			return data[y * width + x];
 		}
 
+		void setPalette(const bmp::Palette &palette) {
+			this->palette = palette;
+		}
+
+		const bmp::Palette &getPalette() const {
+			return palette;
+		}
 		/**
 		 *  \brief Initializes the object
 		 * 

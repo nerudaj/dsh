@@ -61,11 +61,16 @@ namespace bmp {
 		void create(unsigned width, unsigned height);
 
 		/**
-		 *  \brief Store bitmap to file
+		 *  \brief Resize image
 		 * 
-		 *  \param[in]  filename  Name of the output file
+		 *  \param[in]  width   New width of image
+		 *  \param[in]  height  New height of image
+		 * 
+		 *  \note You might lost some data during resize.
+		 * 
+		 *  No color interpolation is performed.
 		 */
-		void saveToFile(const std::string &filename) const;
+		void resize(unsigned width, unsigned height);
 
 		/**
 		 *  \brief Set the value of pixel
@@ -110,16 +115,11 @@ namespace bmp {
 		}
 
 		/**
-		 *  \brief Resize image
+		 *  \brief Store bitmap to file
 		 * 
-		 *  \param[in]  width   New width of image
-		 *  \param[in]  height  New height of image
-		 * 
-		 *  \note You might lost some data during resize.
-		 * 
-		 *  No color interpolation is performed.
+		 *  \param[in]  filename  Name of the output file
 		 */
-		void resize(unsigned width, unsigned height);
+		void saveToFile(const std::string &filename) const;
 
 		/**
 		 *  \brief Initializes the object

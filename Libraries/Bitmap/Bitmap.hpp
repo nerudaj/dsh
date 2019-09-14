@@ -88,14 +88,37 @@ namespace bmp {
 			return data[y * width + x];
 		}
 
+		/**
+		 *  \brief Change currently used palette
+		 * 
+		 *  \param[in]  palette  New palette to use
+		 * 
+		 *  Chaning the palette won't affect the image data,
+		 *  only pixel colors. If can simply convert image
+		 *  from colored to grayscale by only changing the palette
+		 *  and then you can roll back by setting it back.
+		 */
 		void setPalette(const bmp::Palette &palette) {
 			this->palette = palette;
 		}
 
+		/**
+		 *  \brief Get currently used palette
+		 */
 		const bmp::Palette &getPalette() const {
 			return palette;
 		}
 
+		/**
+		 *  \brief Resize image
+		 * 
+		 *  \param[in]  width   New width of image
+		 *  \param[in]  height  New height of image
+		 * 
+		 *  \note You might lost some data during resize.
+		 * 
+		 *  No color interpolation is performed.
+		 */
 		void resize(unsigned width, unsigned height);
 
 		/**

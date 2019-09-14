@@ -31,7 +31,7 @@ void bmp::Bitmap::saveToFile(const std::string &filename) const {
 			}
 			
 			if (width % 4 != 0) {
-				for (int i = width % sizeof(uint32_t); i <= 4; i++) {
+				for (int i = width % sizeof(uint32_t); i < 4; i++) {
 					save << uint8_t(0);
 				}
 			}

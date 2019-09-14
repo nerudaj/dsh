@@ -1,5 +1,6 @@
 #include <fstream>
 #include <iostream>
+#include <cmath>
 
 #include "Bitmap.hpp"
 #include "RawHeaders.hpp"
@@ -43,6 +44,24 @@ void bmp::Bitmap::saveToFile(const std::string &filename) const {
 	catch (std::exception &e) {
         std::cerr << "Bitmap::Exception: " << e.what() << std::endl;
 	}
+}
+
+void bmp::Bitmap::resize(unsigned w, unsigned h) {
+	bmp::Bitmap result;
+	result.create(w, h);
+	result.setPalette(getPalette());
+
+	float kW = float(w) / width;
+	float kH = float(h) / height;
+	
+	for (unsigned y = 0; y < h; y++) {
+		for (unsigned x = 0; x < w; x++) {
+			uint8_t value = getPixel(x / kW, y / kH);
+			result.setPixel(x, y, value);
+		}
+	}
+
+	*this = result;
 }
 
 bmp::Bitmap::Bitmap() {

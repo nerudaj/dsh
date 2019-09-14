@@ -95,6 +95,9 @@ namespace bmp {
 		const bmp::Palette &getPalette() const {
 			return palette;
 		}
+
+		void resize(unsigned width, unsigned height);
+
 		/**
 		 *  \brief Initializes the object
 		 * 

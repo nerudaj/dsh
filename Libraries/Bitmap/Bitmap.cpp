@@ -11,6 +11,25 @@ void bmp::Bitmap::create(unsigned width, unsigned height) {
     bmp::Bitmap::height = height;
 }
 
+void bmp::Bitmap::resize(unsigned w, unsigned h) {
+	bmp::Bitmap result;
+	result.create(w, h);
+	result.setPalette(getPalette());
+
+	float kW = float(w) / width;
+	float kH = float(h) / height;
+	
+	for (unsigned y = 0; y < h; y++) {
+		for (unsigned x = 0; x < w; x++) {
+			uint8_t value = getPixel(x / kW, y / kH);
+			result.setPixel(x, y, value);
+		}
+	}
+
+	*this = result;
+}
+
+
 void bmp::Bitmap::saveToFile(const std::string &filename) const {
 	raw::BmpHeader bmpHeader(width * height);
 	raw::DibHeader dibHeader(width, height);
@@ -46,22 +65,44 @@ void bmp::Bitmap::saveToFile(const std::string &filename) const {
 	}
 }
 
-void bmp::Bitmap::resize(unsigned w, unsigned h) {
-	bmp::Bitmap result;
-	result.create(w, h);
-	result.setPalette(getPalette());
+void loadFromFile(const std::string &filename) {
+	raw::BmpHeader bmpHeader;
+	raw::DibHeader dibHeader;
 
-	float kW = float(w) / width;
-	float kH = float(h) / height;
-	
-	for (unsigned y = 0; y < h; y++) {
-		for (unsigned x = 0; x < w; x++) {
-			uint8_t value = getPixel(x / kW, y / kH);
-			result.setPixel(x, y, value);
-		}
+	bmp::Bitmap result;
+
+	try {
+		std::ifstream load(filename, std::ios::binary);
+
+		load.read((char*)(&bmpHeader), sizeof(raw::BmpHeader));
+		load.read((char*)(&dibHeader), sizeof(raw::DibHeader));
+
+		if (not bmpheader.isValid()) throw std::runtime_error("Invalid BMP header");
+		if (not dibHeader.isValid8bit()) throw std::runtime_error("DIB header is not valid for 8bit bitmap");
+
+		result.create(dibHeader.width, dibHeader.height);
+		result.setPalette(loadPaletteFromStream(load));
+		result.data = loadPixelsFromStream(load);
+
+		load.close();
+		load.clear();
+	}
+	catch (std::exception &e) {
+        std::cerr << "Bitmap::Exception: " << e.what() << std::endl;
 	}
 
 	*this = result;
+}
+
+bmp::Palette loadPaletteFromStream(std::ifstream &load) {
+	bmp::Palette pal;
+	raw::Color color;
+	for (unsigned i = 0; i < 256; i++) {
+		load.read((char*)(&color), sizeof(raw::Color));
+		pal.colors[i] = color.toBmpColor();
+	}
+
+	return pal;
 }
 
 bmp::Bitmap::Bitmap() {

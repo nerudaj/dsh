@@ -11,6 +11,10 @@ namespace raw {
         uint8_t blue;
         uint8_t alpha;
 
+        bmp::Color toBmpColor() const {
+            return bmp::Color(red, green, blue);
+        }
+
         Color(const bmp::Color &color) {
             red = color.red;
             green = color.green;
@@ -26,6 +30,9 @@ namespace raw {
         uint16_t reserved2; ///< 0x0000
         uint32_t dataOffset; ///< SIZEOF(bmpheader) + sizeof(dibheader) + palette
 
+        bool isValid() const {}
+
+        BmpHeader() {}
         BmpHeader(size_t pixelCount);
     };
 
@@ -42,7 +49,10 @@ namespace raw {
         uint32_t nofColorsInPalette;
         uint32_t importantColors; ///< 0 - All
 
+        DibHeader() {}
         DibHeader(uint32_t width, uint32_t height);
+
+        bool isValid8bit() const;
     };
     #pragma pack()
 }

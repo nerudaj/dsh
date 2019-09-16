@@ -47,6 +47,10 @@ namespace bmp {
 		std::vector<uint8_t> data;
 		Palette palette;
 
+		bmp::Palette loadPaletteFromStream(std::ifstream &load);
+
+		std::vector<uint8_t> loadPixelsFromStream(std::ifstream &load);
+
 	public:
 		/**
 		 *  \brief Create empty bitmap canvas
@@ -120,6 +124,8 @@ namespace bmp {
 		 *  \param[in]  filename  Name of the output file
 		 */
 		void saveToFile(const std::string &filename) const;
+
+		void loadFromFile(const std::string &filename);
 
 		/**
 		 *  \brief Initializes the object

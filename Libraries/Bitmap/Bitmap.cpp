@@ -65,7 +65,7 @@ void bmp::Bitmap::saveToFile(const std::string &filename) const {
 	}
 }
 
-void loadFromFile(const std::string &filename) {
+void bmp::Bitmap::loadFromFile(const std::string &filename) {
 	raw::BmpHeader bmpHeader;
 	raw::DibHeader dibHeader;
 
@@ -77,12 +77,12 @@ void loadFromFile(const std::string &filename) {
 		load.read((char*)(&bmpHeader), sizeof(raw::BmpHeader));
 		load.read((char*)(&dibHeader), sizeof(raw::DibHeader));
 
-		if (not bmpheader.isValid()) throw std::runtime_error("Invalid BMP header");
+		if (not bmpHeader.isValid()) throw std::runtime_error("Invalid BMP header");
 		if (not dibHeader.isValid8bit()) throw std::runtime_error("DIB header is not valid for 8bit bitmap");
 
 		result.create(dibHeader.width, dibHeader.height);
 		result.setPalette(loadPaletteFromStream(load));
-		result.data = loadPixelsFromStream(load);
+		result.data = loadPixelsFromStream(load, dibHeader.width, dibHeader.height);
 
 		load.close();
 		load.clear();
@@ -94,7 +94,7 @@ void loadFromFile(const std::string &filename) {
 	*this = result;
 }
 
-bmp::Palette loadPaletteFromStream(std::ifstream &load) {
+bmp::Palette bmp::Bitmap::loadPaletteFromStream(std::ifstream &load) {
 	bmp::Palette pal;
 	raw::Color color;
 	for (unsigned i = 0; i < 256; i++) {
@@ -103,6 +103,18 @@ bmp::Palette loadPaletteFromStream(std::ifstream &load) {
 	}
 
 	return pal;
+}
+
+std::vector<uint8_t> bmp::Bitmap::loadPixelsFromStream(std::ifstream &load, uint32_t width, uint32_t height) {
+	std::vector<uint8_t> result(width * height, 0);
+
+	for (uint32_t y = 0; y < height; y++) {
+		for (uint32_t x = 0; x < width; x++) {
+			load.read((char*)(&result[(height - 1 - y) * width + x]), sizeof(uint8_t));
+		}
+	}
+
+	return result;
 }
 
 bmp::Bitmap::Bitmap() {

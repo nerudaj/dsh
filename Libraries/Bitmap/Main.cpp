@@ -15,7 +15,7 @@ int main() {
     bitmap.saveToFile("pokus2.bmp");
     
     bitmap.resize(1024, 1024);*/
-    //bitmap.setPalette(bmp::Palette::getUnixPalette());
+    bitmap.setPalette(bmp::Palette::getUnixPalette());
     //bitmap.saveToFile("pokus3.bmp");
 
     bitmap.create(2, 2);
@@ -28,6 +28,11 @@ int main() {
     bitmap.saveToFile("resize1.bmp");
     bitmap.resize(71, 71);
     bitmap.saveToFile("resize2.bmp");
+
+    bmp::Bitmap bmp2;
+    bmp2.loadFromFile("resize1.bmp");
+    bmp2.setPalette(bmp::Palette::getGrayscalePalette());
+    bmp2.saveToFile("swap.bmp");
 
     return 0;
 }

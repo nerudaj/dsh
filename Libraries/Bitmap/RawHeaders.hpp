@@ -15,6 +15,7 @@ namespace raw {
             return bmp::Color(red, green, blue);
         }
 
+        Color() {}
         Color(const bmp::Color &color) {
             red = color.red;
             green = color.green;
@@ -30,7 +31,7 @@ namespace raw {
         uint16_t reserved2; ///< 0x0000
         uint32_t dataOffset; ///< SIZEOF(bmpheader) + sizeof(dibheader) + palette
 
-        bool isValid() const {}
+        bool isValid() const;
 
         BmpHeader() {}
         BmpHeader(size_t pixelCount);

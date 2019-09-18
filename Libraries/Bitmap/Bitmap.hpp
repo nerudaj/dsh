@@ -49,7 +49,7 @@ namespace bmp {
 
 		bmp::Palette loadPaletteFromStream(std::ifstream &load);
 
-		std::vector<uint8_t> loadPixelsFromStream(std::ifstream &load);
+		std::vector<uint8_t> loadPixelsFromStream(std::ifstream &load, uint32_t width, uint32_t height);
 
 	public:
 		/**

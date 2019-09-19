@@ -32,6 +32,8 @@
 *.app
 
 # Cmake
+Libraries/build
+Libraries/vsbuild
 Libraries/Bitmap/build
 Libraries/Config/build
 Libraries/Config/vsbuild

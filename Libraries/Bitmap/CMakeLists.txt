@@ -19,5 +19,4 @@ install(TARGETS ${PROJECT_NAME} DESTINATION lib)
 install(FILES Bitmap.hpp DESTINATION include)
 
 # Add executable
-#add_executable(pokus Main.cpp)
-#target_link_libraries(pokus ${PROJECT_NAME})
+add_subdirectory ( tests )

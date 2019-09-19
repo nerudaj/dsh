@@ -1,5 +1,5 @@
 #include "LevelD.hpp"
-#include "Tests/Test.hpp"
+#include "Test.hpp"
 #include <iostream>
 #include <Config.hpp>
 

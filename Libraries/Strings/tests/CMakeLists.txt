@@ -1,7 +1,5 @@
 set ( TESTRUNNER "testrunner_strings" )
 
-include_directories ( "${CMAKE_CURRENT_SOURCE_DIR}/../../Testrunner/include" )
-
 add_executable( ${TESTRUNNER} 
 	main.cpp
 )

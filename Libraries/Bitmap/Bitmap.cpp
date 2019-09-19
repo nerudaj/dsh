@@ -1,6 +1,7 @@
 #include <fstream>
 #include <iostream>
 #include <cmath>
+#include <ciso646>
 
 #include "Bitmap.hpp"
 #include "RawHeaders.hpp"

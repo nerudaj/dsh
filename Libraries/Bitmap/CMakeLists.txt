@@ -7,6 +7,7 @@ add_library( ${PROJECT_NAME}
 	Bitmap.cpp 
 	Palette.cpp 
 	RawHeaders.cpp 
+	IO.cpp
 )
 
 target_include_directories ( ${PROJECT_NAME} 

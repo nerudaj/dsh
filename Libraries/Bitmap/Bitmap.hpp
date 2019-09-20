@@ -47,10 +47,6 @@ namespace bmp {
 		std::vector<uint8_t> data;
 		Palette palette;
 
-		bmp::Palette loadPaletteFromStream(std::ifstream &load);
-
-		std::vector<uint8_t> loadPixelsFromStream(std::ifstream &load, uint32_t width, uint32_t height);
-
 	public:
 		/**
 		 *  \brief Create empty bitmap canvas

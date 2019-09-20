@@ -108,14 +108,31 @@ public:
 };
 
 class IOPixelsTest : public Test {
+private:
+	std::vector<uint8_t> pixels;
+	uint32_t width;
+	uint32_t height;
+
 public:
 	void run() override {
-		throw std::runtime_error("Not implemented!");
+		std::ofstream save("test.bmp", std::ios::binary);
+		IO::savePixelsToStream(pixels, width, save);
+		save.close();
+		save.clear();
+		
+		std::ifstream load("test.bmp", std::ios::binary);
+		std::vector<uint8_t> ref = IO::loadPixelsFromStream(load, width, height);
+		load.close();
+		load.clear();
+
+		assertTrue(pixels == ref);
 	}
 	
 	std::string name() const override {
 		return "IOPixelsTest";
 	}
+	
+	IOPixelsTest(const std::vector<uint8_t> &pixels, uint32_t width, uint32_t height) : pixels(pixels), width(width), height(height) {}
 };
 
 int main(int argc, char *argv[]) {
@@ -129,7 +146,9 @@ int main(int argc, char *argv[]) {
 		new IODibHeaderTest(4, 4),
 		new IODibHeaderTest(10, 10),
 		new IOPaletteTest(),
-		new IOPixelsTest(),
+		new IOPixelsTest({}, 0, 0),
+		new IOPixelsTest({0, 1, 2, 3}, 2, 2),
+		new IOPixelsTest({0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15}, 4, 4),
 	});
 	
 	return runner.evaluateTestcases(true);

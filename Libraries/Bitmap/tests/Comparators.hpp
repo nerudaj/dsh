@@ -41,3 +41,13 @@ bool operator==(const bmp::Palette &a, const bmp::Palette &b) {
 	
 	return true;
 }
+
+bool operator==(const std::vector<uint8_t> &a, const std::vector<uint8_t> &b) {
+	if (a.size() != b.size()) return false;
+	
+	for (unsigned i = 0; i < a.size(); i++) {
+		if (a[i] != b[i]) return false;
+	}
+	
+	return true;
+}

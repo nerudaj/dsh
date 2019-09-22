@@ -135,6 +135,44 @@ public:
 	IOPixelsTest(const std::vector<uint8_t> &pixels, uint32_t width, uint32_t height) : pixels(pixels), width(width), height(height) {}
 };
 
+class BitmapSaveLoadTest : public Test {
+private:
+	bmp::Bitmap bmp;
+
+public:
+	void run() override {
+		bmp.saveToFile("test.bmp");
+
+		bmp::Bitmap ref;
+		ref.loadFromFile("test.bmp");
+
+		assertTrue(bmp.getPalette() == ref.getPalette());
+		assertTrue(bmp.getWidth() == ref.getWidth());
+		assertTrue(bmp.getHeight() == ref.getHeight());
+
+		for (unsigned y = 0; y < bmp.getHeight(); y++) {
+			for (unsigned x = 0; x < bmp.getWidth(); x++) {
+				inLoop(inLoop(assertTrue(bmp.getPixel(x, y) == ref.getPixel(x, y)), x), y);
+			}
+		}
+	}
+
+	std::string name() const override {
+		return "BitmapSaveLoadTest";
+	}
+
+	BitmapSaveLoadTest() {
+		bmp.create(100, 100);
+		bmp.setPalette(bmp::Palette::getUnixPalette());
+
+		for (unsigned y = 0; y < 100; y++) {
+			for (unsigned x = 0; x < 100; x++) {
+				bmp.setPixel(x, y, (y * 100 + x) % 256);
+			}
+		}
+	}
+};
+
 int main(int argc, char *argv[]) {
 	Testrunner runner({
 		new BmpHeaderValidTest(),
@@ -149,6 +187,7 @@ int main(int argc, char *argv[]) {
 		new IOPixelsTest({}, 0, 0),
 		new IOPixelsTest({0, 1, 2, 3}, 2, 2),
 		new IOPixelsTest({0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15}, 4, 4),
+		new BitmapSaveLoadTest()
 	});
 	
 	return runner.evaluateTestcases(true);

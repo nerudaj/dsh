@@ -93,6 +93,14 @@ namespace bmp {
 			return data[y * width + x];
 		}
 
+		unsigned getWidth() const {
+			return width;
+		}
+
+		unsigned getHeight() const {
+			return height;
+		}
+
 		/**
 		 *  \brief Change currently used palette
 		 * 

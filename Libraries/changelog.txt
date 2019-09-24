@@ -1,6 +1,5 @@
-v0.X.X
+v0.7.0
 	- added libbitmap
-	- TODO: fix c++17 in top level cmake
 
 v0.6.2
 	- added docs for LevelD format

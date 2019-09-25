@@ -529,7 +529,14 @@ public:
 	CsvSaveToFileTest(const vector<vector<cfg::Item>> &in) : in(in) {}
 };
 
-int main() {
+int main(int argc, char *argv[]) {
+	if (argc != 2) {
+		std::cerr << "ERROR: pathPrefix unspecified!" << std::endl;
+		return 1;
+	}
+	
+	std::string pathPrefix = argv[1];
+	
 	Testrunner runner({
 		new ItemInitTest<const char*>(std::string("hello world").c_str(), "hello world"),
 		new ItemInitTest<std::string>("hello world", "hello world"),
@@ -627,7 +634,7 @@ int main() {
 			})}
 		}),
 		// IniLoadFromFileTest
-		new IniLoadFromFileTest("../tests/iniOk0.ini", {
+		new IniLoadFromFileTest(pathPrefix + "/iniOk0.ini", {
 			{"root", cfg::IniSection({
 				{"key1", cfg::Item("value1")}
 			})},
@@ -637,17 +644,17 @@ int main() {
 				{"key4", cfg::Item("false")}
 			})}
 		}),
-		new IniLoadFromFileTest("../tests/iniOk1.ini", {
+		new IniLoadFromFileTest(pathPrefix + "/iniOk1.ini", {
 			{"root", cfg::IniSection({
 				{"key1", cfg::Item()}
 			})}
 		}),
-		new IniLoadFromFileFailTest("../tests/iniFail0.ini"),
-		new IniLoadFromFileFailTest("../tests/iniFail1.ini"),
-		new IniLoadFromFileFailTest("../tests/iniFail2.ini"),
+		new IniLoadFromFileFailTest(pathPrefix + "/iniFail0.ini"),
+		new IniLoadFromFileFailTest(pathPrefix + "/iniFail1.ini"),
+		new IniLoadFromFileFailTest(pathPrefix + "/iniFail2.ini"),
 		// IniSaveToFileTest
-		new IniSaveToFileTest("../tests/iniOk0.ini"),
-		new IniSaveToFileTest("../tests/iniOk1.ini"),
+		new IniSaveToFileTest(pathPrefix + "/iniOk0.ini"),
+		new IniSaveToFileTest(pathPrefix + "/iniOk1.ini"),
 		// ArgsSetupArgumentsTest
 		new ArgsSetupArgumentsTest("h"),
 		new ArgsSetupArgumentsTest("h:"),
@@ -691,55 +698,55 @@ int main() {
 		// ArgsGetArgValueFailTest
 		new ArgsGetArgValueFailTest("h:", {"progname"}, 'h', 10),
 		// CsvLoadFromFileTest
-		new CsvLoadFromFileTest("../tests/test0.csv", {
+		new CsvLoadFromFileTest(pathPrefix + "/test0.csv", {
 			{"aaa", "bbb", "ccc"}, {"ddd", "eee", "fff"}
 		}),
-		new CsvLoadFromFileTest("../tests/test1.csv", {
+		new CsvLoadFromFileTest(pathPrefix + "/test1.csv", {
 			{"aaa", "bbb", "ccc"}, {"ddd", "eee", "fff"}
 		}),
-		new CsvLoadFromFileTest("../tests/test2.csv", {
+		new CsvLoadFromFileTest(pathPrefix + "/test2.csv", {
 			{"aaa", "bbb", "cc\nc"}, {"ddd", "eee", "fff"}
 		}),
-		new CsvLoadFromFileTest("../tests/test3.csv", {
+		new CsvLoadFromFileTest(pathPrefix + "/test3.csv", {
 			{"aaa", "bbb", "cc,c"}, {"ddd", "eee", "fff"}
 		}),
-		new CsvLoadFromFileTest("../tests/test4.csv", {
+		new CsvLoadFromFileTest(pathPrefix + "/test4.csv", {
 			{"aaa", "bbb", "cc\"c"}, {"ddd", "eee", "fff"}
 		}),
-		new CsvLoadFromFileTest("../tests/test5.csv", {
+		new CsvLoadFromFileTest(pathPrefix + "/test5.csv", {
 			{"aaa", "bbb", "ccc"}, {"ddd", "eee", "fff"},
 		}),
-		new CsvLoadFromFileTest("../tests/test6.csv", {
+		new CsvLoadFromFileTest(pathPrefix + "/test6.csv", {
 			{"aaa", "bbb", "ccc"}, {"ddd", "eee"}
 		}),
-		new CsvLoadFromFileTest("../tests/test7.csv", {
+		new CsvLoadFromFileTest(pathPrefix + "/test7.csv", {
 			{"aaa", "bbb", "ccc"}, {"ddd", "eee", "fff", "ggg"}
 		}),
 		// CsvLoadFromFileFailTest
-		new CsvLoadFromFileFailTest("../tests/test8.csv", "Invalid '\"' character at position: 6"),
-		new CsvLoadFromFileFailTest("../tests/test9.csv", "Invalid non-delimiter, non-newline character followed after closing quote at position: 9"),
+		new CsvLoadFromFileFailTest(pathPrefix + "/test8.csv", "Invalid '\"' character at position: 6"),
+		new CsvLoadFromFileFailTest(pathPrefix + "/test9.csv", "Invalid non-delimiter, non-newline character followed after closing quote at position: 9"),
 		// CsvLoadFromFilePedanticTest
-		new CsvLoadFromFilePedanticTest("../tests/test0.csv", {
+		new CsvLoadFromFilePedanticTest(pathPrefix + "/test0.csv", {
 			{"aaa", "bbb", "ccc"}, {"ddd", "eee", "fff"}
 		}),
-		new CsvLoadFromFilePedanticTest("../tests/test1.csv", {
+		new CsvLoadFromFilePedanticTest(pathPrefix + "/test1.csv", {
 			{"aaa", "bbb", "ccc"}, {"ddd", "eee", "fff"}
 		}),
-		new CsvLoadFromFilePedanticTest("../tests/test2.csv", {
+		new CsvLoadFromFilePedanticTest(pathPrefix + "/test2.csv", {
 			{"aaa", "bbb", "cc\nc"}, {"ddd", "eee", "fff"}
 		}),
-		new CsvLoadFromFilePedanticTest("../tests/test3.csv", {
+		new CsvLoadFromFilePedanticTest(pathPrefix + "/test3.csv", {
 			{"aaa", "bbb", "cc,c"}, {"ddd", "eee", "fff"}
 		}),
-		new CsvLoadFromFilePedanticTest("../tests/test4.csv", {
+		new CsvLoadFromFilePedanticTest(pathPrefix + "/test4.csv", {
 			{"aaa", "bbb", "cc\"c"}, {"ddd", "eee", "fff"}
 		}),
-		new CsvLoadFromFilePedanticTest("../tests/test5.csv", {
+		new CsvLoadFromFilePedanticTest(pathPrefix + "/test5.csv", {
 			{"aaa", "bbb", "ccc"}, {"ddd", "eee", "fff"}
 		}),
 		// CsvLoadFromFilePedanticFailTest
-		new CsvLoadFromFilePedanticFailTest("../tests/test6.csv", "loadFromFile: Rows do not have the same number of columns and pedantic flag has been set"),
-		new CsvLoadFromFilePedanticFailTest("../tests/test7.csv", "loadFromFile: Rows do not have the same number of columns and pedantic flag has been set"),
+		new CsvLoadFromFilePedanticFailTest(pathPrefix + "/test6.csv", "loadFromFile: Rows do not have the same number of columns and pedantic flag has been set"),
+		new CsvLoadFromFilePedanticFailTest(pathPrefix + "/test7.csv", "loadFromFile: Rows do not have the same number of columns and pedantic flag has been set"),
 		// CsvSaveToFileTest
 		new CsvSaveToFileTest({{"aaa", "bbb", "ccc"}, {"ddd", "eee", "fff"}}),
 		new CsvSaveToFileTest({{"aaa", "bbb", "cc\nc"}, {"ddd", "eee", "fff"}}),

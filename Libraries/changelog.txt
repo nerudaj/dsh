@@ -1,3 +1,6 @@
+v0.7.0
+	- added libbitmap
+
 v0.6.2
 	- added docs for LevelD format
 	- added id field to LevelD actor objects

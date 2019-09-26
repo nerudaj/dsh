@@ -7,6 +7,7 @@ endif()
 project ( dshlibs )
 
 include_directories ( "Testrunner/include" )
+include_directories ( "Catch" )
 
 enable_testing()
 

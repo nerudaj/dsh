@@ -41,7 +41,7 @@ namespace perlin {
 	template<unsigned Dimensions>
 	class NoiseGenerator {
 	private:
-		GradientVector gradients;
+		GradientVector<Dimensions> gradients;
 
 	public:
 		float getValueAt(const perlin::Vector<Dimensions> &coords) const;

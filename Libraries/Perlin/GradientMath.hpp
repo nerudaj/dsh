@@ -20,6 +20,12 @@ public:
 
 	template<unsigned Dimensions>
 	static void normalizeGradient(Gradient<Dimensions> &vec) {
+		float size = getGradientSize(vec);
+		if (size == 0.f) return;
+
+		for (unsigned i = 0; i < Dimensions; i++) {
+			vec[i] /= size;
+		}
 	}
 
 	template<unsigned Dimensions>

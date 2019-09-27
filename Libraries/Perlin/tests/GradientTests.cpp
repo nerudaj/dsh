@@ -26,3 +26,59 @@ TEST_CASE("Get gradient size", "[GradientMath]") {
 		REQUIRE(GradientMath::getGradientSize<4>({1, 1, 1, 1}) == 2.f);
 	}
 }
+
+TEST_CASE("Normalize gradient", "[GradientMath]") {
+	SECTION("All zeroes") {
+		perlin::Gradient<1> gz1({0});
+		GradientMath::normalizeGradient<1>(gz1);
+		REQUIRE(GradientMath::getGradientSize<1>(gz1) == 0.f);
+
+		perlin::Gradient<2> gz2({0, 0});
+		GradientMath::normalizeGradient<2>(gz2);
+		REQUIRE(GradientMath::getGradientSize<2>(gz2) == 0.f);
+
+		perlin::Gradient<3> gz3({0, 0, 0});
+		GradientMath::normalizeGradient<3>(gz3);
+		REQUIRE(GradientMath::getGradientSize<3>(gz3) == 0.f);
+
+		perlin::Gradient<4> gz4({0, 0, 0, 0});
+		GradientMath::normalizeGradient<4>(gz4);
+		REQUIRE(GradientMath::getGradientSize<4>(gz4) == 0.f);
+	}
+
+	SECTION("Already normalized") {
+		perlin::Gradient<1> gz1({1});
+		GradientMath::normalizeGradient<1>(gz1);
+		REQUIRE(GradientMath::getGradientSize<1>(gz1) == 1.f);
+
+		perlin::Gradient<2> gz2({0, 1});
+		GradientMath::normalizeGradient<2>(gz2);
+		REQUIRE(GradientMath::getGradientSize<2>(gz2) == 1.f);
+
+		perlin::Gradient<3> gz3({0, 1, 0});
+		GradientMath::normalizeGradient<3>(gz3);
+		REQUIRE(GradientMath::getGradientSize<3>(gz3) == 1.f);
+
+		perlin::Gradient<4> gz4({1, 0, 0, 0});
+		GradientMath::normalizeGradient<4>(gz4);
+		REQUIRE(GradientMath::getGradientSize<4>(gz4) == 1.f);
+	}
+
+	SECTION("Will be normalized") {
+		perlin::Gradient<1> gz1({10});
+		GradientMath::normalizeGradient<1>(gz1);
+		REQUIRE(GradientMath::getGradientSize<1>(gz1) == Approx(1.f));
+
+		perlin::Gradient<2> gz2({0.5, 1});
+		GradientMath::normalizeGradient<2>(gz2);
+		REQUIRE(GradientMath::getGradientSize<2>(gz2) == Approx(1.f));
+
+		perlin::Gradient<3> gz3({0.25, 0.1, 0.3});
+		GradientMath::normalizeGradient<3>(gz3);
+		REQUIRE(GradientMath::getGradientSize<3>(gz3) == Approx(1.f));
+
+		perlin::Gradient<4> gz4({100.f, 50.f, 69.f, 42.f});
+		GradientMath::normalizeGradient<4>(gz4);
+		REQUIRE(GradientMath::getGradientSize<4>(gz4) == Approx(1.f));
+	}
+}

@@ -1,8 +1,11 @@
+#pragma once
+
 #include "Perlin.hpp"
-#include <iostream>
+
+using namespace perlin;
 
 template<unsigned Dimensions>
-int perlin::Vector<Dimensions>::getNormalizedIndex(const perlin::Vector<Dimensions> &dims) const {
+int Vector<Dimensions>::getNormalizedIndex(const Vector<Dimensions> &dims) const {
 	int result = 0;
 
 	for (unsigned i = 0; i < Dimensions; i++) {

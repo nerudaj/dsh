@@ -82,3 +82,10 @@ TEST_CASE("Normalize gradient", "[GradientMath]") {
 		REQUIRE(GradientMath::getGradientSize<4>(gz4) == Approx(1.f));
 	}
 }
+
+TEST_CASE("Linear interpolation", "[GradientMath]") {
+	REQUIRE(GradientMath::lerp(10.f, 20.f, 0.f) == 10.f);
+	REQUIRE(GradientMath::lerp(10.f, 20.f, 1.f) == 20.f);
+	REQUIRE(GradientMath::lerp(10.f, 20.f, 0.5f) == 15.f);
+	REQUIRE(GradientMath::lerp(10.f, 20.f, 0.75f) == 17.5f);
+}

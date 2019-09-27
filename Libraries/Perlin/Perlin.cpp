@@ -3,11 +3,6 @@
 using namespace perlin;
 
 template<unsigned Dimensions>
-void NoiseGenerator<Dimensions>::generateGradients() {
-	
-}
-
-template<unsigned Dimensions>
 float NoiseGenerator<Dimensions>::getValueAt(const Vector<Dimensions> &coord) const {
 	return -1.f;
 }

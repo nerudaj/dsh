@@ -59,3 +59,25 @@ TEST_CASE("getNormalizedIndex multi dim test", "[Vector]") {
 		REQUIRE(out == 15);
 	}
 }
+
+TEST_CASE("Get Dims Product", "[Vector]") {
+	SECTION("Single dimension") {
+		perlin::Vector<1> vec({10});
+		REQUIRE(vec.getDimsProduct() == 10);
+	}
+
+	SECTION("Two dimensions") {
+		perlin::Vector<2> vec({2, 5});
+		REQUIRE(vec.getDimsProduct() == 10);
+	}
+
+	SECTION("Three dimensions") {
+		perlin::Vector<3> vec({2, 5, 3});
+		REQUIRE(vec.getDimsProduct() == 30);
+	}
+
+	SECTION("Four dimensions") {
+		perlin::Vector<4> vec({2, 5, 3, 2});
+		REQUIRE(vec.getDimsProduct() == 60);
+	}
+}

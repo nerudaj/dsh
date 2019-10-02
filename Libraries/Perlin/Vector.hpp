@@ -21,3 +21,21 @@ int Vector<Dimensions>::getNormalizedIndex(const Vector<Dimensions> &dims) const
 
 	return result;
 }
+
+template<unsigned Dimensions>
+int Vector<Dimensions>::getDimsProduct() const {
+	int result = 1;
+
+	for (auto &dim : data) {
+		result *= dim;
+	}
+
+	return result;
+}
+
+template<unsigned Dimensions>
+void Vector<Dimensions>::normalizeDims(const Vector<Dimensions> &other) {
+	for (unsigned i = 0; i < Dimensions; i++) {
+		data[i] /= other[i];
+	}
+}

@@ -2,7 +2,6 @@
 
 #include <array>
 #include <vector>
-#include <memory>
 
 namespace perlin {
 	/**
@@ -16,7 +15,18 @@ namespace perlin {
 	public:
 		int getNormalizedIndex(const Vector<Dimensions> &dims) const;
 
+		int getDim(unsigned dim) const {
+			return data.at(dim);
+		}
+
+		int getDimsProduct() const;
+
+		void normalizeDims(const Vector<Dimensions> &other);
+
 		Vector(const std::array<int, Dimensions> &dims) : data(dims) {}
+		Vector(int coord) : data(std::array<int, Dimensions>()) {
+			data.fill(coord);
+		}
 	};
 
 	enum class GradientComplexity : size_t {
@@ -41,10 +51,16 @@ namespace perlin {
 	template<unsigned Dimensions>
 	class NoiseGenerator {
 	private:
+		Vector<Dimensions> gridSize;
+		Vector<Dimensions> gridDensity;
 		GradientVector<Dimensions> gradients;
 
+		void generateGradients();
+
 	public:
-		float getValueAt(const perlin::Vector<Dimensions> &coords) const;
+		float getValueAt(perlin::Vector<Dimensions> coords) const;
+
+		NoiseGenerator();
 	};
 
 	typedef NoiseGenerator<1> NoiseGenerator1D;

@@ -1,6 +1,6 @@
 #include <catch.hpp>
 #include "../Perlin.hpp"
-#include "../VectorIndex.hpp"
+#include "../Vector.hpp"
 
 TEST_CASE("getNormalizedIndex zero test", "[Vector]") {
 	perlin::Vector<3> vec({0, 0, 0});

@@ -23,14 +23,20 @@ public:
 		float size = getGradientSize(vec);
 		if (size == 0.f) return;
 
-		for (unsigned i = 0; i < Dimensions; i++) {
-			vec[i] /= size;
+		for (auto &dim : vec) {
+			dim /= size;
 		}
 	}
 
 	template<unsigned Dimensions>
-	static float getGradientDotProduct(Gradient<Dimensions> &vec1, Gradient<Dimensions> &vec2) {
-		return -1.f;
+	static float getGradientDotProduct(const Gradient<Dimensions> &vec1, const Gradient<Dimensions> &vec2) {
+		float result = 0.f;
+
+		for (unsigned i = 0; i < Dimensions; i++) {
+			result += vec1[i] * vec2[i];
+		}
+
+		return result;
 	}
 
 	static float lerp(float a, float b, float t) {

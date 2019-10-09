@@ -6,19 +6,19 @@ namespace perlin {
 
 class VectorMath {
 public:
-	static void normalizef(VectorFloat &vec);
+	static void normalize(VectorFloat &vec);
 
-	static float getSizef(const VectorFloat &vec);
+	static float getSize(const VectorFloat &vec);
 
-	static float getDotProductf(const VectorFloat &a, const VectorFloat &b);
+	static float getDotProduct(const VectorFloat &a, const VectorFloat &b);
 
 	static void normalizeEachDim(VectorInt &target, VectorInt &coefs);
 
 	static VectorFloat getVectorFromPoints(const VectorFloat &from, const VectorFloat &to);
 };
 
-}
-
 VectorFloat operator+(VectorFloat a, const VectorFloat &b);
 
 VectorInt operator+(VectorInt a, const VectorInt &b);
+
+}

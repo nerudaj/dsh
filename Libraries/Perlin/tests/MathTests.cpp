@@ -1,6 +1,10 @@
 #include <catch.hpp>
 #include "../Math.hpp"
 
+using perlin::Math;
+using perlin::VectorInt;
+using perlin::VectorFloat;
+
 TEST_CASE("lerp", "[Math]") {
 	REQUIRE(Math::lerp(10.f, 20.f, 0.f) == 10.f);
 	REQUIRE(Math::lerp(10.f, 20.f, 1.f) == 20.f);
@@ -9,81 +13,41 @@ TEST_CASE("lerp", "[Math]") {
 }
 
 TEST_CASE("getDimensionsProduct", "[Math]") {
-	REQUIRE(false);
+	REQUIRE(Math::getDimensionsProduct({0, 0, 0}) == 0);
+	REQUIRE(Math::getDimensionsProduct({1}) == 1);
+	REQUIRE(Math::getDimensionsProduct({2}) == 2);
+	REQUIRE(Math::getDimensionsProduct({1, 2, 3}) == 6);
 }
 
 TEST_CASE("getSquashedIndex", "[Math]") {
-	REQUIRE(false);
-}
-
-/*
-TEST_CASE("getNormalizedIndex zero test", "[Vector]") {
-	perlin::Vector<3> vec({0, 0, 0});
-	int out = vec.getNormalizedIndex({{10, 10, 10}});
-	REQUIRE(out == 0);
-}
-
-TEST_CASE("getNormalizedIndex one dimension test", "[Vector]") {
-	SECTION("2-10") {
-		perlin::Vector<1> vec({2});
-		int out = vec.getNormalizedIndex({{10}});
-		REQUIRE(out == 2);
+	SECTION("Zero vector") {
+		REQUIRE(Math::getSquashedIndex({0, 0, 0}, {10, 10, 10}) == 0);
 	}
 
-	SECTION("overflow 2-1") {
-		perlin::Vector<1> vec({2});
-		int out = vec.getNormalizedIndex({{1}});
-		REQUIRE(out == 0);
+	SECTION("One dimension") {
+		REQUIRE(Math::getSquashedIndex({2}, {10}) == 2);
+		REQUIRE(Math::getSquashedIndex({2}, {1}) == 0);
+		REQUIRE(Math::getSquashedIndex({10}, {7}) == 3);
 	}
 
-	SECTION("overflow 10-7") {
-		perlin::Vector<1> vec({10});
-		int out = vec.getNormalizedIndex({{7}});
-		REQUIRE(out == 3);
+	SECTION("Two dimensions") {
+		REQUIRE(Math::getSquashedIndex({1, 1}, {2, 2}) == 3);
+		REQUIRE(Math::getSquashedIndex({5, 1}, {10, 10}) == 15);
+		REQUIRE(Math::getSquashedIndex({5, 1}, {1,1}) == 0);
+	}
+
+	SECTION("Three dimensions") {
+		REQUIRE(Math::getSquashedIndex({1, 1, 1}, {2, 2, 2}) == 7);
+	}
+
+	SECTION("Four dimensions") {
+		REQUIRE(Math::getSquashedIndex({1, 1, 1, 1}, {2, 2, 2, 2}) == 15);
 	}
 }
-
-TEST_CASE("getNormalizedIndex multi dim test", "[Vector]") {
-	SECTION("1,1-2,2") {
-		perlin::Vector<2> vec({1, 1});
-		int out = vec.getNormalizedIndex({{2, 2}});
-		REQUIRE(out == 3);
-	}
-
-	SECTION("5,1-10,10") {
-		perlin::Vector<2> vec({5, 1});
-		int out = vec.getNormalizedIndex({{10, 10}});
-		REQUIRE(out == 15);
-	}
-
-	SECTION("5,1-1,1") {
-		perlin::Vector<2> vec({5, 1});
-		int out = vec.getNormalizedIndex({{1, 1}});
-		REQUIRE(out == 0);
-	}
-
-	SECTION("1,1,1-2,2,2") {
-		perlin::Vector<3> vec({1, 1, 1});
-		int out = vec.getNormalizedIndex({{2, 2, 2}});
-		REQUIRE(out == 7);
-	}
-
-	SECTION("1,1,1,1-2,2,2,2") {
-		perlin::Vector<4> vec({1, 1, 1, 1});
-		int out = vec.getNormalizedIndex({{2, 2, 2, 2}});
-		REQUIRE(out == 15);
-	}
-}
-*/
 
 TEST_CASE("getPointBoundingBox", "[Math]") {
-	REQUIRE(false);
-}
-
-/*
-TEST_CASE("Get gradient indices", "[GradientMath]") {
 	SECTION("One dimension") {
-		auto data = GradientMath::getGradientIndices<1>(0, {{10}});
+		auto data = Math::getPointBoundingBox(0, {10});
 
 		REQUIRE(data.size() == 2);
 		REQUIRE(data[0] == 0);
@@ -91,7 +55,7 @@ TEST_CASE("Get gradient indices", "[GradientMath]") {
 	}
 
 	SECTION("Two dimensions") {
-		auto data = GradientMath::getGradientIndices<2>(0, {{10, 10}});
+		auto data = Math::getPointBoundingBox(0, {10, 10});
 
 		REQUIRE(data.size() == 4);
 		REQUIRE(data[0] == 0);
@@ -101,7 +65,7 @@ TEST_CASE("Get gradient indices", "[GradientMath]") {
 	}
 
 	SECTION("Three dimensions") {
-		auto data = GradientMath::getGradientIndices<3>(0, {{10, 10, 10}});
+		auto data = Math::getPointBoundingBox(0, {10, 10, 10});
 
 		REQUIRE(data.size() == 8);
 		REQUIRE(data[0] == 0);
@@ -115,7 +79,7 @@ TEST_CASE("Get gradient indices", "[GradientMath]") {
 	}
 
 	SECTION("Four dimensions") {
-		auto data = GradientMath::getGradientIndices<4>(0, {{10, 10, 10, 10}});
+		auto data = Math::getPointBoundingBox(0, {10, 10, 10, 10});
 
 		REQUIRE(data.size() == 16);
 		REQUIRE(data[0] == 0);
@@ -136,4 +100,3 @@ TEST_CASE("Get gradient indices", "[GradientMath]") {
 		REQUIRE(data[15] == 1111);
 	}
 }
-*/

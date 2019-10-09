@@ -3,7 +3,9 @@ cmake_minimum_required ( VERSION 3.1 )
 project ( perlin )
 
 add_library ( ${PROJECT_NAME} STATIC
-	Perlin.cpp
+	Math.cpp
+	Convert.cpp
+	VectorMath.cpp
 )
 
 target_include_directories ( ${PROJECT_NAME} 

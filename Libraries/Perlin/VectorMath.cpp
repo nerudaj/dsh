@@ -1,10 +1,10 @@
-#include "VectorMath.cpp"
+#include "VectorMath.hpp"
 
 #include <cmath>
 
 using namespace perlin;
 
-void VectorMath::normalizef(VectorFloat &vec) {
+void VectorMath::normalize(VectorFloat &vec) {
 	float size = getSize(vec);
 	if (size == 0.f) return;
 
@@ -13,7 +13,7 @@ void VectorMath::normalizef(VectorFloat &vec) {
 	}
 }
 
-float VectorMath::getSizef(const VectorFloat &vec) {
+float VectorMath::getSize(const VectorFloat &vec) {
 	float sum = 0.f;
 
 	for (unsigned i = 0; i < vec.size(); i++) {
@@ -23,7 +23,7 @@ float VectorMath::getSizef(const VectorFloat &vec) {
 	return sum == 0.f ? sum : sqrt(sum);
 }
 
-float VectorMath::getDotProductf(const VectorFloat &a, const VectorFloat &b) {
+float VectorMath::getDotProduct(const VectorFloat &a, const VectorFloat &b) {
 	float result = 0.f;
 
 	for (unsigned i = 0; i < a.size(); i++) {

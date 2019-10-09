@@ -1,16 +1,24 @@
 #pragma once
 
-#include "Perlin.hpp"
+#include "Vector.hpp"
 
-class VecMath {
-	template<typename T, unsigned Dimensions>
-	static float getSize(const Vector<Dimensions> &vec) {
-		float sum = 0.f;
+namespace perlin {
 
-		for (unsigned i = 0; i < Dimensions; i++) {
-			sum += vec[i] * vec[i];
-		}
+class VectorMath {
+public:
+	static void normalizef(VectorFloat &vec);
 
-		return sum == 0.f ? sum : sqrt(static_cast<float>(sum));
-	}
+	static float getSizef(const VectorFloat &vec);
+
+	static float getDotProductf(const VectorFloat &a, const VectorFloat &b);
+
+	static void normalizeEachDim(VectorInt &target, VectorInt &coefs);
+
+	static VectorFloat getVectorFromPoints(const VectorFloat &from, const VectorFloat &to);
 };
+
+}
+
+VectorFloat operator+(VectorFloat a, const VectorFloat &b);
+
+VectorInt operator+(VectorInt a, const VectorInt &b);

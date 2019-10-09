@@ -1,8 +1,6 @@
 #include <catch.hpp>
 #include "../Perlin.hpp"
-#include "../GradientMath.hpp"
-
-using perlin::GradientMath;
+#include "../VectorMath.hpp"
 
 TEST_CASE("Get gradient size", "[GradientMath]") {
 	SECTION("Zero gradient size") {
@@ -95,13 +93,6 @@ TEST_CASE("Get gradient dot product", "[GradientMath]") {
 	REQUIRE(GradientMath::getGradientDotProduct<4>({1.f, 2.f, 3.f, 4.f}, {1.f, 2.f, 3.f, 4.f}) == 30.f);
 }
 
-TEST_CASE("Linear interpolation", "[GradientMath]") {
-	REQUIRE(GradientMath::lerp(10.f, 20.f, 0.f) == 10.f);
-	REQUIRE(GradientMath::lerp(10.f, 20.f, 1.f) == 20.f);
-	REQUIRE(GradientMath::lerp(10.f, 20.f, 0.5f) == 15.f);
-	REQUIRE(GradientMath::lerp(10.f, 20.f, 0.75f) == 17.5f);
-}
-
 TEST_CASE("Make gradient from coord", "[GradientMath]") {
 	SECTION("One dimensions") {
 		auto grad = GradientMath::makeGradientFromCoord<1>({{3}}, {{2}});
@@ -126,61 +117,7 @@ TEST_CASE("Make vector from gradient", "[GradientMath]") {
 	}
 }
 
-TEST_CASE("Get gradient indices", "[GradientMath]") {
-	SECTION("One dimension") {
-		auto data = GradientMath::getGradientIndices<1>(0, {{10}});
 
-		REQUIRE(data.size() == 2);
-		REQUIRE(data[0] == 0);
-		REQUIRE(data[1] == 1);
-	}
-
-	SECTION("Two dimensions") {
-		auto data = GradientMath::getGradientIndices<2>(0, {{10, 10}});
-
-		REQUIRE(data.size() == 4);
-		REQUIRE(data[0] == 0);
-		REQUIRE(data[1] == 1);
-		REQUIRE(data[2] == 10);
-		REQUIRE(data[3] == 11);
-	}
-
-	SECTION("Three dimensions") {
-		auto data = GradientMath::getGradientIndices<3>(0, {{10, 10, 10}});
-
-		REQUIRE(data.size() == 8);
-		REQUIRE(data[0] == 0);
-		REQUIRE(data[1] == 1);
-		REQUIRE(data[2] == 10);
-		REQUIRE(data[3] == 11);
-		REQUIRE(data[4] == 100);
-		REQUIRE(data[5] == 101);
-		REQUIRE(data[6] == 110);
-		REQUIRE(data[7] == 111);
-	}
-
-	SECTION("Four dimensions") {
-		auto data = GradientMath::getGradientIndices<4>(0, {{10, 10, 10, 10}});
-
-		REQUIRE(data.size() == 16);
-		REQUIRE(data[0] == 0);
-		REQUIRE(data[1] == 1);
-		REQUIRE(data[2] == 10);
-		REQUIRE(data[3] == 11);
-		REQUIRE(data[4] == 100);
-		REQUIRE(data[5] == 101);
-		REQUIRE(data[6] == 110);
-		REQUIRE(data[7] == 111);
-		REQUIRE(data[8] == 1000);
-		REQUIRE(data[9] == 1001);
-		REQUIRE(data[10] == 1010);
-		REQUIRE(data[11] == 1011);
-		REQUIRE(data[12] == 1100);
-		REQUIRE(data[13] == 1101);
-		REQUIRE(data[14] == 1110);
-		REQUIRE(data[15] == 1111);
-	}
-}
 
 TEST_CASE("Construct gradient from points", "[GradientMath]") {
 	SECTION("One dimension") {
@@ -202,5 +139,27 @@ TEST_CASE("Construct gradient from points", "[GradientMath]") {
 		REQUIRE(grad[0] == 1);
 		REQUIRE(grad[1] == 3);
 		REQUIRE(grad[2] == 3);
+	}
+}
+
+TEST_CASE("Get Dims Product", "[Vector]") {
+	SECTION("Single dimension") {
+		perlin::Vector<1> vec({10});
+		REQUIRE(vec.getDimsProduct() == 10);
+	}
+
+	SECTION("Two dimensions") {
+		perlin::Vector<2> vec({2, 5});
+		REQUIRE(vec.getDimsProduct() == 10);
+	}
+
+	SECTION("Three dimensions") {
+		perlin::Vector<3> vec({2, 5, 3});
+		REQUIRE(vec.getDimsProduct() == 30);
+	}
+
+	SECTION("Four dimensions") {
+		perlin::Vector<4> vec({2, 5, 3, 2});
+		REQUIRE(vec.getDimsProduct() == 60);
 	}
 }

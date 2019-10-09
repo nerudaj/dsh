@@ -17,8 +17,8 @@ public:
 	static VectorFloat getVectorFromPoints(const VectorFloat &from, const VectorFloat &to);
 };
 
-VectorFloat operator+(VectorFloat a, const VectorFloat &b);
-
-VectorInt operator+(VectorInt a, const VectorInt &b);
-
 }
+
+perlin::VectorFloat operator+(perlin::VectorFloat a, const perlin::VectorFloat &b);
+
+perlin::VectorInt operator+(perlin::VectorInt a, const perlin::VectorInt &b);

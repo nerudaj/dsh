@@ -5,6 +5,7 @@ set ( TGT_NAME "testrunner_${PROJECT_NAME}" )
 add_executable ( ${TGT_NAME}
 	Main.cpp
 	MathTests.cpp
+	VectorMathTests.cpp
 )
 
 target_link_libraries ( ${TGT_NAME}

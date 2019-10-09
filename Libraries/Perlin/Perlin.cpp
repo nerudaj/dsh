@@ -18,9 +18,46 @@ void NoiseGenerator<Dimensions>::generateGradients() {
 }
 
 template<unsigned Dimensions>
-float NoiseGenerator<Dimensions>::getValueAt(Vector<Dimensions> coord) const {
-	coord.normalizeDims(gridDensity);
-	int index = coord.getNormalizedIndex(gridSize);
+float NoiseGenerator<Dimensions>::getValueAt(Vector<Dimensions> coords) const {
+	// Normalize coord using gridDensity and convert it to float vector (Gradient)
+	Gradient<Dimensions> normalizedCoords = GradientMath::makeGradientFromCoord<Dimensions>(coords, gridDensity);
+
+	// Floor coordinates 
+	Vector<Dimensions> flooredCoords = GradientMath::makeVectorFromGradient<Dimensions>(normalizedCoords);
+
+	// Compute lerp factors
+	std::array<float, Dimensions> lerpFactors;
+	for (unsigned i = 0; i < Dimensions; i++) {
+		lerpFactors[i] = normalizedCoords[i] - static_cast<float>(flooredCoords.getDim(i));
+	}
+
+	// Get gradient normalized index
+	int index = flooredCoords.getNormalizedIndex(gridSize);
+
+	// Compute bounding box
+	auto bounds = GradientMath::getGradientIndices<Dimensions>(index, gridSize);
+
+	std::vector<float> dotProducts;
+	for (auto &index : bounds) {
+		auto &gradient = gradients[index];
+		auto vecToPoint = GradientMath::constructGradientFromPoints<Dimensions>(normalizedCoords, gradient);
+
+		dotProducts.push_back(GradientMath::getGradientDotProduct<Dimensions>(vecToPoint, gradient));
+	}
+
+	// For each vertex of the bounding box
+	// Get gradient of that vertex
+	// Compute vector from vertex to gcoord
+	// Compute dot product of those two vectors
+
+	// This leads to some sort of reduce algorithm
+	// Gather values from previous step and somehow lerp them using params[0]
+	
+	// Gather values from previous step and somehow lerp them using params[1]
+	
+	// ....
+	
+	// Gather values from previous step and somehow lerp them using params[n]
 	
 	return -1.f;
 }

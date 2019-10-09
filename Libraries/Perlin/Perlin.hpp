@@ -39,6 +39,16 @@ namespace perlin {
 	template<unsigned Dimensions>
 	using Gradient = std::array<float, Dimensions>;
 
+	// TRUE VECTOR MATH
+	template<typename T, unsigned Dimensions>
+	using VVector = std::array<T, Dimensions>;
+	
+	template<unsigned Dimensions>
+	using IntVector = VVector<int, Dimensions>;
+
+	template<unsigned Dimensions>
+	using FloatVector = VVector<float, Dimensions>;
+
 	/**
 	 *  \brief
 	 */
@@ -52,8 +62,8 @@ namespace perlin {
 	class NoiseGenerator {
 	private:
 		Vector<Dimensions> gridSize;
-		Vector<Dimensions> gridDensity;
-		GradientVector<Dimensions> gradients;
+		Vector<Dimensions> gridDensity; // How many tiles fit between two gradients
+		std::vector<FloatVector<Dimensions>> gradients;
 
 		void generateGradients();
 

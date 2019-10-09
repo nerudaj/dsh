@@ -101,3 +101,106 @@ TEST_CASE("Linear interpolation", "[GradientMath]") {
 	REQUIRE(GradientMath::lerp(10.f, 20.f, 0.5f) == 15.f);
 	REQUIRE(GradientMath::lerp(10.f, 20.f, 0.75f) == 17.5f);
 }
+
+TEST_CASE("Make gradient from coord", "[GradientMath]") {
+	SECTION("One dimensions") {
+		auto grad = GradientMath::makeGradientFromCoord<1>({{3}}, {{2}});
+		REQUIRE(grad[0] == 1.75f);
+
+		grad = GradientMath::makeGradientFromCoord<1>({{2}}, {{2}});
+		REQUIRE(grad[0] == 1.25f);
+	}
+
+	SECTION("Two dimensions") {
+		auto grad = GradientMath::makeGradientFromCoord<2>({{3, 10}}, {{2, 2}});
+		REQUIRE(grad[0] == 1.75f);
+		REQUIRE(grad[1] == 5.25f);
+	}
+}
+
+TEST_CASE("Make vector from gradient", "[GradientMath]") {
+	SECTION("Two dimensions") {
+		auto vec = GradientMath::makeVectorFromGradient<2>({2.25f, 7.75f});
+		REQUIRE(vec.getDim(0) == 2);
+		REQUIRE(vec.getDim(1) == 7);
+	}
+}
+
+TEST_CASE("Get gradient indices", "[GradientMath]") {
+	SECTION("One dimension") {
+		auto data = GradientMath::getGradientIndices<1>(0, {{10}});
+
+		REQUIRE(data.size() == 2);
+		REQUIRE(data[0] == 0);
+		REQUIRE(data[1] == 1);
+	}
+
+	SECTION("Two dimensions") {
+		auto data = GradientMath::getGradientIndices<2>(0, {{10, 10}});
+
+		REQUIRE(data.size() == 4);
+		REQUIRE(data[0] == 0);
+		REQUIRE(data[1] == 1);
+		REQUIRE(data[2] == 10);
+		REQUIRE(data[3] == 11);
+	}
+
+	SECTION("Three dimensions") {
+		auto data = GradientMath::getGradientIndices<3>(0, {{10, 10, 10}});
+
+		REQUIRE(data.size() == 8);
+		REQUIRE(data[0] == 0);
+		REQUIRE(data[1] == 1);
+		REQUIRE(data[2] == 10);
+		REQUIRE(data[3] == 11);
+		REQUIRE(data[4] == 100);
+		REQUIRE(data[5] == 101);
+		REQUIRE(data[6] == 110);
+		REQUIRE(data[7] == 111);
+	}
+
+	SECTION("Four dimensions") {
+		auto data = GradientMath::getGradientIndices<4>(0, {{10, 10, 10, 10}});
+
+		REQUIRE(data.size() == 16);
+		REQUIRE(data[0] == 0);
+		REQUIRE(data[1] == 1);
+		REQUIRE(data[2] == 10);
+		REQUIRE(data[3] == 11);
+		REQUIRE(data[4] == 100);
+		REQUIRE(data[5] == 101);
+		REQUIRE(data[6] == 110);
+		REQUIRE(data[7] == 111);
+		REQUIRE(data[8] == 1000);
+		REQUIRE(data[9] == 1001);
+		REQUIRE(data[10] == 1010);
+		REQUIRE(data[11] == 1011);
+		REQUIRE(data[12] == 1100);
+		REQUIRE(data[13] == 1101);
+		REQUIRE(data[14] == 1110);
+		REQUIRE(data[15] == 1111);
+	}
+}
+
+TEST_CASE("Construct gradient from points", "[GradientMath]") {
+	SECTION("One dimension") {
+		auto grad = GradientMath::constructGradientFromPoints<1>({1}, {2});
+
+		REQUIRE(grad[0] == 1);
+	}
+
+	SECTION("Two dimensions") {
+		auto grad = GradientMath::constructGradientFromPoints<2>({1, 0}, {2, 3});
+
+		REQUIRE(grad[0] == 1);
+		REQUIRE(grad[1] == 3);
+	}
+
+	SECTION("Three dimensions") {
+		auto grad = GradientMath::constructGradientFromPoints<3>({1, 0, -1}, {2, 3, 2});
+
+		REQUIRE(grad[0] == 1);
+		REQUIRE(grad[1] == 3);
+		REQUIRE(grad[2] == 3);
+	}
+}

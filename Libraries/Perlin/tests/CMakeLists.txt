@@ -4,8 +4,9 @@ set ( TGT_NAME "testrunner_${PROJECT_NAME}" )
 
 add_executable ( ${TGT_NAME}
 	Main.cpp
-	VectorTests.cpp
-	GradientMathTests.cpp
+	MathTests.cpp
+	VectorMathTests.cpp
+	ConvertTests.cpp
 	GradientTests.cpp
 )
 

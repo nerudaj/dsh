@@ -3,79 +3,90 @@
 #include <array>
 #include <vector>
 
+#include "Generate.hpp"
+#include "Math.hpp"
+#include "Convert.hpp"
+
 namespace perlin {
-	/**
-	 *  \brief
-	 */
 	template<unsigned Dimensions>
-	class Vector {
-	private:
-		std::array<int, Dimensions> data;
-
-	public:
-		int getNormalizedIndex(const Vector<Dimensions> &dims) const;
-
-		int getDim(unsigned dim) const {
-			return data.at(dim);
-		}
-
-		int getDimsProduct() const;
-
-		void normalizeDims(const Vector<Dimensions> &other);
-
-		Vector(const std::array<int, Dimensions> &dims) : data(dims) {}
-		Vector(int coord) : data(std::array<int, Dimensions>()) {
-			data.fill(coord);
-		}
-	};
+	using Vector = std::array<int, Dimensions>;
 
 	enum class GradientComplexity : size_t {
 		SlowRadial
 	};
 
-	/**
-	 *  \brief
-	 */
-	template<unsigned Dimensions>
-	using Gradient = std::array<float, Dimensions>;
-
-	// TRUE VECTOR MATH
-	template<typename T, unsigned Dimensions>
-	using VVector = std::array<T, Dimensions>;
+	const unsigned WIDTH = 10;
+	const unsigned HEIGHT= 10;
+	const unsigned SEED = 0;
+	const GradientComplexity COMPLEXITY = GradientComplexity::SlowRadial;
 	
-	template<unsigned Dimensions>
-	using IntVector = VVector<int, Dimensions>;
-
-	template<unsigned Dimensions>
-	using FloatVector = VVector<float, Dimensions>;
-
-	/**
-	 *  \brief
-	 */
-	template<unsigned Dimensions>
-	using GradientVector = std::vector<Gradient<Dimensions>>;
-
 	/**
 	 *  \brief
 	 */
 	template<unsigned Dimensions>
 	class NoiseGenerator {
 	private:
-		Vector<Dimensions> gridSize;
-		Vector<Dimensions> gridDensity; // How many tiles fit between two gradients
-		std::vector<FloatVector<Dimensions>> gradients;
+		std::vector<int> gridSize;
+		std::vector<int> gridDensity;
+		std::vector<std::vector<float>> gradients;
 
-		void generateGradients();
+		void generateGradients() {
+			std::mt19937 generator(SEED);
+
+			for (auto &grad : gradients) {
+				grad = generateGradient(COMPLEXITY, generator, Dimensions);
+			}
+		}
+
+		void initialize(const unsigned dimensions) {
+			gridSize = {12, 12, 12};
+			gridDensity = {3, 3, 3};
+			gradients.resize(Math::getDimensionsProduct(gridSize));
+			generateGradients();
+		}
+
+		float getValueAt(const std::vector<int> &point) const {
+			VectorFloat offsetPoint = Convert::vecIntToOffsetedFloat(point, gridDensity);
+			VectorInt flooredPoint = Convert::vecFloatToInt(offsetPoint);
+
+			// Compute lerp factors
+			VectorFloat lerpFactors(Dimensions);
+			for (unsigned i = 0; i < Dimensions; i++) {
+				lerpFactors[i] = normalizedCoords[i] - static_cast<float>(flooredPoint[i]);
+			}
+
+			// Get gradient normalized index
+			int index = Math::getSquashedIndex(flooredPoint, gridSize);
+
+			// Compute bounding box
+			auto bounds = Math::getPointBoundingBox(index, gridSize);
+
+			std::vector<float> dotProducts;
+			for (auto &index : bounds) {
+				auto &gradient = gradients[index];
+				auto gradientLoc = /* TODO */{0, 0, 0};
+				auto vecToPoint = VectorMath::getVectorFromPoints(offsetPoint, gradientLoc);
+
+				dotProducts.push_back(VectorMath::getDotProduct<Dimensions>(vecToPoint, gradient));
+			}
+
+			for (unsigned t = 1, skip = 2, f = 0; t > dotProducts.size(); t *= 2, skip *= 2, f++) {
+				for (unsigned i = 0; i < dotProducts.size(); i += skip) {
+					dotProducts[i] = Math::lerp(dotProducts[i], dotProducts[i + t], lerpFactors[f]);
+				}
+			}
+			
+			return -1.f;
+		}
 
 	public:
-		float getValueAt(perlin::Vector<Dimensions> coords) const;
+		float getValueAt(const Vector<Dimensions> &point) const {
+			std::vector<int> templatelessPoint(point.begin(), point.end());
+			return getValueAt(templatelessPoint);
+		}
 
-		NoiseGenerator();
+		NoiseGenerator() {
+			initialize(Dimensions);
+		}
 	};
-
-	typedef NoiseGenerator<1> NoiseGenerator1D;
-	typedef NoiseGenerator<2> NoiseGenerator2D;
-	typedef NoiseGenerator<3> NoiseGenerator3D;
-	typedef NoiseGenerator<4> NoiseGenerator4D;
-	typedef NoiseGenerator<5> NoiseGenerator5D;
 }

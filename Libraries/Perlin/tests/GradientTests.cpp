@@ -1,23 +1,22 @@
 #include <catch.hpp>
-#include "../Gradient.hpp"
-#include "../GradientMath.hpp"
+#include "../Generate.hpp"
 
-using perlin::GradientMath;
 using perlin::GradientComplexity;
+using perlin::VectorMath;
 
 TEST_CASE("Generate gradient", "[Gradient]") {
 	std::mt19937 generator(0);
 
 	SECTION("Test normality of gradients") {
 		for (unsigned i = 0; i < 20; i++) {
-			auto grad = perlin::generateGradient<3>(GradientComplexity::SlowRadial, generator);
+			auto grad = perlin::generateGradient(GradientComplexity::SlowRadial, generator, 3);
 			
-			REQUIRE(GradientMath::getGradientSize(grad) == Approx(1.f));
+			REQUIRE(VectorMath::getSize(grad) == Approx(1.f));
 		}
 	}
 
 	SECTION("Test Slow Radial generate") {
-		auto grad = perlin::generateGradient<3>(GradientComplexity::SlowRadial, generator);
+		auto grad = perlin::generateGradient(GradientComplexity::SlowRadial, generator, 3);
 
 		REQUIRE(grad[0] == Approx(0.2039f).margin(0.0001));
 		REQUIRE(grad[1] == Approx(0.38783f).margin(0.00001));

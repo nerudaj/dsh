@@ -1,26 +1,30 @@
 #include <catch.hpp>
 #include "../Convert.hpp"
 
-TEST_CASE("Make gradient from coord", "[VectorMath]") {
-	SECTION("One dimensions") {
-		auto grad = VectorMath::makeGradientFromCoord<1>({{3}}, {{2}});
-		REQUIRE(grad[0] == 1.75f);
+using perlin::Convert;
+using perlin::VectorInt;
+using perlin::VectorFloat;
 
-		grad = VectorMath::makeGradientFromCoord<1>({{2}}, {{2}});
-		REQUIRE(grad[0] == 1.25f);
+TEST_CASE("vecIntToFloat", "[Convert]") {
+	SECTION("One dimension") {
+		auto vec = Convert::vecIntToOffsetedFloat({3}, {2});
+		REQUIRE(vec[0] == 1.75f);
+
+		vec = Convert::vecIntToOffsetedFloat({2}, {2});
+		REQUIRE(vec[0] == 1.25f);
 	}
 
 	SECTION("Two dimensions") {
-		auto grad = VectorMath::makeGradientFromCoord<2>({{3, 10}}, {{2, 2}});
-		REQUIRE(grad[0] == 1.75f);
-		REQUIRE(grad[1] == 5.25f);
+		auto vec = Convert::vecIntToOffsetedFloat({3, 10}, {2, 2});
+		REQUIRE(vec[0] == 1.75f);
+		REQUIRE(vec[1] == 5.25f);
 	}
 }
 
-TEST_CASE("Make vector from gradient", "[VectorMath]") {
+TEST_CASE("vecFloatToInt", "[Convert]") {
 	SECTION("Two dimensions") {
-		auto vec = VectorMath::makeVectorFromGradient<2>({2.25f, 7.75f});
-		REQUIRE(vec.getDim(0) == 2);
-		REQUIRE(vec.getDim(1) == 7);
+		auto vec = Convert::vecFloatToInt({2.25f, 7.75f});
+		REQUIRE(vec[0] == 2);
+		REQUIRE(vec[1] == 7);
 	}
 }

@@ -10,9 +10,7 @@ public:
 		return VectorInt(vec.begin(), vec.end());
 	}
 
-	static VectorFloat vecIntToFloat(const VectorInt &vec) {
-		return VectorFloat(vec.begin(), vec.end());
-	}
+	static VectorFloat vecIntToOffsetedFloat(const VectorInt &vec, const VectorInt &normalFactor);
 };
 
 }

@@ -7,6 +7,7 @@ add_executable ( ${TGT_NAME}
 	MathTests.cpp
 	VectorMathTests.cpp
 	ConvertTests.cpp
+	GradientTests.cpp
 )
 
 target_link_libraries ( ${TGT_NAME}

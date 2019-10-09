@@ -24,14 +24,14 @@ namespace perlin {
 	private:
 		std::vector<int> gridSize;
 		std::vector<int> gridDensity;
-		std::vector<std::vector<float> gradients;
+		std::vector<std::vector<float>> gradients;
 
 		void generateGradients() {
-			std::mt19937 generator(SEED);
+			/*std::mt19937 generator(SEED);
 
 			for (auto &grad : gradients) {
 				grad = generateGradient<Dimensions>(COMPLEXITY, generator);
-			}
+			}*/
 		}
 
 		void initialize(const unsigned dimensions) {
@@ -39,6 +39,7 @@ namespace perlin {
 		}
 
 		float getValueAt(const std::vector<int> &point) const {
+/*
 			// Normalize coord using gridDensity and convert it to float vector (Gradient)
 			Gradient<Dimensions> normalizedCoords = GradientMath::makeGradientFromCoord<Dimensions>(coords, gridDensity);
 
@@ -64,6 +65,8 @@ namespace perlin {
 
 				dotProducts.push_back(GradientMath::getGradientDotProduct<Dimensions>(vecToPoint, gradient));
 			}
+
+*/
 
 			// For each vertex of the bounding box
 			// Get gradient of that vertex

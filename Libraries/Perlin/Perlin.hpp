@@ -4,9 +4,9 @@
 #include <vector>
 
 namespace perlin {
+	template<unsigned Dimensions>
+	using Vector = std::array<int, Dimensions>;
 	/**
-	 *  \brief
-	 */
 	template<unsigned Dimensions>
 	class Vector {
 	private:
@@ -27,7 +27,7 @@ namespace perlin {
 		Vector(int coord) : data(std::array<int, Dimensions>()) {
 			data.fill(coord);
 		}
-	};
+	};*/
 
 	enum class GradientComplexity : size_t {
 		SlowRadial
@@ -37,45 +37,22 @@ namespace perlin {
 	 *  \brief
 	 */
 	template<unsigned Dimensions>
-	using Gradient = std::array<float, Dimensions>;
-
-	// TRUE VECTOR MATH
-	template<typename T, unsigned Dimensions>
-	using VVector = std::array<T, Dimensions>;
-	
-	template<unsigned Dimensions>
-	using IntVector = VVector<int, Dimensions>;
-
-	template<unsigned Dimensions>
-	using FloatVector = VVector<float, Dimensions>;
-
-	/**
-	 *  \brief
-	 */
-	template<unsigned Dimensions>
-	using GradientVector = std::vector<Gradient<Dimensions>>;
-
-	/**
-	 *  \brief
-	 */
-	template<unsigned Dimensions>
 	class NoiseGenerator {
 	private:
-		Vector<Dimensions> gridSize;
-		Vector<Dimensions> gridDensity; // How many tiles fit between two gradients
-		std::vector<FloatVector<Dimensions>> gradients;
+		std::vector<int> gridSize;
+		std::vector<int> gridDensity;
+		std::vector<std::vector<float> gradients;
 
 		void generateGradients();
+		
+		float getValueAt(const std::vector<int> &point) const;
 
 	public:
-		float getValueAt(perlin::Vector<Dimensions> coords) const;
+		float getValueAt(const Vector<Dimensions> &point) const {
+			std::vector<int> templatelessPoint(point.begin(), point.end());
+			return getValueAt(templatelessPoint);
+		}
 
 		NoiseGenerator();
 	};
-
-	typedef NoiseGenerator<1> NoiseGenerator1D;
-	typedef NoiseGenerator<2> NoiseGenerator2D;
-	typedef NoiseGenerator<3> NoiseGenerator3D;
-	typedef NoiseGenerator<4> NoiseGenerator4D;
-	typedef NoiseGenerator<5> NoiseGenerator5D;
 }

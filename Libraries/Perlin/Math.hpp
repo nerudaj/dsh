@@ -13,8 +13,10 @@ public:
 	static unsigned getDimensionsProduct(const VectorInt &vec);
 
 	static int getSquashedIndex(const VectorInt &source, const VectorInt &limits);
-	
+
 	static std::vector<int> getPointBoundingBox(int start, const VectorInt &limits);
+
+	static VectorFloat computeLerpFactors(const VectorInt &origin, const VectorFloat &target, const unsigned dimensions);
 };
 
 }

@@ -45,3 +45,13 @@ std::vector<int> Math::getPointBoundingBox(int start, const VectorInt &limits) {
 
 	return result;
 }
+
+VectorFloat Math::computeLerpFactors(const VectorInt &origin, const VectorFloat &target, const unsigned dimensions) {
+	VectorFloat lerpFactors(dimensions);
+
+	for (unsigned i = 0; i < dimensions; i++) {
+		lerpFactors[i] = target[i] - static_cast<float>(origin[i]);
+	}
+
+	return lerpFactors;
+}

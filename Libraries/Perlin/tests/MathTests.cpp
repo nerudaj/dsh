@@ -109,8 +109,8 @@ TEST_CASE("computeLerpFactors", "[Math]") {
 	REQUIRE(factors[2] == Approx(0.75f));
 }
 
-TEST_CASE("gradientFromIndex", "[Math]") {
-	auto grad = Math::gradientFromIndex(321, {10, 10, 10});
+TEST_CASE("vectorFromIndex", "[Math]") {
+	auto grad = Math::vectorFromIndex(321, {10, 10, 10});
 
 	REQUIRE(grad[0] == 1.f);
 	REQUIRE(grad[1] == 2.f);

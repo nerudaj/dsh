@@ -18,7 +18,7 @@ public:
 
 	static VectorFloat computeLerpFactors(const VectorInt &origin, const VectorFloat &target);
 	
-	static VectorFloat gradientFromIndex(int index, const VectorFloat &gridSize);
+	static VectorFloat gradientFromIndex(int index, const VectorInt &gridSize);
 };
 
 }

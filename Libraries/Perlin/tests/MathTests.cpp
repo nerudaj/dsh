@@ -102,7 +102,7 @@ TEST_CASE("getPointBoundingBox", "[Math]") {
 }
 
 TEST_CASE("computeLerpFactors", "[Math]") {
-	auto factors = Math::computeLerpFactors({1, 2, 2}, {1.5f, 2.25f, 2.75f}, 3);
+	auto factors = Math::computeLerpFactors({1, 2, 2}, {1.5f, 2.25f, 2.75f});
 
 	REQUIRE(factors[0] == Approx(0.5f));
 	REQUIRE(factors[1] == Approx(0.25f));

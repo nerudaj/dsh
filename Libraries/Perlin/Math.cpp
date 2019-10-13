@@ -59,7 +59,7 @@ VectorFloat Math::computeLerpFactors(const VectorInt &origin, const VectorFloat 
 	return lerpFactors;
 }
 
-static VectorFloat gradientFromIndex(int index, const VectorFloat &gridSize) {
+static VectorFloat gradientFromIndex(int index, const VectorInt &gridSize) {
 	VectorFloat result(gridSize.size());
 
 	unsigned multiplier = 1;

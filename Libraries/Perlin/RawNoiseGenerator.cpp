@@ -33,9 +33,9 @@ float RawNoiseGenerator::getValueAt(const std::vector<int> &point) const {
 	auto bounds = Math::getPointBoundingBox(index, gridSize);
 
 	std::vector<float> dotProducts;
-	for (auto &index : bounds) {
-		auto &gradient = gradients[index];
-		auto gradientLoc = /* TODO */{0, 0, 0};
+	for (auto &gradientIndex : bounds) {
+		auto &gradient = gradients[gradientIndex];
+		auto gradientLoc = Math::gradientFromIndex(index, gridSize);
 		auto vecToPoint = VectorMath::getVectorFromPoints(offsetPoint, gradientLoc);
 
 		dotProducts.push_back(VectorMath::getDotProduct<Dimensions>(vecToPoint, gradient));

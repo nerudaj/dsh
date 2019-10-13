@@ -20,8 +20,14 @@ namespace perlin {
 	class RawNoiseGenerator {
 	protected:
 		std::vector<std::vector<float>> gradients;
+		std::vector<int> gridSize;
+		std::vector<int> gridDensity;
+		GradientComplexity complexity;
+		unsigned seed;
 
-		void generateGradients();
+		void generateGradients(const unsigned dimensions);
+
+		std::vector<float> computeDotProducts(const std::vector<float> &point, int pointIndex) const;
 
 		float getValueAt(const std::vector<int> &point) const;
 	};
@@ -29,14 +35,13 @@ namespace perlin {
 	template<unsigned Dimensions>
 	class NoiseGenerator : public RawNoiseGenerator {
 	private:
-		std::vector<int> gridSize;
-		std::vector<int> gridDensity;
-
-		void initialize(const unsigned dimensions) {
-			gridSize = {12, 12, 12};
-			gridDensity = {3, 3, 3};
+		void initialize() {
+			gridSize = std::vector<int>(Dimensions, 2);
+			gridDensity = std::vector<int>(Dimensions, 5);
 			gradients.resize(Math::getDimensionsProduct(gridSize));
-			generateGradients();
+			seed = 0;
+			complexity = GradientComplexity::SlowRadial;
+			generateGradients(Dimensions);
 		}
 
 	public:
@@ -46,7 +51,7 @@ namespace perlin {
 		}
 
 		NoiseGenerator() {
-			initialize(Dimensions);
+			initialize();
 		}
 	};
 }

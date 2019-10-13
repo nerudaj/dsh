@@ -6,7 +6,7 @@ add_library ( ${PROJECT_NAME} STATIC
 	Math.cpp
 	Convert.cpp
 	VectorMath.cpp
-	#RawNoiseGenerator.cpp
+	RawNoiseGenerator.cpp
 )
 
 target_include_directories ( ${PROJECT_NAME} 

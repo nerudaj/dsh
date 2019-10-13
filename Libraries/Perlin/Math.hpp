@@ -19,6 +19,8 @@ public:
 	static VectorFloat computeLerpFactors(const VectorInt &origin, const VectorFloat &target);
 	
 	static VectorFloat vectorFromIndex(int index, const VectorInt &gridSize);
+	
+	static float reduceDotProducts(VectorFloat dotProducts, const VectorFloat &lerpFactors);
 };
 
 }

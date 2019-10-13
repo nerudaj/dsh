@@ -70,3 +70,13 @@ VectorFloat Math::vectorFromIndex(int index, const VectorInt &gridSize) {
 
 	return result;
 }
+
+float Math::reduceDotProducts(VectorFloat dotProducts, const VectorFloat &lerpFactors) {
+	for (unsigned t = 1, skip = 2, f = 0; t < dotProducts.size(); t *= 2, skip *= 2, f++) {
+		for (unsigned i = 0; i < dotProducts.size(); i += skip) {
+			dotProducts[i] = Math::lerp(dotProducts[i], dotProducts[i + t], lerpFactors[f]);
+		}
+	}
+
+	return dotProducts[0];
+}

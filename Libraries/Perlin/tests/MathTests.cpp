@@ -6,6 +6,7 @@ using perlin::VectorInt;
 using perlin::VectorFloat;
 
 TEST_CASE("lerp", "[Math]") {
+	REQUIRE(Math::lerp(0.f, 1.f, 0.5f) == 0.5f);
 	REQUIRE(Math::lerp(10.f, 20.f, 0.f) == 10.f);
 	REQUIRE(Math::lerp(10.f, 20.f, 1.f) == 20.f);
 	REQUIRE(Math::lerp(10.f, 20.f, 0.5f) == 15.f);
@@ -115,4 +116,15 @@ TEST_CASE("vectorFromIndex", "[Math]") {
 	REQUIRE(grad[0] == 1.f);
 	REQUIRE(grad[1] == 2.f);
 	REQUIRE(grad[2] == 3.f);
+}
+
+TEST_CASE("reduceDotProducts", "[Math]") {
+	float result = Math::reduceDotProducts({0.f, 1.f}, {0.5f});
+	REQUIRE(result == Approx(0.5f));
+
+	result = Math::reduceDotProducts({0.f, 1.f, 2.f, 3.f}, {0.5f, 0.25f});
+	REQUIRE(result == Approx(1.f));
+
+	result = Math::reduceDotProducts({0.f, 1.f, 2.f, 3.f, 4.f, 5.f, 6.f, 7.f}, {0.5f, 0.25f, 0.75f});
+	REQUIRE(result == Approx(4.f));
 }

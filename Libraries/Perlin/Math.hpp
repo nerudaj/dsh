@@ -16,7 +16,9 @@ public:
 
 	static std::vector<int> getPointBoundingBox(int start, const VectorInt &limits);
 
-	static VectorFloat computeLerpFactors(const VectorInt &origin, const VectorFloat &target, const unsigned dimensions);
+	static VectorFloat computeLerpFactors(const VectorInt &origin, const VectorFloat &target);
+	
+	static VectorFloat gradientFromIndex(int index, const VectorFloat &gridSize);
 };
 
 }

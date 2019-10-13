@@ -1,4 +1,5 @@
 #include "Math.hpp"
+#include <cassert>
 
 using namespace perlin;
 
@@ -46,12 +47,26 @@ std::vector<int> Math::getPointBoundingBox(int start, const VectorInt &limits) {
 	return result;
 }
 
-VectorFloat Math::computeLerpFactors(const VectorInt &origin, const VectorFloat &target, const unsigned dimensions) {
-	VectorFloat lerpFactors(dimensions);
+VectorFloat Math::computeLerpFactors(const VectorInt &origin, const VectorFloat &target) {
+	assert(origin.size() == target.size());
 
-	for (unsigned i = 0; i < dimensions; i++) {
+	VectorFloat lerpFactors(origin.size());
+
+	for (unsigned i = 0; i < origin.size(); i++) {
 		lerpFactors[i] = target[i] - static_cast<float>(origin[i]);
 	}
 
 	return lerpFactors;
+}
+
+static VectorFloat gradientFromIndex(int index, const VectorFloat &gridSize) {
+	VectorFloat result(gridSize.size());
+
+	unsigned multiplier = 1;
+	for (unsigned i = 0; i < gridSize.size(); i++) {
+		result[i] = index % (multiplier * gridSize[i]) / multiplier;
+		multiplier *= gridSize[i];
+	}
+
+	return result;
 }

@@ -10,14 +10,16 @@ int main() {
 	image.create(W, H);
 	
 	perlin::NoiseGenerator<2> noise;
+	noise.setGradientGridSize({10, 10});
+	noise.setGradientGridDensity({10, 10});
 
 	for (int y = 0; y < H; y++) {
 		for (int x = 0; x < W; x++) {
 			float value = noise.getValueAt({x, y});
 			std::cout << value << std::endl;
 			value += 2.f;
-			value = value * 255.f / 4.f;
-			image.setPixel(x, y, static_cast<uint8_t>(value));
+			int val = static_cast<int>(value * 255.f / 4.f) / 10;
+			image.setPixel(x, y, val * 10);
 		}
 	}
 	

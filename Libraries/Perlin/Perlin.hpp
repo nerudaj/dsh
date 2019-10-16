@@ -36,10 +36,14 @@ namespace perlin {
 	template<unsigned Dimensions>
 	class NoiseGenerator : public RawNoiseGenerator {
 	private:
-		void initialize() {
+		void reinit() {
+			gradients.resize(Math::getDimensionsProduct(gridSize));
+			generateGradients(Dimensions);
+		}
+
+		void init() {
 			gridSize = std::vector<int>(Dimensions, 2);
 			gridDensity = std::vector<int>(Dimensions, 100);
-			gradients.resize(Math::getDimensionsProduct(gridSize));
 			seed = 0;
 			complexity = GradientComplexity::FastOrthogonal;
 			reinit();
@@ -51,8 +55,21 @@ namespace perlin {
 			return getValueAtRaw(templatelessPoint);
 		}
 
+		void setGradientGridSize(const Vector<Dimensions> &size) {
+			gridSize = std::vector<int>(size.begin(), size.end());
+			
+			for (auto &dim : gridSize) dim++;
+
+			reinit();
+		}
+
+		void setGradientGridDensity(const Vector<Dimensions> &density) {
+			gridDensity = std::vector<int>(density.begin(), density.end());
+			reinit();
+		}
+
 		NoiseGenerator() {
-			initialize();
+			init();
 		}
 	};
 }

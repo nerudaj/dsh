@@ -5,7 +5,7 @@ using perlin::Convert;
 using perlin::VectorInt;
 using perlin::VectorFloat;
 
-TEST_CASE("vecIntToFloat", "[Convert]") {
+/*TEST_CASE("vecIntToFloat", "[Convert]") {
 	SECTION("One dimension") {
 		auto vec = Convert::vecIntToOffsetedFloat({3}, {2});
 		REQUIRE(vec[0] == 1.75f);
@@ -19,7 +19,7 @@ TEST_CASE("vecIntToFloat", "[Convert]") {
 		REQUIRE(vec[0] == 1.75f);
 		REQUIRE(vec[1] == 5.25f);
 	}
-}
+}*/
 
 TEST_CASE("vecFloatToInt", "[Convert]") {
 	SECTION("Two dimensions") {

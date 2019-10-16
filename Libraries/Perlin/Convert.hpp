@@ -10,7 +10,7 @@ public:
 		return VectorInt(vec.begin(), vec.end());
 	}
 
-	static VectorFloat vecIntToOffsetedFloat(const VectorInt &vec, const VectorInt &normalFactor);
+	static VectorFloat vecIntToOffsetedFloat(const VectorInt &vec, const VectorInt &gridSize, const VectorInt &gridDensity);
 };
 
 }

@@ -27,3 +27,12 @@ add_subdirectory ( Config )
 add_subdirectory ( LevelD )
 add_subdirectory ( Bitmap )
 add_subdirectory ( Perlin )
+
+include_directories ( Perlin )
+include_directories ( Bitmap )
+
+add_executable( perlin-test
+	Perlin/perlin-test.cpp
+)
+
+target_link_libraries( perlin-test perlin bitmap )

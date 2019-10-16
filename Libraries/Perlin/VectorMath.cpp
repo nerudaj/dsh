@@ -1,6 +1,7 @@
 #include "VectorMath.hpp"
 
 #include <cmath>
+#include <cassert>
 
 using namespace perlin;
 
@@ -24,6 +25,8 @@ float VectorMath::getSize(const VectorFloat &vec) {
 }
 
 float VectorMath::getDotProduct(const VectorFloat &a, const VectorFloat &b) {
+	assert(a.size() == b.size());
+
 	float result = 0.f;
 
 	for (unsigned i = 0; i < a.size(); i++) {
@@ -34,12 +37,16 @@ float VectorMath::getDotProduct(const VectorFloat &a, const VectorFloat &b) {
 }
 
 void VectorMath::normalizeEachDim(VectorInt &target, VectorInt &coefs) {
+	assert(target.size() == coefs.size());
+
 	for (unsigned i = 0; i < target.size(); i++) {
 		target[i] /= coefs[i];
 	}
 }
 
 VectorFloat VectorMath::getVectorFromPoints(const VectorFloat &from, const VectorFloat &to) {
+	assert(from.size() == to.size());
+
 	VectorFloat result(from.size());
 
 	for (unsigned i = 0; i < from.size(); i++) {
@@ -53,6 +60,8 @@ VectorFloat VectorMath::getVectorFromPoints(const VectorFloat &from, const Vecto
 // OPERATORS //
 // ========= //
 VectorFloat operator+(VectorFloat a, const VectorFloat &b) {
+	assert(a.size() == b.size());
+
 	for (unsigned i = 0; i < a.size(); i++) {
 		a[i] += b[i];
 	}
@@ -61,6 +70,8 @@ VectorFloat operator+(VectorFloat a, const VectorFloat &b) {
 }
 
 VectorInt operator+(VectorInt a, const VectorInt &b) {
+	assert(a.size() == b.size());
+
 	for (unsigned i = 0; i < a.size(); i++) {
 		a[i] += b[i];
 	}

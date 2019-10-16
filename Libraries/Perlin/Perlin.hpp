@@ -29,7 +29,7 @@ namespace perlin {
 
 		std::vector<float> computeDotProducts(const std::vector<float> &point, int pointIndex) const;
 
-		float getValueAt(const std::vector<int> &point) const;
+		float getValueAtRaw(const std::vector<int> &point) const;
 	};
 
 	template<unsigned Dimensions>
@@ -37,7 +37,7 @@ namespace perlin {
 	private:
 		void initialize() {
 			gridSize = std::vector<int>(Dimensions, 2);
-			gridDensity = std::vector<int>(Dimensions, 5);
+			gridDensity = std::vector<int>(Dimensions, 100);
 			gradients.resize(Math::getDimensionsProduct(gridSize));
 			seed = 0;
 			complexity = GradientComplexity::SlowRadial;
@@ -47,7 +47,7 @@ namespace perlin {
 	public:
 		float getValueAt(const Vector<Dimensions> &point) const {
 			std::vector<int> templatelessPoint(point.begin(), point.end());
-			return getValueAt(templatelessPoint);
+			return getValueAtRaw(templatelessPoint);
 		}
 
 		NoiseGenerator() {

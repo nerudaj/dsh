@@ -11,7 +11,8 @@ namespace perlin {
 	using Vector = std::array<int, Dimensions>;
 
 	enum class GradientComplexity : size_t {
-		SlowRadial
+		SlowRadial,
+		FastOrthogonal
 	};
 
 	/**
@@ -40,8 +41,8 @@ namespace perlin {
 			gridDensity = std::vector<int>(Dimensions, 100);
 			gradients.resize(Math::getDimensionsProduct(gridSize));
 			seed = 0;
-			complexity = GradientComplexity::SlowRadial;
-			generateGradients(Dimensions);
+			complexity = GradientComplexity::FastOrthogonal;
+			reinit();
 		}
 
 	public:

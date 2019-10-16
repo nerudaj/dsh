@@ -21,10 +21,23 @@ VectorFloat generateGradientSlowRadial(std::mt19937 &generator, const unsigned d
 	return result;
 }
 
+VectorFloat generateGradientFastOrthogonal(std::mt19937 &generator, const unsigned dimensions) {
+	std::uniform_int_distribution<int> distr1(0, dimensions);
+
+	VectorFloat result(dimensions, 0);
+	result[distr1(generator)] = distr1(generator) % 2 ? 1.f : -1.f;
+
+	return result;
+}
+
 VectorFloat generateGradient(GradientComplexity complexity, std::mt19937 &generator, const unsigned dimensions) {
 	switch (complexity) {
 	case GradientComplexity::SlowRadial:
 		return generateGradientSlowRadial(generator, dimensions);
+		break;
+	
+	case GradientComplexity::FastOrthogonal:
+		return generateGradientFastOrthogonal(generator, dimensions);
 		break;
 
 	default:

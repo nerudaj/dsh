@@ -1,126 +1,46 @@
-#include <Test.hpp>
+#define CATCH_CONFIG_MAIN
+#include <catch.hpp>
 #include "../Strings.hpp"
 
-using std::string;
-using std::vector;
-
-#define tostr(s) std::to_string(s)
-
-class TestStringSplit : public Test {
-private:
-	char delim;
-	string in;
-	vector<string> ref;
-
-public:
-	virtual void run() final override {
-		auto out = Strings::split(delim, in);
-
-		assertEqual(ref.size(), out.size(), tostr(ref.size()), tostr(out.size()));
-
-		for (unsigned i = 0; i < out.size(); i++) {
-			inLoop(assertEqual(ref[i], out[i], ref[i], out[i]), i);
-		}
+TEST_CASE("Strings::split", "[Strings]") {
+	SECTION("Empty vector") {
+		auto vec = Strings::split(';', "");
+		REQUIRE(vec.size() == 0);
 	}
 
-	virtual string name() const final override {
-		return "TestStringSplit";
+	SECTION("No cut") {
+		auto vec = Strings::split(';', "lorem ipsum");
+		REQUIRE(vec.size() == 1);
+		REQUIRE(vec[0] == "lorem ipsum");
 	}
 
-	TestStringSplit(char delim, const string &in, const vector<string> &ref) : delim(delim), in(in), ref(ref) {}
-};
-
-class TestStringReplaceAll : public Test {
-private:
-	string in;
-	string from;
-	string to;
-	string ref;
-
-public:
-	virtual void run() final override {
-		auto out = Strings::replaceAllCopy(in, from, to);
-
-		assertEqual(ref, out, ref, out);
+	SECTION("Standard cut") {
+		auto vec = Strings::split(' ', "lorem ipsum dolor sit amet");
+		REQUIRE(vec.size() == 5);
+		REQUIRE(vec[0] == "lorem");
+		REQUIRE(vec[1] == "ipsum");
+		REQUIRE(vec[2] == "dolor");
+		REQUIRE(vec[3] == "sit");
+		REQUIRE(vec[4] == "amet");
 	}
+}
 
-	virtual string name() const final override {
-		return "TestStringReplaceAll";
-	}
+TEST_CASE("Strings::replaceAll", "[Strings]") {
+	REQUIRE(Strings::replaceAllCopy("abc", "b", "") == "ac");
+	REQUIRE(Strings::replaceAllCopy("abc", "x", "") == "abc");
+	REQUIRE(Strings::replaceAllCopy("aaa", "a", "aa") == "aaaaaa");
+	REQUIRE(Strings::replaceAllCopy("abc", "b", "x") == "axc");
+}
 
-	TestStringReplaceAll(const string &in, const string &from, const string &to, const string &ref) : in(in), from(from), to(to), ref(ref) {}
-};
+TEST_CASE("Strings::trim", "[Strings]") {
+	REQUIRE(Strings::trimCopy("abc") == "abc");
+	REQUIRE(Strings::trimCopy(" abc ") == "abc");
+	REQUIRE(Strings::trimCopy("\t\n \tabc") == "abc");
+	REQUIRE(Strings::trimCopy("abc\t\n \t") == "abc");
+}
 
-class TestStringTrim : public Test {
-private:
-	string in;
-	string ref;
-
-public:
-	virtual void run() final override {
-		auto out = Strings::trimCopy(in);
-
-		assertEqual(ref, out, ref, out);
-	}
-
-	virtual string name() const final override {
-		return "TestStringTrim";
-	}
-
-	TestStringTrim(const string &in, const string &ref) : in(in), ref(ref) {}
-};
-
-class TestStringIsPrefixOf : public Test {
-private:
-	string prefix;
-	string str;
-
-public:
-	virtual void run() final override {
-		assertTrue(Strings::isPrefixOf(prefix, str));
-	}
-
-	virtual string name() const final override {
-		return "TestStringIsPrefixOf";
-	}
-
-	TestStringIsPrefixOf(const string &prefix, const string &str) : prefix(prefix), str(str) {}
-};
-
-class TestStringIsNotPrefixOf : public Test {
-private:
-	string prefix;
-	string str;
-
-public:
-	virtual void run() final override {
-		assertFalse(Strings::isPrefixOf(prefix, str));
-	}
-
-	virtual string name() const final override {
-		return "TestStringIsNotPrefixOf";
-	}
-
-	TestStringIsNotPrefixOf(const string &prefix, const string &str) : prefix(prefix), str(str) {}
-};
-
-int main() {
-	Testrunner runner({
-		new TestStringSplit(';', "", {}),
-		new TestStringSplit(';', "lorem ipsum", {"lorem ipsum"}),
-		new TestStringSplit(' ', "lorem ipsum dolor sit amet", {"lorem", "ipsum", "dolor", "sit", "amet"}),
-		new TestStringReplaceAll("abc", "b", "", "ac"),
-		new TestStringReplaceAll("abc", "", "x", "abc"),
-		new TestStringReplaceAll("aaa", "a", "aa", "aaaaaa"),
-		new TestStringReplaceAll("abc", "b", "x", "axc"),
-		new TestStringTrim("abc", "abc"),
-		new TestStringTrim(" abc ", "abc"),
-		new TestStringTrim("\t\n \tabc", "abc"),
-		new TestStringTrim("abc\t\n \t", "abc"),
-		new TestStringIsPrefixOf("a", "aaa"),
-		new TestStringIsPrefixOf("abc", "abcdef"),
-		new TestStringIsNotPrefixOf("abc", "defabc")
-	});
-
-	return runner.evaluateTestcases(true);
+TEST_CASE("Strings::isPrefixOf", "[Strings]") {
+	REQUIRE(Strings::isPrefixOf("a", "aaa"));
+	REQUIRE(Strings::isPrefixOf("abc", "abcdef"));
+	REQUIRE(!Strings::isPrefixOf("abc", "fedcba"));
 }

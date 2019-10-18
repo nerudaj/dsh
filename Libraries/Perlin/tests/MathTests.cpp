@@ -26,23 +26,23 @@ TEST_CASE("getSquashedIndex", "[Math]") {
 	}
 
 	SECTION("One dimension") {
-		REQUIRE(Math::getSquashedIndex({2}, {10}) == 2);
-		REQUIRE(Math::getSquashedIndex({2}, {1}) == 0);
-		REQUIRE(Math::getSquashedIndex({10}, {7}) == 3);
+		REQUIRE(Math::getSquashedIndex({1}, {3}) == 1);
+		REQUIRE(Math::getSquashedIndex({3}, {3}) == 1);
 	}
 
 	SECTION("Two dimensions") {
-		REQUIRE(Math::getSquashedIndex({1, 1}, {2, 2}) == 3);
-		REQUIRE(Math::getSquashedIndex({5, 1}, {10, 10}) == 15);
-		REQUIRE(Math::getSquashedIndex({5, 1}, {1,1}) == 0);
+		REQUIRE(Math::getSquashedIndex({1, 0}, {4, 4}) == 1);
+		REQUIRE(Math::getSquashedIndex({2, 2}, {4, 4}) == 10);
+		REQUIRE(Math::getSquashedIndex({3, 1}, {4, 4}) == 4);
+		REQUIRE(Math::getSquashedIndex({3, 3}, {4, 4}) == 0);
 	}
 
 	SECTION("Three dimensions") {
-		REQUIRE(Math::getSquashedIndex({1, 1, 1}, {2, 2, 2}) == 7);
+		REQUIRE(Math::getSquashedIndex({1, 1, 1}, {2, 2, 2}) == 0);
 	}
 
 	SECTION("Four dimensions") {
-		REQUIRE(Math::getSquashedIndex({1, 1, 1, 1}, {2, 2, 2, 2}) == 15);
+		REQUIRE(Math::getSquashedIndex({1, 1, 1, 1}, {2, 2, 2, 2}) == 0);
 	}
 }
 

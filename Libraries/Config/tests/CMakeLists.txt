@@ -2,6 +2,7 @@ set ( TESTRUNNER "testrunner_config" )
 
 add_executable( ${TESTRUNNER} 
 	Main.cpp
+	ArgsTest.cpp
 )
 
 target_link_libraries( ${TESTRUNNER}

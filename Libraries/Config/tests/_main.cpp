@@ -656,7 +656,7 @@ int main(int argc, char *argv[]) {
 		new IniSaveToFileTest(pathPrefix + "/iniOk0.ini"),
 		new IniSaveToFileTest(pathPrefix + "/iniOk1.ini"),
 		// ArgsSetupArgumentsTest
-		new ArgsSetupArgumentsTest("h"),
+		/*new ArgsSetupArgumentsTest("h"),
 		new ArgsSetupArgumentsTest("h:"),
 		new ArgsSetupArgumentsTest("h!"),
 		new ArgsSetupArgumentsTest("hg"),
@@ -696,7 +696,7 @@ int main(int argc, char *argv[]) {
 		new ArgsGetArgValueTest("h:", {"progname", "-h", "10"}, 'h', 10),
 		new ArgsGetArgValueTest("d!", {"progname", "-d", "ehlo"}, 'd', "ehlo"),
 		// ArgsGetArgValueFailTest
-		new ArgsGetArgValueFailTest("h:", {"progname"}, 'h', 10),
+		new ArgsGetArgValueFailTest("h:", {"progname"}, 'h', 10),*/
 		// CsvLoadFromFileTest
 		new CsvLoadFromFileTest(pathPrefix + "/test0.csv", {
 			{"aaa", "bbb", "ccc"}, {"ddd", "eee", "fff"}

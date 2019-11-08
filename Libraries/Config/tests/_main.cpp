@@ -9,7 +9,7 @@
 using std::string;
 using std::vector;
 
-template<typename T>
+/*template<typename T>
 class ItemInitTest : public Test {
 private:
 	T input;
@@ -48,9 +48,9 @@ public:
 	}
 
 	ItemAssignTest(T input, const string &ref) : input(input), ref(ref) {}
-};
+};*/
 
-template<typename T, typename U>
+/*template<typename T, typename U>
 class ItemEqualTest : public Test {
 private:
 	T input;
@@ -68,7 +68,7 @@ public:
 	}
 
 	ItemEqualTest(T input, U ref) : input(input), ref(ref) {}
-};
+};*/
 
 void compareIniToReferenceMap(const cfg::Ini &ini, const std::map<string, cfg::IniSection> &ref) {
 	for (auto &sec : ref) {
@@ -213,7 +213,7 @@ public:
 	}
 };
 
-class ArgsSetupArgumentsTest : public Test {
+/*class ArgsSetupArgumentsTest : public Test {
 private:
 	string setup;
 
@@ -405,7 +405,7 @@ public:
 	}
 
 	ArgsGetArgValueFailTest(const string &setup, const vector<const char*> &inArgs, char query, const cfg::Item &ref) : setup(setup), inArgs(inArgs), query(query) {}
-};
+};*/
 
 void assertCsvsEqual(const vector<vector<cfg::Item>> &out, const vector<vector<cfg::Item>> &ref) {
 	assertEqual(out.size(), ref.size(), std::to_string(out.size()), std::to_string(ref.size()));
@@ -538,22 +538,22 @@ int main(int argc, char *argv[]) {
 	std::string pathPrefix = argv[1];
 	
 	Testrunner runner({
-		new ItemInitTest<const char*>(std::string("hello world").c_str(), "hello world"),
+		/*new ItemInitTest<const char*>(std::string("hello world").c_str(), "hello world"),
 		new ItemInitTest<std::string>("hello world", "hello world"),
 		new ItemInitTest<bool>(true, "1"),
 		new ItemInitTest<bool>(false, "0"),
 		new ItemInitTest<int>(268374, "268374"),
 		new ItemInitTest<long>(2061728394, "2061728394"),
-		new ItemInitTest<float>(42.69f, "42.689999"),
-		new ItemAssignTest<const char*>(std::string("hello world").c_str(), "hello world"),
+		new ItemInitTest<float>(42.69f, "42.689999"),*/
+		/*new ItemAssignTest<const char*>(std::string("hello world").c_str(), "hello world"),
 		new ItemAssignTest<std::string>("hello world", "hello world"),
 		new ItemAssignTest<bool>(true, "1"),
 		new ItemAssignTest<bool>(false, "0"),
 		new ItemAssignTest<int>(268374, "268374"),
 		new ItemAssignTest<long>(2061728394, "2061728394"),
-		new ItemAssignTest<float>(42.69f, "42.689999"),
+		new ItemAssignTest<float>(42.69f, "42.689999"),*/
 		// const char * | anything
-		new ItemEqualTest<const char*, const char*>(std::string("hello world").c_str(), std::string("hello world").c_str()),
+		/*new ItemEqualTest<const char*, const char*>(std::string("hello world").c_str(), std::string("hello world").c_str()),
 		new ItemEqualTest<const char*, std::string>(std::string("hello world").c_str(), "hello world"),
 		new ItemEqualTest<const char*, bool>(std::string("").c_str(), false),
 		new ItemEqualTest<const char*, bool>(std::string("0").c_str(), false),
@@ -612,7 +612,7 @@ int main(int argc, char *argv[]) {
 		new ItemEqualTest<float, bool>(0.f, false),
 		new ItemEqualTest<float, int>(2.2f, 2),
 		new ItemEqualTest<float, long>(2061728394.2f, 2061728384L),
-		new ItemEqualTest<float, float>(2061728394.2f, 2061728394.2f),
+		new ItemEqualTest<float, float>(2061728394.2f, 2061728394.2f),*/
 		// IniManualInitTest
 		new IniManualInitTest({}),
 		new IniManualInitTest({

@@ -2,6 +2,7 @@ set ( TESTRUNNER "testrunner_config" )
 
 add_executable( ${TESTRUNNER} 
 	Main.cpp
+	ItemTests.cpp
 	ArgsTest.cpp
 )
 

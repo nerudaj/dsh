@@ -3,7 +3,8 @@ set ( TESTRUNNER "testrunner_config" )
 add_executable( ${TESTRUNNER} 
 	Main.cpp
 	ItemTests.cpp
-	ArgsTest.cpp
+	ArgsTests.cpp
+	IniTests.cpp
 )
 
 target_link_libraries( ${TESTRUNNER}
@@ -11,7 +12,7 @@ target_link_libraries( ${TESTRUNNER}
 	strings
 )
 
-add_test ( NAME ${PROJECT_NAME} COMMAND ${TESTRUNNER} ${CMAKE_CURRENT_SOURCE_DIR} )
+add_test ( NAME ${PROJECT_NAME} COMMAND ${TESTRUNNER} )
 
 set ( TESTRUNNER_OLD "testrunner_config_old" )
 

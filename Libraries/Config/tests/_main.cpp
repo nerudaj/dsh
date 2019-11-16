@@ -69,7 +69,7 @@ public:
 
 	ItemEqualTest(T input, U ref) : input(input), ref(ref) {}
 };*/
-
+/*
 void compareIniToReferenceMap(const cfg::Ini &ini, const std::map<string, cfg::IniSection> &ref) {
 	for (auto &sec : ref) {
 		assertTrue(ini.hasSection(sec.first));
@@ -211,7 +211,7 @@ public:
 	~IniSaveToFileTest() {
 		remove(string(filename + ".test").c_str());
 	}
-};
+};*/
 
 /*class ArgsSetupArgumentsTest : public Test {
 private:
@@ -614,7 +614,7 @@ int main(int argc, char *argv[]) {
 		new ItemEqualTest<float, long>(2061728394.2f, 2061728384L),
 		new ItemEqualTest<float, float>(2061728394.2f, 2061728394.2f),*/
 		// IniManualInitTest
-		new IniManualInitTest({}),
+		/*new IniManualInitTest({}),
 		new IniManualInitTest({
 			{"root", cfg::IniSection()}
 		}),
@@ -632,9 +632,9 @@ int main(int argc, char *argv[]) {
 				{"key", cfg::Item(3)},
 				{"key3", cfg::Item(false)},
 			})}
-		}),
+		}),*/
 		// IniLoadFromFileTest
-		new IniLoadFromFileTest(pathPrefix + "/iniOk0.ini", {
+		/*new IniLoadFromFileTest(pathPrefix + "/iniOk0.ini", {
 			{"root", cfg::IniSection({
 				{"key1", cfg::Item("value1")}
 			})},
@@ -651,10 +651,10 @@ int main(int argc, char *argv[]) {
 		}),
 		new IniLoadFromFileFailTest(pathPrefix + "/iniFail0.ini"),
 		new IniLoadFromFileFailTest(pathPrefix + "/iniFail1.ini"),
-		new IniLoadFromFileFailTest(pathPrefix + "/iniFail2.ini"),
+		new IniLoadFromFileFailTest(pathPrefix + "/iniFail2.ini"),*/
 		// IniSaveToFileTest
-		new IniSaveToFileTest(pathPrefix + "/iniOk0.ini"),
-		new IniSaveToFileTest(pathPrefix + "/iniOk1.ini"),
+		/*new IniSaveToFileTest(pathPrefix + "/iniOk0.ini"),
+		new IniSaveToFileTest(pathPrefix + "/iniOk1.ini"),*/
 		// ArgsSetupArgumentsTest
 		/*new ArgsSetupArgumentsTest("h"),
 		new ArgsSetupArgumentsTest("h:"),

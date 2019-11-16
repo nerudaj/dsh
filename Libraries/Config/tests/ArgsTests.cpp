@@ -15,9 +15,14 @@ TEST_CASE("Args::setupArguments", "[Args]") {
 	SECTION("Failing") {
 		auto setup = GENERATE(as<std::string>{}, "h?", "");
 		
+		try {
+			args.setupArguments(setup);
+			REQUIRE(false);
+		} catch (...) {}
+		/* Following does not work:
 		REQUIRE_THROWS([&](){
 			args.setupArguments(setup);
-		});
+		});*/
 	}
 }
 
@@ -60,10 +65,16 @@ TEST_CASE("Args::parse failing", "[Args]") {
 	SECTION("Failing") {
 		auto i = GENERATE_COPY(range(0u, setups.size()));
 
+		try {
+			args.setupArguments(setups[i]);
+			args.parse(argSetups[i].size(), argSetups[i].data());
+			REQUIRE(false);
+		} catch(...) {}
+		/* Following does not work:
 		REQUIRE_THROWS([&](){
 			args.setupArguments(setups[i]);
 			args.parse(argSetups[i].size(), argSetups[i].data());
-		});
+		});*/
 	}
 }
 
@@ -89,10 +100,10 @@ TEST_CASE("Args::isSet passing", "[Args]") {
 	SECTION("Passing") {
 		auto i = GENERATE_COPY(range(0u, setups.size()));
 		
-		REQUIRE_NOTHROW([&](){
+		//REQUIRE_NOTHROW([&](){
 			args.setupArguments(setups[i]);
 			args.parse(argSetups[i].size(), argSetups[i].data());
-		});
+		//});
 
 		for (auto query : queries[i]) {
 			REQUIRE(args.isSet(query));
@@ -192,11 +203,17 @@ TEST_CASE("Args::getArgumentValue", "[Args]") {
 	}
 	
 	SECTION("No value") {
-		std::vector<const char*> params = {"progname", "-v", "10"};
+		std::vector<const char*> params = {"progname" };
 		args.parse(params.size(), params.data());
 
+		try {
+			args.getArgumentValue('v');
+			REQUIRE(false);
+		} catch (...) {}
+
+		/* Following does not work:
 		REQUIRE_THROWS([&]() {
 			args.getArgumentValue('v');
-		});
+		});*/
 	}
 }

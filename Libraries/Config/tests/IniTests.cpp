@@ -1,15 +1,9 @@
 #include <catch.hpp>
 #include "../Config.hpp"
 #include <fstream>
+#include "Helper.hpp"
 
 const std::string TEST_FILE_PATH = "test.ini";
-
-void writeFile(const std::string &path, const std::string &blob) {
-	std::ofstream save(path);
-	save.write(blob.c_str(), blob.size());
-	save.close();
-	save.clear();
-}
 
 TEST_CASE("cfg::Ini::loadFromFile", "[Ini]") {
 	cfg::Ini ini;
@@ -17,11 +11,11 @@ TEST_CASE("cfg::Ini::loadFromFile", "[Ini]") {
 	SECTION("OK 1") {
 		std::string blob = "key1=";
 
-		writeFile(TEST_FILE_PATH, blob);
+		Helper::writeFile(TEST_FILE_PATH, blob);
 		ini.loadFromFile(TEST_FILE_PATH);
 
 		// Following does not work
-		// REQUIRE_NOTHROW([&]() { writeFile(TEST_FILE_PATH, blob); });
+		// REQUIRE_NOTHROW([&]() { Helper::writeFile(TEST_FILE_PATH, blob); });
 		// REQUIRE_NOTHROW([&] () { ini.loadFromFile(TEST_FILE_PATH); });
 
 		REQUIRE(ini["root"].hasKey("key1"));
@@ -31,11 +25,11 @@ TEST_CASE("cfg::Ini::loadFromFile", "[Ini]") {
 	SECTION("OK 2") {
 		std::string blob = "key1=value1\n\n[section]\nkey2=value2\nkey3=10\nkey4=false";
 
-		writeFile(TEST_FILE_PATH, blob);
+		Helper::writeFile(TEST_FILE_PATH, blob);
 		ini.loadFromFile(TEST_FILE_PATH);
 
 		// Following does not work
-		// REQUIRE_NOTHROW([&]() { writeFile(TEST_FILE_PATH, blob); });
+		// REQUIRE_NOTHROW([&]() { Helper::writeFile(TEST_FILE_PATH, blob); });
 		// REQUIRE_NOTHROW([&] () { ini.loadFromFile(TEST_FILE_PATH); });
 
 		REQUIRE(ini["root"].hasKey("key1"));
@@ -58,7 +52,7 @@ TEST_CASE("cfg::Ini::loadFromFile", "[Ini]") {
 			"value1"
 		);
 
-		writeFile(TEST_FILE_PATH, blob);
+		Helper::writeFile(TEST_FILE_PATH, blob);
 		try {
 			ini.loadFromFile(TEST_FILE_PATH);
 			REQUIRE(false);
@@ -66,7 +60,7 @@ TEST_CASE("cfg::Ini::loadFromFile", "[Ini]") {
 		catch (...) {}
 
 		// Following does not work:
-		//REQUIRE_NOTHROW([&]() { writeFile(TEST_FILE_PATH, blob); });
+		//REQUIRE_NOTHROW([&]() { Helper::writeFile(TEST_FILE_PATH, blob); });
 		//REQUIRE_THROWS([&]() { ini.loadFromFile(TEST_FILE_PATH); });
 	}
 }

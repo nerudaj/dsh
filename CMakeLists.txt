@@ -34,6 +34,13 @@ install(
 		"."
 )
 
+install(
+	FILES
+		Readme.md
+	DESTINATION
+		"."
+)
+
 ## Packaging
 set ( CPACK_GENERATOR "ZIP" )
 

@@ -7,8 +7,8 @@ install(
 		bootstrap.bat
 		doomsh.cmd
 		dsh.bat
-		Scripts/unzip.vbs
-		Scripts/wget.js
+		unzip.vbs
+		wget.js
 	DESTINATION
 		install
 )

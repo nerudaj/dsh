@@ -22,6 +22,8 @@ include_directories ( "${CMAKE_CURRENT_BINARY_DIR}/catch2" )
 
 ## Add subdirectories as needed
 add_subdirectory ( Libraries )
+add_subdirectory ( Utilities )
+add_subdirectory ( Environment )
 
 ## Allow pushing test targets to ctest
 enable_testing()

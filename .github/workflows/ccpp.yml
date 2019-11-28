@@ -30,7 +30,7 @@ jobs:
       run: cmake .
     - name: make
       run: |
-        call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\Common7\Tools\VsDevCmd.bat"
+        Invoke-BatchFile "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\Common7\Tools\VsDevCmd.bat"
         devenv dsh.sln /Build Debug
         devenv dsh.sln /Build Release
   

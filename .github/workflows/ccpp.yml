@@ -18,8 +18,8 @@ jobs:
         run: make
       - name: test
         run: ctest
-      - name: package
-        run: cpack
+      #- name: package
+        #run: cpack
         
   build-windows-visual:
     runs-on: windows-latest
@@ -30,9 +30,8 @@ jobs:
       run: cmake .
     - name: make
       run: |
-        Invoke-BatchFile "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\Common7\Tools\VsDevCmd.bat"
-        devenv dsh.sln /Build Debug
-        devenv dsh.sln /Build Release
+       & "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\Common7\IDE\devenv.exe" dsh.sln /Build Debug
+       & "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\Common7\IDE\devenv.exe" dsh.sln /Build Release
   
   build-ubuntu:
     runs-on: ubuntu-latest

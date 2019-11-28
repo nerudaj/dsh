@@ -10,4 +10,7 @@ add_executable(${PROJECT_NAME} Main.cpp)
 
 TARGET_LINK_LIBRARIES(${PROJECT_NAME} config strings)
 
-install(TARGETS ${PROJECT_NAME})
+install(
+    TARGETS              ${PROJECT_NAME}
+    RUNTIME DESTINATION  bin
+)

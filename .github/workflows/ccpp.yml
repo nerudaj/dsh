@@ -8,8 +8,11 @@ on:
 
 jobs:
   build:
-
-    runs-on: windows-latest
+    name: Build on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [windows-latest, ubuntu-latest]
     
     steps:
     - uses: actions/checkout@v1
@@ -19,3 +22,5 @@ jobs:
       run: make
     - name: tests
       run: ctest
+    - name: package
+      run: cpack

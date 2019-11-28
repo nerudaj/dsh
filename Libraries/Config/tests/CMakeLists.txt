@@ -1,7 +1,7 @@
 set ( TESTRUNNER "testrunner_config" )
 
-add_executable( ${TESTRUNNER} 
-	Main.cpp
+add_executable( ${TESTRUNNER}
+	main.cpp
 	ItemTests.cpp
 	ArgsTests.cpp
 	IniTests.cpp

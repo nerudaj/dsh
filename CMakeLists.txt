@@ -1,0 +1,55 @@
+# dsh
+cmake_minimum_required ( VERSION 3.0 )
+
+## Project setup
+project ( dsh )
+set ( PROJECT_VERSION_MAJOR "1" )
+set ( PROJECT_VERSION_MINOR "0" )
+set ( PROJECT_VERSION_PATCH "0" )
+
+## Catch2
+include ( ExternalProject )
+ExternalProject_Add( catch2
+	URL                 "https://github.com/catchorg/Catch2/releases/download/v2.10.2/catch.hpp"
+	DOWNLOAD_DIR        "${CMAKE_CURRENT_BINARY_DIR}/catch2"
+	DOWNLOAD_NO_EXTRACT true
+	CONFIGURE_COMMAND   ""
+	BUILD_COMMAND       ""
+	INSTALL_COMMAND     ""
+)
+
+include_directories ( "${CMAKE_CURRENT_BINARY_DIR}/catch2" )
+
+## Add subdirectories as needed
+add_subdirectory ( Libraries )
+add_subdirectory ( Utilities )
+add_subdirectory ( Environment )
+
+## Allow pushing test targets to ctest
+enable_testing()
+
+## Install few additional files
+install(
+	FILES
+		changelog.txt
+	DESTINATION
+		"."
+)
+
+install(
+	FILES
+		Readme.md
+	DESTINATION
+		"."
+)
+
+## Packaging
+set ( CPACK_GENERATOR "ZIP" )
+
+set ( CPACK_PACKAGE_DESCRIPTION_SUMMARY "Development C++ libraries and tools for Windows" )
+set ( CPACK_PACKAGE_DESCRIPTION_FILE    "${CMAKE_CURRENT_SOURCE_DIR}/Readme.md" )
+set ( CPACK_PACKAGE_VERSION_MAJOR       "${PROJECT_VERSION_MAJOR}" )
+set ( CPACK_PACKAGE_VERSION_MINOR       "${PROJECT_VERSION_MINOR}" )
+set ( CPACK_PACKAGE_VERSION_PATCH       "${PROJECT_VERSION_PATCH}" )
+
+include ( CPack )

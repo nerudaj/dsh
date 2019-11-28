@@ -2,6 +2,7 @@ set ( TESTRUNNER "testrunner_bitmap" )
 
 add_executable( ${TESTRUNNER} 
 	Main.cpp
+	BitmapTests.cpp
 )
 
 target_link_libraries( ${TESTRUNNER}

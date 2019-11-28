@@ -1,15 +1,12 @@
 set ( TESTRUNNER "testrunner_leveld" )
 
-#include_directories ( "${CMAKE_CURRENT_SOURCE_DIR}/../../Testrunner/include" )
-
 add_executable( ${TESTRUNNER} 
 	Main.cpp
-	TestMetadata.cpp
-	TestMesh.cpp
-	TestPlayers.cpp
-	TestItems.cpp
-	TestNpcs.cpp
-	TestAll.cpp
+	MetadataTests.cpp
+	MeshTests.cpp
+	ThingsTests.cpp
+	AllTests.cpp
+	BytestreamTests.cpp
 )
 
 target_link_libraries( ${TESTRUNNER}

@@ -60,6 +60,8 @@ public:
  */
 #define assertEqual(a,b,aStr,bStr) if ((a) != (b)) throw std::runtime_error("Assertion failed: " + std::string(#a) + " == " + #b + ".\n" + std::string(#a) + " = " + aStr + "\n" + std::string(#b) + " = " + bStr);
 
+#define assertEqualStrCompat(a, b) if ((a) != (b)) throw std::runtime_error("Assertion failed: " + std::string(#a) + " == " + #b + ".\n" + std::string(#a) + " = " + std::to_string(a) + "\n" + std::string(#b) + " = " + std::to_string(b));
+
 /**
  * \brief Expect two values to have different values
  *

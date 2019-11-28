@@ -92,3 +92,12 @@ void Args::setupArguments(const std::string &argarray) {
 	
 	arguments = inArgs;
 }
+
+const cfg::Item &Args::getArgumentValue(const char argument) const {
+	std::string arg = "-";
+	arg += argument;
+	
+	if (not isSet(argument)) throw ArgsException("-" + std::string(arg) + " is not set!");
+
+	return arguments.at(arg).value;
+}

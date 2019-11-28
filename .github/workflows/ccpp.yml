@@ -30,8 +30,8 @@ jobs:
       run: cmake .
     - name: make
       run: |
-       & "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\Common7\IDE\devenv.exe" dsh.sln /Build Debug
-       & "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\Common7\IDE\devenv.exe" dsh.sln /Build Release
+       & "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\Common7\IDE\devenv" dsh.sln /Build Debug
+       & "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\Common7\IDE\devenv" dsh.sln /Build Release
   
   build-ubuntu:
     runs-on: ubuntu-latest

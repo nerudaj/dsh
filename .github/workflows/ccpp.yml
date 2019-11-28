@@ -28,10 +28,11 @@ jobs:
     - uses: actions/checkout@v1
     - name: configure
       run: cmake .
-    - name: make-debug
-      run: devenv dsh.sln /Build Debug
-    - name: make-release
-      run: devenv dsh.sln /Build Release
+    - name: make
+      run: |
+        call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\Common7\Tools\VsDevCmd.bat"
+        devenv dsh.sln /Build Debug
+        devenv dsh.sln /Build Release
   
   build-ubuntu:
     runs-on: ubuntu-latest

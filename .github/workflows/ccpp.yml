@@ -16,8 +16,12 @@ jobs:
     
     steps:
     - uses: actions/checkout@v1
-    - name: configure
+    - name: configure-windows
+      if: ${{ matrix.os }} == 'windows-latest'
       run: cmake -G "MinGW Makefiles" -DCMAKE_SH="CMAKE_SH-NOTFOUND" .
+    - name: configure-ubuntu
+      if: ${{ matrix.os }} == 'ubuntu-latest'
+      run: cmake .
     - name: make
       run: make
     - name: tests

@@ -48,7 +48,7 @@ Everything will be installed under `C:\tools` and will not interfere with your n
  * `ll`
  * `gmake`
 
-The last command: `gmake` is an alias to `cmake -G "MinGW Makefiles`` and is important if you have Visual Studio installed on your machine. In that case, calling `cmake` will generate solution for Visual Studio. If you need Makefile for G++, you can call `gmake` and everything will work.
+The last command: `gmake` is an alias to `cmake -G "MinGW Makefiles"` and is important if you have Visual Studio installed on your machine. In that case, calling `cmake` will generate solution for Visual Studio. If you need Makefile for G++, you can call `gmake` and everything will work.
 
 #### Sharing libraries
 

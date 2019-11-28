@@ -2,7 +2,9 @@
 cmake_minimum_required ( VERSION 3.0 )
 
 if (NOT ("${CMAKE_GENERATOR}" MATCHES "MinGW Makefiles"))
-	set (CMAKE_GENERATOR_PLATFORM "x64")
+	if (NOT ("${CMAKE_GENERATOR}" MATCHES "Unix Makefiles"))
+		set (CMAKE_GENERATOR_PLATFORM "x64")
+	endif()
 endif()
 
 set (CMAKE_INSTALL_PREFIX /tools)

@@ -19,8 +19,8 @@ call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\Tool
 mkdir vsbuild
 cd vsbuild
     cmake.exe ..
-    devenv dshlibs.sln /Build Debug
-    devenv dshlibs.sln /Build Release
+    devenv dsh.sln /Build Debug
+    devenv dsh.sln /Build Release
     cpack
 cd ..
 

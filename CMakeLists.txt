@@ -1,6 +1,17 @@
 # dsh
 cmake_minimum_required ( VERSION 3.0 )
 
+if (NOT ("${CMAKE_GENERATOR}" MATCHES "MinGW Makefiles"))
+	set (CMAKE_GENERATOR_PLATFORM "x64")
+endif()
+
+set (CMAKE_INSTALL_PREFIX /tools)
+set (CMAKE_CXX_STANDARD 17)
+
+IF (MSVC)
+	set (CMAKE_CXX_FLAGS "/EHsc")
+ENDIF (MSVC)
+
 ## Project setup
 project ( dsh )
 set ( PROJECT_VERSION_MAJOR "1" )

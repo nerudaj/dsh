@@ -6,7 +6,7 @@ TEST_CASE("Args::setupArguments", "[Args]") {
 
 	SECTION("Passing") {
 		auto setup = GENERATE(as<std::string>{}, "h", "h:", "h!", "hg", "h:g:", "h!g!", "hg:i!");
-		
+
 		REQUIRE_NOTHROW([&](){
 			args.setupArguments(setup);
 		});
@@ -14,7 +14,7 @@ TEST_CASE("Args::setupArguments", "[Args]") {
 
 	SECTION("Failing") {
 		auto setup = GENERATE(as<std::string>{}, "h?", "");
-		
+
 		try {
 			args.setupArguments(setup);
 			REQUIRE(false);
@@ -42,8 +42,8 @@ TEST_CASE("Args::parse passing", "[Args]") {
 	REQUIRE(setups.size() == argSetups.size());
 
 	SECTION("Passing") {
-		auto i = GENERATE_COPY(range(0u, setups.size()));
-		
+		auto i = GENERATE_COPY(range(unsigned(0), unsigned(setups.size())));
+
 		REQUIRE_NOTHROW([&](){
 			args.setupArguments(setups[i]);
 			args.parse(argSetups[i].size(), argSetups[i].data());
@@ -63,7 +63,7 @@ TEST_CASE("Args::parse failing", "[Args]") {
 	REQUIRE(setups.size() == argSetups.size());
 
 	SECTION("Failing") {
-		auto i = GENERATE_COPY(range(0u, setups.size()));
+		auto i = GENERATE_COPY(range(unsigned(0), unsigned(setups.size())));
 
 		try {
 			args.setupArguments(setups[i]);
@@ -98,8 +98,8 @@ TEST_CASE("Args::isSet passing", "[Args]") {
 	REQUIRE(setups.size() == queries.size());
 
 	SECTION("Passing") {
-		auto i = GENERATE_COPY(range(0u, setups.size()));
-		
+		auto i = GENERATE_COPY(range(unsigned(0), unsigned(setups.size())));
+
 		//REQUIRE_NOTHROW([&](){
 			args.setupArguments(setups[i]);
 			args.parse(argSetups[i].size(), argSetups[i].data());
@@ -127,8 +127,8 @@ TEST_CASE("Args::isSet failing", "[Args]") {
 	REQUIRE(setups.size() == queries.size());
 
 	SECTION("Failing") {
-		auto i = GENERATE_COPY(range(0u, setups.size()));
-		
+		auto i = GENERATE_COPY(range(unsigned(0), unsigned(setups.size())));
+
 		REQUIRE_NOTHROW([&](){
 			args.setupArguments(setups[i]);
 			args.parse(argSetups[i].size(), argSetups[i].data());
@@ -201,7 +201,7 @@ TEST_CASE("Args::getArgumentValue", "[Args]") {
 
 		REQUIRE(args.getArgumentValue('v').asString() == "ehlo");
 	}
-	
+
 	SECTION("No value") {
 		std::vector<const char*> params = {"progname" };
 		args.parse(params.size(), params.data());

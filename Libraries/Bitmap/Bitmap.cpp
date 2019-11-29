@@ -23,7 +23,7 @@ void bmp::Bitmap::resize(unsigned w, unsigned h) {
 	
 	for (unsigned y = 0; y < h; y++) {
 		for (unsigned x = 0; x < w; x++) {
-			uint8_t value = getPixel(x / kW, y / kH);
+			uint8_t value = getPixel(static_cast<unsigned>(x / kW), static_cast<unsigned>(y / kH));
 			result.setPixel(x, y, value);
 		}
 	}

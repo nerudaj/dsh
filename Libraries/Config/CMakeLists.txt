@@ -35,5 +35,14 @@ install(
 		include
 )
 
+if (${MANDATORY_FOR_VISUAL_STUDIO})
+	install(
+		FILES
+			${CMAKE_CURRENT_BINARY_DIR}/Debug/${PROJECT_NAME}-d.lib
+		DESTINATION
+			lib
+	)
+endif()
+
 # Tests
 add_subdirectory ( tests )

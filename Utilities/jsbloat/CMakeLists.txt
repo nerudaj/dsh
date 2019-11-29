@@ -8,8 +8,9 @@ include_directories(/tools/include)
 
 add_executable(${PROJECT_NAME} Main.cpp)
 
-find_library(CFG_LIB NAMES config)
-find_library(STR_LIB NAMES strings)
-TARGET_LINK_LIBRARIES(${PROJECT_NAME} ${CFG_LIB} ${STR_LIB})
+TARGET_LINK_LIBRARIES(${PROJECT_NAME} config strings)
 
-install(TARGETS ${PROJECT_NAME})
+install(
+    TARGETS              ${PROJECT_NAME}
+    RUNTIME DESTINATION  bin
+)

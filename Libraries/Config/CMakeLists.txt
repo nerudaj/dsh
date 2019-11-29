@@ -7,9 +7,9 @@ include_directories("${CMAKE_CURRENT_SOURCE_DIR}/../Strings")
 
 # Add library
 add_library( ${PROJECT_NAME}
-	Args.cpp 
-	Csv.cpp 
-	Ini.cpp 
+	Args.cpp
+	Csv.cpp
+	Ini.cpp
 	Item.cpp
 )
 
@@ -20,20 +20,29 @@ target_include_directories ( ${PROJECT_NAME}
 
 # Install
 install(
-	TARGETS      config 
+	TARGETS      config
 	DESTINATION  lib
 )
 
 install(
 	FILES
-		Config.hpp 
-		Args.hpp 
-		Csv.hpp 
-		Ini.hpp 
-		Item.hpp 
-	DESTINATION 
+		Config.hpp
+		Args.hpp
+		Csv.hpp
+		Ini.hpp
+		Item.hpp
+	DESTINATION
 		include
 )
 
+if (${MANDATORY_FOR_VISUAL_STUDIO})
+	install(
+		FILES
+			${CMAKE_CURRENT_BINARY_DIR}/Debug/${PROJECT_NAME}-d.lib
+		DESTINATION
+			lib
+	)
+endif()
+
 # Tests
-add_subdirectory ( Tests )
+add_subdirectory ( tests )

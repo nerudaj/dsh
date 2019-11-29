@@ -7,20 +7,40 @@ on:
       - master
 
 jobs:
-  build:
-
+  build-windows-mingw:
+    runs-on: windows-latest
+    
+    steps:
+      - uses: actions/checkout@v1
+      - name: configure
+        run: cmake -G "MinGW Makefiles" -DCMAKE_SH="CMAKE_SH-NOTFOUND" .
+      - name: make
+        run: make
+      - name: test
+        run: ctest
+        
+  build-windows-visual:
     runs-on: windows-latest
     
     steps:
     - uses: actions/checkout@v1
     - name: configure
+      run: cmake .
+    - name: make
       run: |
-        mkdir build
-        cd build
-        cmake -G "MinGW Makefiles" ..
+        & "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\Common7\IDE\devenv" dsh.sln /Build Release /Project catch2
+        & "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\Common7\IDE\devenv" dsh.sln /Build Release
+  
+  build-ubuntu:
+    runs-on: ubuntu-latest
+  
+    steps:
+    - uses: actions/checkout@v1
+    - name: configure
+      run: cmake .
     - name: make
       run: make
-    - name: make check
-      run: make check
     - name: tests
       run: ctest
+    - name: package
+      run: cpack

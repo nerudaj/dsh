@@ -18,8 +18,35 @@ add_library(${PROJECT_NAME}
 target_include_directories (${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
 # Install
-install(TARGETS ${PROJECT_NAME} DESTINATION lib)
-install(FILES LevelD.hpp DESTINATION include)
+install(
+	TARGETS
+		${PROJECT_NAME}
+	DESTINATION
+		lib
+)
+
+if (${MANDATORY_FOR_VISUAL_STUDIO})
+	install(
+		FILES
+			${CMAKE_CURRENT_BINARY_DIR}/Debug/${PROJECT_NAME}-d.lib
+		DESTINATION
+			lib
+	)
+endif()
+
+install(
+	FILES
+		LevelD.hpp
+	DESTINATION
+		include
+)
+
+install(
+	FILES
+		LevelD.md
+	DESTINATION
+		docs
+)
 
 # Tests
 add_subdirectory ( Tests )

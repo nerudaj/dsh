@@ -6,7 +6,7 @@ const uint16_t BM_IDENTIFIER = 0x4d42;
 
 raw::BmpHeader::BmpHeader(size_t pixelCount) {
     identity = BM_IDENTIFIER; // "MB", will export as BM
-	sizeOfFile = sizeof(raw::BmpHeader) + sizeof(raw::DibHeader) + COLOR_COUNT_IN_PALETTE * sizeof(uint32_t) + pixelCount;
+	sizeOfFile = static_cast<uint32_t>(sizeof(raw::BmpHeader) + sizeof(raw::DibHeader) + COLOR_COUNT_IN_PALETTE * sizeof(uint32_t) + pixelCount);
 	reserved1 = 0;
 	reserved2 = 0;
 	dataOffset = sizeof(raw::BmpHeader) + sizeof(raw::DibHeader) + COLOR_COUNT_IN_PALETTE * sizeof(uint32_t);

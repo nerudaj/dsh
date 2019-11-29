@@ -104,11 +104,7 @@ namespace cfg {
 		 *  \details Since the reference is returned, always call \ref isSet
 		 *  on optional arguments to prevent exceptions from being thrown.
 		 */
-		const cfg::Item &getArgumentValue(const char argument) const {
-			std::string arg = "-";
-			arg += argument;
-			return arguments.at(arg).value;
-		}
+		const cfg::Item &getArgumentValue(const char argument) const;
 		
 		/**
 		 *  \brief Get parsed positional arguments

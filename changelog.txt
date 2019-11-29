@@ -1,0 +1,23 @@
+v1.0.0
+ * whole repository is packaged
+ * tests are written in Catch2
+ * jsbloat integrated with release
+ * [FIX] cfg::Args::getArgumentValue throws if argument was not set
+
+v0.7.0
+ * added libbitmap
+
+v0.6.2
+ * added docs for LevelD format
+ * added id field to LevelD actor objects
+ * VS libraries are also build in C++17
+
+v0.5.3
+ * rewritten cfg::Csv
+ * removed liblogger
+ * libraries compiled in x64 where possible
+
+v0.2.3
+ * added leveld library
+ * bugfixes in libconfig
+ * bugfixes in libstrings

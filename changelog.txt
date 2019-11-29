@@ -1,6 +1,7 @@
 v1.0.0
  * whole repository is packaged
  * tests are written in Catch2
+ * jsbloat integrated with release
  * [FIX] cfg::Args::getArgumentValue throws if argument was not set
 
 v0.7.0

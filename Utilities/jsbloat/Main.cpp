@@ -25,7 +25,7 @@ public:
 	void setLoggingLevel(int i) {}
 };
 
-Logger log;
+Logger logger;
 
 struct RuleForStatic {
 	std::regex findFunction;
@@ -109,7 +109,7 @@ std::string loadSourceCodes(const std::vector<std::string> &filenames) {
 			std::size_t len = load.tellg();
 			load.seekg(0, std::ios::beg);
 			
-			log.debug("Loading file", "Allocating buffer");
+			logger.debug("Loading file", "Allocating buffer");
 			
 			// Allocate buffer
 			char *buf = new char[len];
@@ -117,7 +117,7 @@ std::string loadSourceCodes(const std::vector<std::string> &filenames) {
 			// Read buffer and add it to file
 			load.read(buf, len);
 			
-			log.debug("Loading file", "Allocating string");
+			logger.debug("Loading file", "Allocating string");
 			
 			file += std::string(buf, len);
 			
@@ -134,7 +134,7 @@ std::string loadSourceCodes(const std::vector<std::string> &filenames) {
 		}*/
 	}
 	
-	log.debug("Loading done", "Concatenated size: " + std::to_string(file.size()));
+	logger.debug("Loading done", "Concatenated size: " + std::to_string(file.size()));
 	
 	return file;
 }
@@ -188,17 +188,17 @@ int main(int argc, char *argv[]) {
 	}
 	
 	if (args.isSet('v')) {
-		log.setLoggingLevel(args.getArgumentValue('v').asInt());
+		logger.setLoggingLevel(args.getArgumentValue('v').asInt());
 	}
 	else {
-		log.setLoggingLevel(2);
+		logger.setLoggingLevel(2);
 	}
 
 	// Grab file names
 	std::vector<std::string> filenames = args.getPositionalArguments();
 	
 	if (filenames.empty()) {
-		log.warning("jsbloat", "No input filenames given, nothing to do");
+		logger.warning("jsbloat", "No input filenames given, nothing to do");
 		return 0;
 	}
 
@@ -296,7 +296,7 @@ int main(int argc, char *argv[]) {
 		obfuscateHinted(hints, file);
 	}
 	
-	log.debug("Loading done", "Minified size: " + std::to_string(file.size()));
+	logger.debug("Loading done", "Minified size: " + std::to_string(file.size()));
 	
 	std::string outfilename = "concat.min.js";
 	if (args.isSet('o')) outfilename = args.getArgumentValue('o').asString();

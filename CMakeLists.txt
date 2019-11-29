@@ -4,7 +4,13 @@ cmake_minimum_required ( VERSION 3.0 )
 if (NOT ("${CMAKE_GENERATOR}" MATCHES "MinGW Makefiles"))
 	if (NOT ("${CMAKE_GENERATOR}" MATCHES "Unix Makefiles"))
 		set (CMAKE_GENERATOR_PLATFORM "x64")
+		set ( BUILD_SYSTEM "VSx64" )
+	else()
+		set ( BUILD_SYSTEM "ubuntu" )
 	endif()
+else()
+	# This could be x64 if build with mingw64 but I don't support mingw64 at this time
+	set ( BUILD_SYSTEM "mingw32" )
 endif()
 
 set (CMAKE_INSTALL_PREFIX /tools)
@@ -64,5 +70,6 @@ set ( CPACK_PACKAGE_DESCRIPTION_FILE    "${CMAKE_CURRENT_SOURCE_DIR}/Readme.md" 
 set ( CPACK_PACKAGE_VERSION_MAJOR       "${PROJECT_VERSION_MAJOR}" )
 set ( CPACK_PACKAGE_VERSION_MINOR       "${PROJECT_VERSION_MINOR}" )
 set ( CPACK_PACKAGE_VERSION_PATCH       "${PROJECT_VERSION_PATCH}" )
+set ( CPACK_PACKAGE_FILE_NAME           "${PROJECT_NAME}-${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}-${BUILD_SYSTEM}.zip" )
 
 include ( CPack )

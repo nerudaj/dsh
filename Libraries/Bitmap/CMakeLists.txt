@@ -17,6 +17,16 @@ target_include_directories ( ${PROJECT_NAME}
 
 # Install
 install(TARGETS ${PROJECT_NAME} DESTINATION lib)
+
+if (${MANDATORY_FOR_VISUAL_STUDIO})
+	install(
+		FILES
+			${CMAKE_CURRENT_BINARY_DIR}/Debug/${PROJECT_NAME}-d.lib
+		DESTINATION
+			lib
+	)
+endif()
+
 install(FILES Bitmap.hpp DESTINATION include)
 
 # Add executable

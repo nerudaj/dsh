@@ -10,7 +10,7 @@ void IO::savePaletteToStream(const bmp::Palette &palette, std::ofstream &save) {
 void IO::savePixelsToStream(const std::vector<uint8_t> &pixels, uint32_t width, std::ofstream &save) {
 	if (width == 0) return;
 	
-	uint32_t height = pixels.size() / width;
+	uint32_t height = static_cast<uint32_t>(pixels.size() / width);
 	for (uint32_t cnt = 0, y = height - 1; cnt < height; cnt++, y--) {
 		for (uint32_t x = 0; x < width; x++) {
 			save.write((char*)(&pixels[y * width + x]), 1);

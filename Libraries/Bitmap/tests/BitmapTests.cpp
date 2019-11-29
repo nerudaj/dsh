@@ -33,8 +33,8 @@ TEST_CASE("IO save load operations", "[IO]") {
 		unsigned pixelCount = GENERATE(0, 1000);
 
 		std::ofstream save("test.bmp", std::ios::binary);
-		raw::BmpHeader bmp(pixelCount);
-		IO::saveBmpHeaderToStream(bmp, save);
+		raw::BmpHeader bmpHead(pixelCount);
+		IO::saveBmpHeaderToStream(bmpHead, save);
 		save.close();
 		save.clear();
 
@@ -43,8 +43,12 @@ TEST_CASE("IO save load operations", "[IO]") {
 		IO::loadBmpHeaderFromStream(ref, load);
 		load.close();
 		load.clear();
-
-		REQUIRE(bmp == ref);
+		
+		REQUIRE(bmpHead.dataOffset == ref.dataOffset);
+		REQUIRE(bmpHead.identity == ref.identity);
+		REQUIRE(bmpHead.reserved1 == ref.reserved1);
+		REQUIRE(bmpHead.reserved2 == ref.reserved2);
+		REQUIRE(bmpHead.sizeOfFile == ref.sizeOfFile);
 	}
 
 	SECTION("DibHeader") {
@@ -52,8 +56,8 @@ TEST_CASE("IO save load operations", "[IO]") {
 		unsigned height = GENERATE(0, 4, 10, 15);
 
 		std::ofstream save("test.bmp", std::ios::binary);
-		raw::DibHeader dib(width, height);
-		IO::saveDibHeaderToStream(dib, save);
+		raw::DibHeader dibHead(width, height);
+		IO::saveDibHeaderToStream(dibHead, save);
 		save.close();
 		save.clear();
 
@@ -63,13 +67,23 @@ TEST_CASE("IO save load operations", "[IO]") {
 		load.close();
 		load.clear();
 
-		REQUIRE(dib == ref);
+		REQUIRE(dibHead.bitsPerPixel == ref.bitsPerPixel);
+		REQUIRE(dibHead.compression == ref.compression);
+		REQUIRE(dibHead.height == ref.height);
+		REQUIRE(dibHead.importantColors == ref.importantColors);
+		REQUIRE(dibHead.nofColorsInPalette == ref.nofColorsInPalette);
+		REQUIRE(dibHead.plane == ref.plane);
+		REQUIRE(dibHead.printHeight == ref.printHeight);
+		REQUIRE(dibHead.printWidth == ref.printWidth);
+		REQUIRE(dibHead.sizeOfDibHeader == ref.sizeOfDibHeader);
+		REQUIRE(dibHead.sizeRaw == ref.sizeRaw);
+		REQUIRE(dibHead.width == ref.width);
 	}
 
 	SECTION("Palette") {
 		std::ofstream save("test.bmp", std::ios::binary);
-		bmp::Palette pal = bmp::Palette::getGrayscalePalette();
-		IO::savePaletteToStream(pal, save);
+		bmp::Palette palette = bmp::Palette::getGrayscalePalette();
+		IO::savePaletteToStream(palette, save);
 		save.close();
 		save.clear();
 
@@ -78,7 +92,7 @@ TEST_CASE("IO save load operations", "[IO]") {
 		load.close();
 		load.clear();
 
-		REQUIRE(pal == ref);
+		REQUIRE(arePalettesSame(palette, ref));
 	}
 
 	SECTION("Pixels") {
@@ -115,7 +129,7 @@ TEST_CASE("BitmapSaveLoadTest", "[Bitmap]") {
 	ref.loadFromFile("test.bmp");
 
 	SECTION("Does palette match") {
-		REQUIRE(bmp.getPalette() == ref.getPalette());
+		REQUIRE(arePalettesSame(bmp.getPalette(), ref.getPalette()));
 	}
 	
 	SECTION("Does width match") {

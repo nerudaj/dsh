@@ -6,7 +6,7 @@
 #include "Logger.hpp"
 #include "Obfuscation.hpp"
 
-Logger log; // Declaration of extern variable
+Logger logger; // Declaration of extern variable
 
 int main(int argc, char *argv[]) {
 	cfg::Args args;
@@ -25,7 +25,7 @@ int main(int argc, char *argv[]) {
 		return 1;
 	}
 	
-	log.setLoggingLevel(args.isSet('v') ? args.getArgumentValue('v').asInt() : 2);
+	logger.setLoggingLevel(args.isSet('v') ? args.getArgumentValue('v').asInt() : 2);
 
 	// Grab file names
 	std::vector<std::string> filenames = args.getPositionalArguments();
@@ -38,7 +38,7 @@ int main(int argc, char *argv[]) {
 	// Concatenate all files into one
 	auto file = io::concatenateSourceFiles(filenames);
 	file.replaceString(" (", "(");
-	log.debug("Loading done", "Concatenated size: " + std::to_string(file.getContent().size()));
+	logger.debug("Loading done", "Concatenated size: " + std::to_string(file.getContent().size()));
 	
 	// Obfuscate everything
 	obfuscateStaticIdentifiers(file);
@@ -51,7 +51,7 @@ int main(int argc, char *argv[]) {
 		obfuscateHinted(hints, file);
 	}
 	
-	log.debug("Minification done", "Minified size: " + std::to_string(file.getContent().size()));
+	logger.debug("Minification done", "Minified size: " + std::to_string(file.getContent().size()));
 	
 	// Export
 	std::string outFileName = args.isSet('o') ?

@@ -32,7 +32,7 @@ void obfuscateStaticIdentifiers(SourceFile &file) {
                 if (ids.find(identifier) != ids.end()) continue;
 
                 ids[identifier] = obfId.read();
-                log.info("static", identifier + " --> " + ids[identifier]);
+                logger.info("static", identifier + " --> " + ids[identifier]);
 
                 obfId.permutate();
             }
@@ -59,7 +59,7 @@ void obfuscateIds(SourceFile &file) {
             if (ids.find(id) != ids.end()) continue;
 
             ids[id] = "\"" + obfId.read() + "\"";
-            log.info("id", id + " --> " + ids[id]);
+            logger.info("id", id + " --> " + ids[id]);
 
             obfId.permutate();
         }
@@ -86,7 +86,7 @@ void obfuscateEnums(SourceFile &file) {
             if (ids.find(id) != ids.end()) continue;
 
             ids[id] = std::to_string(idCounter);
-            log.info("enum", id + " --> " + ids[id]);
+            logger.info("enum", id + " --> " + ids[id]);
 
             idCounter++;
         }
@@ -103,6 +103,7 @@ void obfuscateHinted(const std::vector<std::string> &hints, SourceFile &file) {
 	
 	for (auto hint : hints) {
         file.replaceString(hint, obfId.read());
+        logger.info("hint", hint + " --> " + obfId.read());
         obfId.permutate();
 	}
 }

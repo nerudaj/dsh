@@ -23,4 +23,4 @@ public:
 	void setLoggingLevel(int i) {}
 };
 
-extern Logger log;
+extern Logger logger;

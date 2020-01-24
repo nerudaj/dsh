@@ -23,5 +23,5 @@ public:
 
     void saveToFile(const std::string &filename);
 
-    SourceFile &concatenate(const SourceFile &other);
+    void concatenate(const SourceFile &other);
 };

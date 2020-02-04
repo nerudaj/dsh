@@ -1,3 +1,6 @@
+v1.0.1
+ * Fix jsbloat internals
+
 v1.0.0
  * whole repository is packaged
  * tests are written in Catch2

@@ -6,7 +6,28 @@
 
 void SourceFile::replaceStrings(const std::unordered_map<std::string, std::string> &strings) {
     for (auto item : strings) {
-        Strings::replaceAll(content, item.first, item.second);
+        Strings::replaceAll(content, item.first + ",", item.second + ",");
+        Strings::replaceAll(content, item.first + ")", item.second + ")");
+        Strings::replaceAll(content, item.first + "(", item.second + "(");
+        Strings::replaceAll(content, item.first + "]", item.second + "]");
+        Strings::replaceAll(content, item.first + "[", item.second + "[");
+        Strings::replaceAll(content, item.first + "\"", item.second + "\"");
+        Strings::replaceAll(content, item.first + "\'", item.second + "\'");
+        Strings::replaceAll(content, item.first + ";", item.second + ";");
+        Strings::replaceAll(content, item.first + " ", item.second + " ");
+        Strings::replaceAll(content, item.first + "\n", item.second + "\n");
+        Strings::replaceAll(content, item.first + "\r", item.second + "\r");
+        Strings::replaceAll(content, item.first + "\t", item.second + "\t");
+        Strings::replaceAll(content, item.first + "\r\n", item.second + "\r\n");
+        Strings::replaceAll(content, item.first + "\n\r", item.second + "\n\r");
+        Strings::replaceAll(content, item.first + "=", item.second + "=");
+        Strings::replaceAll(content, item.first + "+", item.second + "+");
+        Strings::replaceAll(content, item.first + "-", item.second + "-");
+        Strings::replaceAll(content, item.first + "*", item.second + "*");
+        Strings::replaceAll(content, item.first + "/", item.second + "/");
+        Strings::replaceAll(content, item.first + "%", item.second + "%");
+        Strings::replaceAll(content, item.first + ".", item.second + ".");
+        Strings::replaceAll(content, item.first + ":", item.second + ":");
     }
 }
 

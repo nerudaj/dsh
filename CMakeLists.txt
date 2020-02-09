@@ -23,8 +23,8 @@ ENDIF (MSVC)
 ## Project setup
 project ( dsh )
 set ( PROJECT_VERSION_MAJOR "1" )
-set ( PROJECT_VERSION_MINOR "0" )
-set ( PROJECT_VERSION_PATCH "0" )
+set ( PROJECT_VERSION_MINOR "1" )
+set ( PROJECT_VERSION_PATCH "1" )
 
 ## Catch2
 include ( ExternalProject )

@@ -28,6 +28,8 @@ public:
      *  \brief Section representing level mesh
      */
     struct Mesh {
+        uint16_t tileWidth;           // Width of tile
+        uint16_t tileHeight;          // Height of tile
         uint32_t width;               // Number of tiles on X axis
         uint32_t height;              // Number of tiles on Y axis
         std::vector<uint16_t> tiles;  // Index number of tiles on map
@@ -35,8 +37,8 @@ public:
 
         bool empty() const { return width == 0 || height == 0; }
 
-        Mesh() : width(0), height(0) {}
-        Mesh(uint32_t width, uint32_t height, const std::vector<uint16_t> &tiles, const std::vector<bool> &blocks) : width(width), height(height), tiles(tiles), blocks(blocks) {}
+        Mesh() : tileWidth(0), tileHeight(0), width(0), height(0) {}
+        Mesh(uint16_t tileWidth, uint16_t tileHeight, uint32_t width, uint32_t height, const std::vector<uint16_t> &tiles, const std::vector<bool> &blocks) : tileWidth(tileWidth), tileHeight(tileHeight), width(width), height(height), tiles(tiles), blocks(blocks) {}
     };
 
     /**

@@ -11,11 +11,13 @@ TEST_CASE("Mesh save/load", "[LevelD]") {
 	}
 
 	SECTION("/w data") {
-		out.mesh = {2, 2, {1, 2, 3, 4}, {1, 0, 0, 1}};
+		out.mesh = {64000, 20, 2, 2, {1, 2, 3, 4}, {1, 0, 0, 1}};
 		out.saveToFile("temp.lvd");
 		in.loadFromFile("temp.lvd");
 	}
 
+	REQUIRE(out.mesh.tileWidth == in.mesh.tileWidth);
+	REQUIRE(out.mesh.tileHeight == in.mesh.tileHeight);
 	REQUIRE(out.mesh.width == in.mesh.width);
 	REQUIRE(out.mesh.height == in.mesh.height);
 	REQUIRE(out.mesh.width *  out.mesh.height == out.mesh.tiles.size());

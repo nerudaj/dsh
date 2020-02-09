@@ -1,7 +1,7 @@
 #include "Top.hpp"
 
 void ModuleMesh::serialize(BytestreamOut &bout, const LevelD &lvld) const {
-    bout << lvld.mesh.width;
+    bout << lvld.mesh.tileWidth << lvld.mesh.tileHeight << lvld.mesh.width;
 
     std::vector<uint16_t> dataout(lvld.mesh.width * lvld.mesh.height);
 
@@ -13,11 +13,14 @@ void ModuleMesh::serialize(BytestreamOut &bout, const LevelD &lvld) const {
 }
 
 void ModuleMesh::deserialize(BytestreamIn &bin, LevelD &lvld) const {
+    uint16_t tileW, tileH;
     uint32_t width;
     std::vector<uint16_t> data;
 
-    bin >> width >> data;
+    bin >> tileW >> tileH >> width >> data;
 
+    lvld.mesh.tileWidth = tileW;
+    lvld.mesh.tileHeight = tileH;
     lvld.mesh.width = width;
     lvld.mesh.height = data.size() / width;
     lvld.mesh.tiles.resize(data.size(), 0);

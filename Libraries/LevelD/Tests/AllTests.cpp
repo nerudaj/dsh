@@ -13,7 +13,7 @@ TEST_CASE("Everything save/load", "[LevelD]") {
 	SECTION("Data") {
 		out = {
 			{ "MAP01", "Entryway", "doomista", "First level of the game", 1554812963 },
-			{ 4, 4,
+			{ 16, 16, 4, 4,
 				{ 1, 2, 2, 3, 
 				  2, 0, 0, 2, 
 				  2, 0, 0, 2, 
@@ -38,6 +38,8 @@ TEST_CASE("Everything save/load", "[LevelD]") {
 	REQUIRE(in.metadata.description == out.metadata.description);
 
 	// Mesh asserts
+	REQUIRE(out.mesh.tileWidth == in.mesh.tileWidth);
+	REQUIRE(out.mesh.tileHeight == in.mesh.tileHeight);
 	REQUIRE(out.mesh.width == in.mesh.width);
 	REQUIRE(out.mesh.height == in.mesh.height);
 	REQUIRE(out.mesh.width *  out.mesh.height == out.mesh.tiles.size());

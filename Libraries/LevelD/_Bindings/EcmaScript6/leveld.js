@@ -1,10 +1,40 @@
-function ByteStreamIn() {
-    this.data = null;
+function ByteStreamIn(inputData = null, inputIsString = false) {
+    this.data = inputData;
+    if (inputIsString) this.data = new TextEncoder().encode(inputData);
+
+    this.index = 0;
 }
 
-ByteStreamIn.prototype.FetchDataSynchronous = function (url) {
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', url, false);
+ByteStreamIn.prototype.MakeRequest = function(url) {
+    return new Promise(function (resolve, reject) {
+        let xhr = new XMLHttpRequest();
+        xhr.open("GET", url);
+        xhr.onload = function () {
+            if (this.status >= 200 && this.status < 300) {
+                resolve(xhr.response);
+            } else {
+                reject({
+                    status: this.status,
+                    statusText: xhr.statusText
+                });
+            }
+        };
+        xhr.onerror = function () {
+            reject({
+                status: this.status,
+                statusText: xhr.statusText
+            });
+        };
+        xhr.send();
+    });
+}
+
+ByteStreamIn.prototype.LoadFromFile = async function(url) {
+    let response = await this.MakeRequest(url);
+    console.log(response);
+    this.data = new Uint8Array(response);
+/*    var xhr = new XMLHttpRequest();
+    xhr.open('GET', url);
     xhr.responseType = 'arraybuffer';
 
     xhr.send(null);
@@ -13,44 +43,39 @@ ByteStreamIn.prototype.FetchDataSynchronous = function (url) {
         throw "Could not fetch the data";
     }
 
-    return new Uint8Array(this.response);
+    var arraydata = stringTo
+    return new Uint8Array(this.response);*/
 }
 
 ByteStreamIn.prototype.GetByte = function() {
-    return data.shift();
+    return this.data[this.index++];
 }
 
-/*ByteStreamIn.prototype.GetDoubleByte = function() {
-    // TODO: Slice and convert
+ByteStreamIn.prototype.GetDoubleByte = function() {
     return 256 * this.GetByte() + this.GetByte();
 }
 
 ByteStreamIn.prototype.GetQuadByte = function() {
-    // TODO: Slice and convert
-    var sum = 0;
-    var exp = 256 * 256 * 256;
-
-    for (let i = 0; i < 4; i++) {
-        sum += exp * this.GetByte();
-        exp /= 256;
-    }
-
-    return sum;
+    return this.GetDoubleByte() * 256 * 256 + this.GetDoubleByte();
 }
 
 ByteStreamIn.prototype.GetString = function() {
-    var result = "";
     var length = this.GetByte();
-
-    // TODO: slice and convert
-    for (let i = 0; i < length; i++) {
-        result += this.GetByte();
-    }
+    var rawStr = this.data.slice(this.index, this.index + length);
+    this.index += length;
+    return new TextDecoder("utf-8").decode(rawStr);
 }
 
 ByteStreamIn.prototype.GetDoubleByteVector = function() {
-    // TODO: slice and convert
-}*/
+    var length = this.GetQuadByte();
+    var result = [];
+
+    for (let i = 0; i < length; i++) {
+        result.push(this.GetDoubleByte());
+    }
+
+    return result;
+}
 
 function LevelMetadata() {
     this.time = 0;

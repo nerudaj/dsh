@@ -5,48 +5,6 @@ function ByteStreamIn(inputData = null, inputIsString = false) {
     this.index = 0;
 }
 
-ByteStreamIn.prototype.MakeRequest = function(url) {
-    return new Promise(function (resolve, reject) {
-        let xhr = new XMLHttpRequest();
-        xhr.open("GET", url);
-        xhr.onload = function () {
-            if (this.status >= 200 && this.status < 300) {
-                resolve(xhr.response);
-            } else {
-                reject({
-                    status: this.status,
-                    statusText: xhr.statusText
-                });
-            }
-        };
-        xhr.onerror = function () {
-            reject({
-                status: this.status,
-                statusText: xhr.statusText
-            });
-        };
-        xhr.send();
-    });
-}
-
-ByteStreamIn.prototype.LoadFromFile = async function(url) {
-    let response = await this.MakeRequest(url);
-    console.log(response);
-    this.data = new Uint8Array(response);
-/*    var xhr = new XMLHttpRequest();
-    xhr.open('GET', url);
-    xhr.responseType = 'arraybuffer';
-
-    xhr.send(null);
-
-    if (request.status !== 200) {
-        throw "Could not fetch the data";
-    }
-
-    var arraydata = stringTo
-    return new Uint8Array(this.response);*/
-}
-
 ByteStreamIn.prototype.GetByte = function() {
     return this.data[this.index++];
 }
@@ -75,6 +33,29 @@ ByteStreamIn.prototype.GetDoubleByteVector = function() {
     }
 
     return result;
+}
+
+function ByteStreamOut() {
+    this.data = new Uint8Array(256);
+    this.usedSize = 0;
+}
+
+ByteStreamOut.prototype.WriteByte = function(data) {
+    this.data[this.usedSize] = data;
+    this.usedSize++;
+}
+
+ByteStreamOut.prototype.WriteDoubleByte = function(data) {
+    this.WriteByte(parseInt(data / 256));
+    this.WriteByte(data % 256);
+}
+
+ByteStreamOut.prototype.WriteQuadByte = function(data) {
+    let upper = parseInt(data / (256 * 256));
+    let lower = parseInt(data % (256 * 256));
+
+    this.WriteDoubleByte(upper);
+    this.WriteDoubleByte(lower);
 }
 
 function LevelMetadata() {

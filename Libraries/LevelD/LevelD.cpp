@@ -5,14 +5,19 @@
 #include <stdexcept>
 #include <iostream>
 
-const uint16_t VERSION = 1;
+const uint16_t VERSION = 2;
 
 using std::vector;
 using std::string;
 
-Module *getModule(uint32_t identity) {
+Module *getModule(uint32_t identity, uint16_t version) {
     if (identity == LVLD_METADATA_CODE)     return new ModuleMetadata;
-    else if (identity == LVLD_MESH_CODE)    return new ModuleMesh;
+    else if (identity == LVLD_MESH_CODE)    {
+        switch(version) {
+        case 1: return new ModuleMesh_v1;
+        case 2: return new ModuleMesh_v2;
+        }
+    }
     else if (identity == LVLD_PLAYERS_CODE) return new ModulePlayers;
     else if (identity == LVLD_ITEMS_CODE)   return new ModuleItems;
     else if (identity == LVLD_NPCS_CODE)    return new ModuleNpcs;
@@ -27,7 +32,7 @@ void LevelD::loadFromFile(const string &filename) {
     uint16_t version;
     bin >> version;
 
-    if (version != VERSION) {
+    if (version > VERSION) {
         throw std::runtime_error("Unsupported version of LVD!");
     }
 
@@ -35,7 +40,7 @@ void LevelD::loadFromFile(const string &filename) {
         uint32_t identity;
         bin >> identity;
 
-        auto *module = getModule(identity);
+        auto *module = getModule(identity, version);
         module->deserialize(bin, *this);
         delete module;
     }
@@ -51,8 +56,8 @@ void LevelD::saveToFile(const string &filename) const {
 
     if (!mesh.empty()) {
         bout << LVLD_MESH_CODE;
-        ModuleMesh meshmod;
-        meshmod.serialize(bout, *this);
+        Module* meshmod = getModule(LVLD_MESH_CODE, VERSION);
+        meshmod->serialize(bout, *this);
     }
 
     if (!players.empty()) {

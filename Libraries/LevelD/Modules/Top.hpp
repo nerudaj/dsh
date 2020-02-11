@@ -22,7 +22,13 @@ public:
     virtual void deserialize(BytestreamIn &bin, LevelD &lvld) const final override;
 };
 
-class ModuleMesh : public Module {
+class ModuleMesh_v1 : public Module {
+public:
+    virtual void serialize(BytestreamOut &bout, const LevelD &lvld) const final override;
+    virtual void deserialize(BytestreamIn &bin, LevelD &lvld) const final override;
+};
+
+class ModuleMesh_v2 : public Module {
 public:
     virtual void serialize(BytestreamOut &bout, const LevelD &lvld) const final override;
     virtual void deserialize(BytestreamIn &bin, LevelD &lvld) const final override;

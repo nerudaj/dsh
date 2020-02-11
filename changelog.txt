@@ -1,5 +1,6 @@
 v1.X.X
  * Fixed LevelD parser to be version aware
+ * Added leveld-migration-tool for upgrading old LevelD files to newest version
 
 ---
 

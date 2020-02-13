@@ -58,6 +58,24 @@ ByteStreamOut.prototype.WriteQuadByte = function(data) {
     this.WriteDoubleByte(lower);
 }
 
+ByteStreamOut.prototype.WriteString = function(data) {
+    if (data.length > 255) throw new Error("String is too long");
+
+    this.WriteByte(data.length);
+
+    for (let i = 0; i < data.length; i++) {
+        this.WriteByte(data.charCodeAt(i));
+    }
+}
+
+ByteStreamOut.prototype.WriteDoubleByteVector = function(data) {
+    this.WriteQuadByte(data.length);
+
+    for (let i = 0; i < data.length; i++) {
+        this.WriteDoubleByte(data[i]);
+    }
+}
+
 function LevelMetadata() {
     this.time = 0;
     this.id = "";

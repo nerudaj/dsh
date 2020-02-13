@@ -1,3 +1,5 @@
+/** BYTESTREAM IN **/
+
 function ByteStreamIn(inputData = null, inputIsString = false) {
     this.data = inputData;
     if (inputIsString) this.data = new TextEncoder().encode(inputData);
@@ -34,6 +36,8 @@ ByteStreamIn.prototype.GetDoubleByteVector = function() {
 
     return result;
 }
+
+/** BYTESTREAM OUT **/
 
 function ByteStreamOut() {
     this.data = new Uint8Array(256);
@@ -76,7 +80,48 @@ ByteStreamOut.prototype.WriteDoubleByteVector = function(data) {
     }
 }
 
-function LevelMetadata() {
+class Module() {
+    constructor() {
+        this.serialize(lvd, bout);
+        this.deserialize(bin, lvd);
+    }
+
+    serialize(lvd, bout) {}
+    deserialize(bin, lvd) {}
+}
+
+class MetadataModule extends Module {
+    constructor() {
+        super();
+    }
+
+    serialize(lvd, bout) {
+        console.log("MetadataModule::serialize");
+
+        // TODO: timestamp
+        bout.WriteQuadByte(0);
+        bout.WriteQuadByte(0);
+
+        bout.WriteString(lvd.metadata.id);
+        bout.WriteString(lvd.metadata.name);
+        bout.WriteString(lvd.metadata.author);
+        bout.WriteString(lvd.metadata.description);
+    }
+
+    deserialize(bin, lvd) {
+        console.log("MetadataModule::deserialize");
+
+        // TODO: timestamp
+        lvd.metadata.timestamp = 0;
+
+        lvd.metadata.id = bin.GetString();
+        lvd.metadata.name = bin.GetString();
+        lvd.metadata.author = bin.GetString();
+        lvd.metadata.description = bin.GetString();
+    }
+};
+
+/*function LevelMetadata() {
     this.time = 0;
     this.id = "";
     this.name = "";
@@ -100,4 +145,4 @@ function LevelD() {
 
 LevelD.prototype.loadFromFile = function(filename) {
     var data = FetchDataSynchronous(filename);
-}
+}*/

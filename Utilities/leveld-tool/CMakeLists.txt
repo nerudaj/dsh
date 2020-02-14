@@ -1,6 +1,6 @@
-cmake_minimum_required ( VERSION 3.16 )
+cmake_minimum_required ( VERSION 3.14 )
 
-project ( leveld-migration-tool )
+project ( leveld-tool )
 
 set (CMAKE_INSTALL_PREFIX /tools)
 set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++14")

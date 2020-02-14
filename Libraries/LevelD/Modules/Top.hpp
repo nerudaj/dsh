@@ -3,12 +3,12 @@
 #include "../LevelD.hpp"
 #include "../Bytestream/Bytestream.hpp"
 
-const uint32_t LVLD_METADATA_CODE = 0x4154454D; // 'META'
-const uint32_t LVLD_MESH_CODE     = 0x4853454D; // 'MESH'
-const uint32_t LVLD_PLAYERS_CODE  = 0x53524C50; // 'PLRS'
-const uint32_t LVLD_ITEMS_CODE    = 0x4D455449; // 'ITEM'
-const uint32_t LVLD_NPCS_CODE     = 0x5343504E; // 'NPCS'
-const uint32_t LVLD_EVENTS_CODE   = 0x544E5645; // 'EVNT'
+const uint32_t LVLD_METADATA_CODE = 0x4D455441; // 'META'
+const uint32_t LVLD_MESH_CODE     = 0x4D455348; // 'MESH'
+const uint32_t LVLD_PLAYERS_CODE  = 0x504C5253; // 'PLRS'
+const uint32_t LVLD_ITEMS_CODE    = 0x4954454D; // 'ITEM'
+const uint32_t LVLD_NPCS_CODE     = 0x4E504353; // 'NPCS'
+const uint32_t LVLD_EVENTS_CODE   = 0x45564E54; // 'EVNT'
 
 class Module {
 public:

@@ -7,7 +7,7 @@ This file contains comprehensive documentation of LevelD file format and how is 
  * [Introduction](#introduction)
  * [META block](#meta-block)
  * [MESH block](#mesh-block)
- * [PLAS block](#plas-block)
+ * [PLRS block](#plrs-block)
  * [NPCS block](#npcs-block)
  * [ITEM block](#item-block)
 
@@ -88,13 +88,13 @@ Mesh block represents the level mesh - how it looks and where the collisions are
 
 Each cell in `data` vector represents single tile. Tile with coordinates [x, y] lies in the cell with index `x * width + y`. Every cell represents two information - if the block is impassable (single top bit of the value, `true` if impassable) and id of the tile (bottom 15 bits). LevelD object has these two stored in separate vectors: `blocks` (collision data) and `tiles` (ids). Height of the map is compute as size of `data` divided by `width`.
 
-## PLAS block
+## PLRS block
 
 Players block is for storing spawn positions of players in level:
 
 | Width (bytes) | Usage | Note |
 | :-----------: | :---- | :--- |
-| 4             | Block ID    | ID of this block. Value is fixed to 'PLAS' |
+| 4             | Block ID    | ID of this block. Value is fixed to 'PLRS' |
 | 4             | count | Total number of players |
 
 Following sub-block follows `count` number of times.
@@ -109,10 +109,10 @@ Following sub-block follows `count` number of times.
 
 NPCs block is for storing spawn positions of non-players in level.
 
-Parsing is identical to parsing of PLAS block, just the Block ID is set to 'NPCS'.
+Parsing is identical to parsing of PLRS block, just the Block ID is set to 'NPCS'.
 
 ## ITEM block
 
 Item block is for storing spawn positions of items in level.
 
-Parsing is identical to parsing of PLAS and NPCS block, just the Block ID is set to 'ITEM'.
+Parsing is identical to parsing of PLRS and NPCS block, just the Block ID is set to 'ITEM'.

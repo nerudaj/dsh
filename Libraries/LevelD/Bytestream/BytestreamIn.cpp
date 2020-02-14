@@ -1,4 +1,5 @@
 #include "Bytestream.hpp"
+#include "SwapEndian.hpp"
 #include <fstream>
 #include <stdexcept>
 
@@ -20,7 +21,7 @@ BytestreamIn &BytestreamIn::operator>>(uint8_t &num) {
 BytestreamIn &BytestreamIn::operator>>(uint16_t &num) {
     checkStreamSize(sizeof(num));
 
-    num = *((uint16_t*)(data.data() + pos));
+    num = sanitize(*((uint16_t*)(data.data() + pos)));
     pos += sizeof(num);
 
     return *this;
@@ -29,7 +30,7 @@ BytestreamIn &BytestreamIn::operator>>(uint16_t &num) {
 BytestreamIn &BytestreamIn::operator>>(uint32_t &num) {
     checkStreamSize(sizeof(num));
 
-    num = *((uint32_t*)(data.data() + pos));
+    num = sanitize(*((uint32_t*)(data.data() + pos)));
     pos += sizeof(num);
 
     return *this;
@@ -38,7 +39,7 @@ BytestreamIn &BytestreamIn::operator>>(uint32_t &num) {
 BytestreamIn &BytestreamIn::operator>>(uint64_t &num) {
     checkStreamSize(sizeof(num));
 
-    num = *((uint64_t*)(data.data() + pos));
+    num = sanitize(*((uint64_t*)(data.data() + pos)));
     pos += sizeof(num);
 
     return *this;
@@ -63,7 +64,9 @@ BytestreamIn &BytestreamIn::operator>>(std::vector<uint16_t> &vec) {
     checkStreamSize(vecsize * sizeof(uint16_t));
 
     uint16_t *vecdata = (uint16_t*)(data.data() + pos);
-    vec = std::vector<uint16_t>(vecdata, vecdata + vecsize);
+
+    vec.resize(vecsize);
+    for (unsigned i = 0; i < vecsize; i++) vec[i] = sanitize(vecdata[i]);
     pos += sizeof(uint16_t) * vecsize;
 
     return *this;

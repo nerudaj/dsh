@@ -18,7 +18,7 @@ void printHelp() {
     std::cout << std::endl;
     std::cout << "Description:" << std::endl;
     std::cout << "\tBy default, this tool prints info about .lvd files. If -m was specified, it migrates input file to newest version of LevelD file format." << std::endl;
-    std::cout << "\tWhen using -e option, the str is in key=value format, where key is name of metadata attribute and value is the new value. For example: -e author=ExampleAuthor" << std::endl;
+    std::cout << "\tWhen using -e option, the str is in key=value format, where key is name of metadata attribute and value is the new value. For example: -e \"author=Example Author\". You can overwrite the input file." << std::endl;
     std::cout << std::endl;
 }
 
@@ -49,17 +49,17 @@ void printInfo(const LevelD &lvd, uint16_t version) {
 uint16_t getVersionOfLvdFile(const std::string &filename) {
     std::ifstream load(filename, std::ios::binary);
 
-    uint16_t version;
+    char buf[2];
 
-    load.read((char*)(&version), 2);
+    load.read(buf, 2);
     load.close();
     load.clear();
 
-    return version;
+    return buf[0] * 256 + buf[1];
 }
 
 int main(int argc, char *argv[]) {
-    cfg::Args args("hi:m:e!");
+    cfg::Args args("hi:m:e:");
     
     try { args.parse(argc, argv); }
     catch (std::exception &e) {

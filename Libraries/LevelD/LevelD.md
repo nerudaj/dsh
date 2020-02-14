@@ -17,86 +17,102 @@ The LevelD file format is an universal storage for game level data. It provides 
 
 The LevelD file format (.lvd for short) is build around the idea of modules or blocks of data that can be provided independently on each other. LevelD structure is meant to be serialized as a binary file, as effectively as possible.
 
-### LevelD C++ Structure
+### Endianess
 
-Declaration of this structure is particulary messy, due to many sub-structures being introduced, but when using it, you only need to care about following members:
+Every number is stored in **big-endian** format.
+
+### File structure
+
+Every .lvd file consists of a simple header and a number of blocks. While header is fixed, blocks are not ordered in any way and parser should not make any assumptions about their order. For exporters, it is _recommended_ to export metadata block first.
+
+### File <-> Software mapping
+
+Each attribute of LevelD object is directly mapped to one block in .lvd file. List of supported blocks and their contents is dependent on used version of LevelD exporter.
+
+ > **NOTE:** If a particular attribute of LevelD object is not initialized, it is recommended for exporters to not write it to output file for efficiency reasons.
+
+Available blocks:
 
  * metadata
- * mesh
+ * mesh (changed in version 2)
  * players
  * npcs
  * items
 
-Each of these members is represented by a single block in the .lvd file. If a member is not initialized, it's block won't be serialized into .lvd file and vice versa.
+### Versioning
 
-### Parsing
+Each change to LevelD file format will bump the version number by 1. Every parser **must** be able to parse files with lower versions and **must** throw exception when version number is higher.
 
-Every .lvd file **must** start with 4B big endian number denoting version of LevelD specification. This number denotes which blocks are supported. This specification will clearly denote which version of LevelD parser each block requires.
+### Blocks
 
-After these initial parsing must proceed in following steps:
- 1. Read next 4 bytes of data. This is the block *ID*
- 2. Then proceed with parser specific for that block based on *ID*
+Every block starts with 4B string identifier. When parsing, one can first read these four bytes, then decide which block parser to use and then apply it to parse the given block.
 
-#### Strings
+### Strings
 
 When this specification states something is stored as a string, that this is stored first as a 1B number stating how many characters that string has (string cannot be longer than 255 characters, ignoring null terminating character) and then that many characters follow.
 
-#### Vectors
+### Vectors
 
 When this specification states something is stored as a vector of XB numbers, it means first there are 4B of data specifiying *length* of the vector and then X * *length* bytes of data containing the desired vector.
 
+## File header
+
+| Width (bytes) | Usage   | Note |
+| :-----------: | :----   | :--- |
+| 2             | Version | Interpret as unsigned 2B integer |
+
 ## META block
 
-This block represents metadata of the level.
+This block represents metadata of the level. It has following structure:
 
-Meta block parsing follows these steps:
-
- 1. Read 8B of data - *timestamp*
- 2. Read a string of data - *id* of the level
- 3. Read a string of data - *name* of the level
- 4. Read a string of data - *author* of the level
- 5. Read a string of data - brief *description* of the level
+| Width (bytes) | Usage | Note |
+| :-----------: | :---- | :--- |
+| 4             | Block ID    | ID of this block. Value is fixed to 'META' |
+| 8             | timestamp | User defined |
+| string        | id    | ID of the level |
+| string        | name  | Name of the level |
+| string        | author | Author of the level |
+| string        | description | Brief description of the level |
 
 ## MESH block
 
-Mesh block represents the level mesh - how it looks and where the collisions are. This block only supports tile based maps with only simple (on/off) collisions.
+Mesh block represents the level mesh - how it looks and where the collisions are. This block only supports tile based maps with only simple (on/off) collisions:
 
-Parsing follows these steps:
+| Width (bytes) | Usage | Note |
+| :-----------: | :---- | :--- |
+| 4             | Block ID    | ID of this block. Value is fixed to 'MESH' |
+| 2             | tileWidth | Width of tile in pixels (since version 2) |
+| 2             | tileHeight | Height of tile in pixels (since version 2) |
+| 4             | width | Width of map |
+| vector        | data | Data for all tiles |
 
- 1. Read 2B of data - *width* of tile
- 2. Read 2B of data - *height* of tile
- 3. Read 4B of data - *width* of map
- 4. Read vector of 2B data - *data* of map
- 5. *height* of the map is computed as |*data*| / *width*
- 6. Split *data* into two vectors - *tiles* and *blocks*
- 7. You obtain *tiles* by taking bottom 15bits from each field of *data*
- 8. You obtain *blocks* by taking top 1bit from each field of *data*
-
-The *blocks* vector basically says whether a tile at index [x, y] is impassable or not. You can index into blocks using this formula: `y * width + x`
-
-The *tiles* vector says what type of a tile is at index [x, y]. Indexing formula is the same as for *blocks*.
+Each cell in `data` vector represents single tile. Tile with coordinates [x, y] lies in the cell with index `x * width + y`. Every cell represents two information - if the block is impassable (single top bit of the value, `true` if impassable) and id of the tile (bottom 15 bits). LevelD object has these two stored in separate vectors: `blocks` (collision data) and `tiles` (ids). Height of the map is compute as size of `data` divided by `width`.
 
 ## PLAS block
 
-Players block is for storing spawn positions of players in level.
+Players block is for storing spawn positions of players in level:
 
-Parsing follows these steps:
+| Width (bytes) | Usage | Note |
+| :-----------: | :---- | :--- |
+| 4             | Block ID    | ID of this block. Value is fixed to 'PLAS' |
+| 4             | count | Total number of players |
 
- 1. Read 4B of data - *count* of player spawns
- 2. N times do this:
-    a. Read 4B of data - *id* of the actor (from LevelD version 1)
-    b. Read 4B of data - *x* coordinate of current player spawn
-    c. Read 4B of data - *y* coordinate of current player spawn
-    d. Read 2B of data - *flags* affecting current player spawn
+Following sub-block follows `count` number of times.
+
+| Width (bytes) | Usage | Note |
+| 4             | id | Id of the player |
+| 4             | x  | X coordinate of player spawn |
+| 4             | y  | Y coordinate of player spawn |
+| 2             | flags  | Flags given to player spawn |
 
 ## NPCS block
 
 NPCs block is for storing spawn positions of non-players in level.
 
-Parsing is identical to parsing of PLAS block.
+Parsing is identical to parsing of PLAS block, just the Block ID is set to 'NPCS'.
 
 ## ITEM block
 
 Item block is for storing spawn positions of items in level.
 
-Parsing is identical to parsing of PLAS and NPCS block.
+Parsing is identical to parsing of PLAS and NPCS block, just the Block ID is set to 'ITEM'.

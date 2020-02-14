@@ -1,3 +1,9 @@
+v1.X.X changelog:
+ * Fixed LevelD parser to be version aware
+ * Added leveld-migration-tool for upgrading old LevelD files to newest version
+
+---
+
 v1.1.1 changelog:
  * Fixed jsbloat internals
  * Added tileWidth and tileHeight to LevelD::Mesh

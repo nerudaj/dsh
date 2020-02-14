@@ -1,4 +1,4 @@
-v1.X.X changelog:
+v1.3.2 changelog:
  * Critical fix: LevelD numbers weren't stored as big endian
  * Fixed documentation for Players block in LevelD files
  * Fixed LevelD parser to be version aware

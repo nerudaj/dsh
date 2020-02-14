@@ -1,6 +1,9 @@
 v1.X.X changelog:
  * Fixed LevelD parser to be version aware
- * Added leveld-migration-tool for upgrading old LevelD files to newest version
+ * Critical fix: LevelD numbers weren't stored as big endian
+ * Added leveld-tool for inspecting and upgrading old LeveldD files
+	* it also allows user to edit metadata values
+ * Fixed documentation for Players block in LevelD files
 
 ---
 

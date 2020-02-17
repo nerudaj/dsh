@@ -1,5 +1,4 @@
 /** BYTESTREAM IN **/
-
 function ByteStreamIn(inputData = null, inputIsString = false) {
     this.data = inputData;
     if (inputIsString) this.data = new TextEncoder().encode(inputData);
@@ -35,6 +34,10 @@ ByteStreamIn.prototype.GetDoubleByteVector = function() {
     }
 
     return result;
+}
+
+ByteStreamIn.prototype.Eof = function() {
+    return this.index == this.data.length;
 }
 
 /** BYTESTREAM OUT **/
@@ -80,14 +83,16 @@ ByteStreamOut.prototype.WriteDoubleByteVector = function(data) {
     }
 }
 
-class Module() {
+/* Modules */
+
+class Module {
     constructor() {
-        this.serialize(lvd, bout);
-        this.deserialize(bin, lvd);
+/*        this.Serialize(lvd, bout);
+        this.Deserialize(bin, lvd);*/
     }
 
-    serialize(lvd, bout) {}
-    deserialize(bin, lvd) {}
+    Serialize(lvd, bout) {}
+    Deserialize(bin, lvd) {}
 }
 
 class MetadataModule extends Module {
@@ -95,7 +100,7 @@ class MetadataModule extends Module {
         super();
     }
 
-    serialize(lvd, bout) {
+    Serialize(lvd, bout) {
         console.log("MetadataModule::serialize");
 
         // TODO: timestamp
@@ -108,7 +113,7 @@ class MetadataModule extends Module {
         bout.WriteString(lvd.metadata.description);
     }
 
-    deserialize(bin, lvd) {
+    Deserialize(bin, lvd) {
         console.log("MetadataModule::deserialize");
 
         // TODO: timestamp
@@ -121,28 +126,56 @@ class MetadataModule extends Module {
     }
 };
 
-/*function LevelMetadata() {
-    this.time = 0;
-    this.id = "";
-    this.name = "";
-    this.author = "";
-    this.description = "";
+const VERSION = 2;
+const MODULE_CODE_META = 0x4154454D;
+const MODULE_CODE_MESH = 0x4853454D;
+const MODULE_CODE_PLRS = 0x53524C50;
+const MODULE_CODE_NPCS = 0x5343504E;
+const MODULE_CODE_ITEM = 0x4D455449;
+
+function GetModule(code, version) {
+    if (code == MODULE_CODE_META) {
+        return new MetadataModule();
+    }
+
+    throw new Error("Module code '" + code + "' is not recognized!");
 }
 
-function LevelMesh() {
-    this.tileWidth = 0;
-    this.tileHeight = 0;
-    this.width = 0;
-    this.height = 0;
-    this.tiles = [];
-    this.blocks = [];
-}
+class LeveldMetadata {
+    constructor() {
+        this.time = 0;
+        this.id = "";
+        this.name = "";
+        this.author = "";
+        this.description = "";
+    }
+};
 
-function LevelD() {
-    this.metadata = new LevelMetadata();
-    this.mesh = new LevelMesh();
-}
+class Leveld {
+    constructor() {
+        this.metadata = new LeveldMetadata();
+    }
 
-LevelD.prototype.loadFromFile = function(filename) {
-    var data = FetchDataSynchronous(filename);
-}*/
+    LoadFromUint8Array(arr) {
+        let bin = new ByteStreamIn(arr);
+        let version = bin.GetDoubleByte();
+
+        if (version > VERSION) {
+            throw new Error("Unsupported version: " + version);
+        }
+
+        while (!bin.Eof()) {
+            let code = bin.GetQuadByte();
+            let module = GetModule(code, version);
+
+            module.Deserialize(bin, this);
+        }
+    }
+
+    SaveToUint8Array() {
+        let bout = new ByteStreamOut();
+
+        let metamod = GetModule(MODULE_CODE_META, VERSION);
+        metamot.Serialize(this, bout);
+    }
+}

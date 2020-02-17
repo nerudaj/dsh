@@ -19,6 +19,7 @@ describe("Bytestream In", () => {
         expect(bin.GetByte()).toEqual(3);
         expect(bin.GetByte()).toEqual(4);
         expect(bin.GetByte()).toEqual(5);
+        expect(bin.Eof()).toEqual(true);
     });
 
     it ("should return double byte when initialized", () => {
@@ -26,6 +27,7 @@ describe("Bytestream In", () => {
 
         expect(bin.GetDoubleByte()).toEqual(258);
         expect(bin.GetDoubleByte()).toEqual(772);
+        expect(bin.Eof()).toEqual(true);
     });
 
     it ("should return quad byte when initialized", () => {
@@ -33,18 +35,21 @@ describe("Bytestream In", () => {
 
         expect(bin.GetQuadByte()).toEqual(16909060);
         expect(bin.GetQuadByte()).toEqual(16909061);
+        expect(bin.Eof()).toEqual(true);
     });
 
     it ("should return UTF-8 string when initialized", () => {
         bin = new ByteStreamIn(new Uint8Array([6, 97, 98, 97, 99, 100, 101]));
 
         expect(bin.GetString()).toEqual("abacde");
+        expect(bin.Eof()).toEqual(true);
     });
 
     it ("should return uint16 vector when initialized", () => {
         bin = new ByteStreamIn(new Uint8Array([0, 0, 0, 4, 0, 1, 0, 2, 1, 2, 1, 3]));
 
         expect(bin.GetDoubleByteVector()).toEqual([1, 2, 258, 259]);
+        expect(bin.Eof()).toEqual(true);
     });
 
     it ("should work after loading from file", () => {
@@ -53,5 +58,6 @@ describe("Bytestream In", () => {
         expect(bin.GetByte()).toEqual(97);
         expect(bin.GetString()).toEqual("hello world this is message abcd");
         expect(bin.GetByte()).toEqual(48);
+        expect(bin.Eof()).toEqual(true);
     });
 });

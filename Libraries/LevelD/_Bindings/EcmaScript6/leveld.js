@@ -43,13 +43,25 @@ ByteStreamIn.prototype.Eof = function() {
 /** BYTESTREAM OUT **/
 
 function ByteStreamOut() {
-    this.data = new Uint8Array(256);
+    this.ALLOC_CHUNK_SIZE = 256;
+    this.data = new Uint8Array(this.ALLOC_CHUNK_SIZE);
     this.usedSize = 0;
+}
+
+ByteStreamOut.prototype._ResizeBuffer = function(newSize) {
+    var oldBuffer = this.data.buffer;
+    var newBuffer = new ArrayBuffer(newSize);
+    this.data = new Uint8Array(newBuffer);
+    this.data.set(oldBuffer);
 }
 
 ByteStreamOut.prototype.WriteByte = function(data) {
     this.data[this.usedSize] = data;
     this.usedSize++;
+
+    if (this.usedSize == this.data.length) {
+        this._ResizeBuffer(usedSize + this.ALLOC_CHUNK_SIZE);
+    }
 }
 
 ByteStreamOut.prototype.WriteDoubleByte = function(data) {
@@ -86,10 +98,7 @@ ByteStreamOut.prototype.WriteDoubleByteVector = function(data) {
 /* Modules */
 
 class Module {
-    constructor() {
-/*        this.Serialize(lvd, bout);
-        this.Deserialize(bin, lvd);*/
-    }
+    constructor() {}
 
     Serialize(lvd, bout) {}
     Deserialize(bin, lvd) {}
@@ -103,9 +112,8 @@ class MetadataModule extends Module {
     Serialize(lvd, bout) {
         console.log("MetadataModule::serialize");
 
-        // TODO: timestamp
-        bout.WriteQuadByte(0);
-        bout.WriteQuadByte(0);
+        bout.WriteQuadByte(parseInt(lvd.metadata.timestamp / 0x0100000000));
+        bout.WriteQuadByte(lvd.metadata.timestamp % 0x0100000000);
 
         bout.WriteString(lvd.metadata.id);
         bout.WriteString(lvd.metadata.name);
@@ -116,14 +124,22 @@ class MetadataModule extends Module {
     Deserialize(bin, lvd) {
         console.log("MetadataModule::deserialize");
 
-        // TODO: timestamp
-        lvd.metadata.timestamp = 0;
+        lvd.metadata.timestamp = (bin.GetQuadByte() * 0x0100000000) + bin.GetQuadByte();
 
         lvd.metadata.id = bin.GetString();
         lvd.metadata.name = bin.GetString();
         lvd.metadata.author = bin.GetString();
         lvd.metadata.description = bin.GetString();
     }
+};
+
+class MeshModule_v1 extends Module {
+    constructor() {
+        super();
+    }
+
+    Serialize(lvd, bout) {}
+    Deserialize(bin, lvd) {}
 };
 
 const VERSION = 2;
@@ -151,7 +167,7 @@ class LeveldMetadata {
     }
 };
 
-class Leveld {
+class LevelD {
     constructor() {
         this.metadata = new LeveldMetadata();
     }
@@ -172,10 +188,15 @@ class Leveld {
         }
     }
 
-    SaveToUint8Array() {
+    GetSerializedToUint8Array() {
         let bout = new ByteStreamOut();
 
+        bout.WriteDoubleByte(VERSION);
+
         let metamod = GetModule(MODULE_CODE_META, VERSION);
-        metamot.Serialize(this, bout);
+        bout.WriteQuadByte(MODULE_CODE_META);
+        metamod.Serialize(this, bout);
+
+        return bout.data.slice(0, bout.usedSize);
     }
 }

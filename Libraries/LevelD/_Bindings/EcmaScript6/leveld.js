@@ -133,13 +133,44 @@ class MetadataModule extends Module {
     }
 };
 
-class MeshModule_v1 extends Module {
+class MeshModule_v2 extends Module {
     constructor() {
         super();
     }
 
-    Serialize(lvd, bout) {}
-    Deserialize(bin, lvd) {}
+    Serialize(lvd, bout) {
+        console.log("MeshModule_v2::serialize");
+        bout.WriteQuadByte(lvd.mesh.tileWidth);
+        bout.WriteQuadByte(lvd.mesh.tileHeight);
+        bout.WriteQuadByte(lvd.mesh.width);
+
+        let dataSize = lvd.mesh.width * lvd.mesh.height;
+        bout.WriteQuadByte(dataSize);
+
+        for (let i = 0; i < dataSize; i++) {
+            let dblbyte = lvd.mesh.tiles[i];
+            dblbyte = (lvd.mesh.blocks[i] ? 0x8000 : 0) | dblbyte ;
+            bout.WriteDoubleByte(dblbyte);
+        }
+    }
+
+    Deserialize(bin, lvd) {
+        console.log("MeshModule_v2::deserialize");
+        lvd.mesh.tileWidth = bin.GetQuadByte();
+        lvd.mesh.tileHeight = bin.GetQuadByte();
+        lvd.mesh.width = bin.GetQuadByte();
+
+        let data = bin.GetDoubleByteVector();
+
+        lvd.mesh.height = data.length / lvd.mesh.width;
+        lvd.mesh.tiles = [];
+        lvd.mesh.blocks = [];
+
+        for (let i = 0; i < data.length; i++) {
+            lvd.mesh.tiles.push(data[i] & 0x7fff);
+            lvd.mesh.blocks.push(data[i] & 0x8000 > 0);
+        }
+    }
 };
 
 const VERSION = 2;
@@ -152,6 +183,9 @@ const MODULE_CODE_ITEM = 0x4D455449;
 function GetModule(code, version) {
     if (code == MODULE_CODE_META) {
         return new MetadataModule();
+    }
+    else if (code == MODULE_CODE_MESH && version == VERSION) {
+        return new MeshModule_v2();
     }
 
     throw new Error("Module code '" + code + "' is not recognized!");
@@ -167,9 +201,21 @@ class LeveldMetadata {
     }
 };
 
+class LeveldMesh {
+    constructor() {
+        this.tileWidth = 0;
+        this.tileHeight = 0;
+        this.width = 0;
+        this.height = 0;
+        this.tiles = [];
+        this.blocks = [];
+    }
+};
+
 class LevelD {
     constructor() {
         this.metadata = new LeveldMetadata();
+        this.mesh = new LeveldMesh();
     }
 
     LoadFromUint8Array(arr) {
@@ -196,6 +242,12 @@ class LevelD {
         let metamod = GetModule(MODULE_CODE_META, VERSION);
         bout.WriteQuadByte(MODULE_CODE_META);
         metamod.Serialize(this, bout);
+
+        if (this.mesh.width * this.mesh.height > 0) {
+            let meshmod = GetModule(MODULE_CODE_MESH, VERSION);
+            bout.WriteQuadByte(MODULE_CODE_MESH);
+            meshmod.Serialize(this, bout);
+        }
 
         return bout.data.slice(0, bout.usedSize);
     }

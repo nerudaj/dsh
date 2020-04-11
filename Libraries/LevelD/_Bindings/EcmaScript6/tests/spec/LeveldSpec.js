@@ -53,4 +53,58 @@ describe ("LevelD", () => {
             expect(lvd.mesh.blocks[i]).toEqual(lvd2.mesh.blocks[i]);
         }
     });
+
+    it ("should properly (de)serialize PLRS block", () => {
+        lvd.players.push(new LeveldActor(0, 100, 20, 15));
+        lvd.players.push(new LeveldActor(1, 15, 39, 2));
+
+        var rawData = lvd.GetSerializedToUint8Array();
+        var lvd2 = new LevelD();
+        lvd2.LoadFromUint8Array(rawData);
+
+        expect(lvd.players.length).toEqual(lvd2.players.length);
+
+        for (let i = 0; i < lvd.players.length; i++) {
+            expect(lvd.players[i].id).toEqual(lvd2.players[i].id);
+            expect(lvd.players[i].x).toEqual(lvd2.players[i].x);
+            expect(lvd.players[i].y).toEqual(lvd2.players[i].y);
+            expect(lvd.players[i].flags).toEqual(lvd2.players[i].flags);
+        }
+    });
+
+    it ("should properly (de)serialize ITEM block", () => {
+        lvd.items.push(new LeveldActor(0, 100, 20, 15));
+        lvd.items.push(new LeveldActor(1, 15, 39, 2));
+
+        var rawData = lvd.GetSerializedToUint8Array();
+        var lvd2 = new LevelD();
+        lvd2.LoadFromUint8Array(rawData);
+
+        expect(lvd.items.length).toEqual(lvd2.items.length);
+
+        for (let i = 0; i < lvd.items.length; i++) {
+            expect(lvd.items[i].id).toEqual(lvd2.items[i].id);
+            expect(lvd.items[i].x).toEqual(lvd2.items[i].x);
+            expect(lvd.items[i].y).toEqual(lvd2.items[i].y);
+            expect(lvd.items[i].flags).toEqual(lvd2.items[i].flags);
+        }
+    });
+
+    it ("should properly (de)serialize NPCS block", () => {
+        lvd.npcs.push(new LeveldActor(0, 100, 20, 15));
+        lvd.npcs.push(new LeveldActor(1, 15, 39, 2));
+
+        var rawData = lvd.GetSerializedToUint8Array();
+        var lvd2 = new LevelD();
+        lvd2.LoadFromUint8Array(rawData);
+
+        expect(lvd.npcs.length).toEqual(lvd2.npcs.length);
+
+        for (let i = 0; i < lvd.npcs.length; i++) {
+            expect(lvd.npcs[i].id).toEqual(lvd2.npcs[i].id);
+            expect(lvd.npcs[i].x).toEqual(lvd2.npcs[i].x);
+            expect(lvd.npcs[i].y).toEqual(lvd2.npcs[i].y);
+            expect(lvd.npcs[i].flags).toEqual(lvd2.npcs[i].flags);
+        }
+    });
 });

@@ -173,6 +173,57 @@ class MeshModule_v2 extends Module {
     }
 };
 
+class ActorsModule extends Module {
+    constructor() {
+        super();
+        this.actorType = "none";
+    }
+
+    Serialize(lvd, bout) {
+        bout.WriteQuadByte(lvd[this.actorType].length);
+
+        for (let i = 0; i < lvd[this.actorType].length; i++) {
+            bout.WriteQuadByte(lvd[this.actorType][i].id);
+            bout.WriteQuadByte(lvd[this.actorType][i].x);
+            bout.WriteQuadByte(lvd[this.actorType][i].y);
+            bout.WriteDoubleByte(lvd[this.actorType][i].flags);
+        }
+    }
+
+    Deserialize(bin, lvd) {
+        let count = bin.GetQuadByte();
+
+        for (let i = 0; i < count; i++) {
+            lvd[this.actorType].push(new LeveldActor());
+            lvd[this.actorType][i].id = bin.GetQuadByte();
+            lvd[this.actorType][i].x = bin.GetQuadByte();
+            lvd[this.actorType][i].y = bin.GetQuadByte();
+            lvd[this.actorType][i].flags = bin.GetDoubleByte();
+        }
+    }
+};
+
+class PlayersModule extends ActorsModule {
+    constructor() {
+        super();
+        this.actorType = "players";
+    }
+};
+
+class NpcsModule extends ActorsModule {
+    constructor() {
+        super();
+        this.actorType = "npcs";
+    }
+};
+
+class ItemsModule extends ActorsModule {
+    constructor() {
+        super();
+        this.actorType = "items";
+    }
+};
+
 const VERSION = 2;
 const MODULE_CODE_META = 0x4154454D;
 const MODULE_CODE_MESH = 0x4853454D;
@@ -186,6 +237,15 @@ function GetModule(code, version) {
     }
     else if (code == MODULE_CODE_MESH && version == VERSION) {
         return new MeshModule_v2();
+    }
+    else if (code == MODULE_CODE_PLRS) {
+        return new PlayersModule();
+    }
+    else if (code == MODULE_CODE_ITEM) {
+        return new ItemsModule();
+    }
+    else if (code == MODULE_CODE_NPCS) {
+        return new NpcsModule();
     }
 
     throw new Error("Module code '" + code + "' is not recognized!");
@@ -212,10 +272,22 @@ class LeveldMesh {
     }
 };
 
+class LeveldActor {
+    constructor(id = 0, x = 0, y = 0, flags = 0) {
+        this.id = id;
+        this.x = x;
+        this.y = y;
+        this.flags = flags;
+    }
+};
+
 class LevelD {
     constructor() {
         this.metadata = new LeveldMetadata();
         this.mesh = new LeveldMesh();
+        this.players = [];
+        this.npcs = [];
+        this.items = [];
     }
 
     LoadFromUint8Array(arr) {
@@ -247,6 +319,24 @@ class LevelD {
             let meshmod = GetModule(MODULE_CODE_MESH, VERSION);
             bout.WriteQuadByte(MODULE_CODE_MESH);
             meshmod.Serialize(this, bout);
+        }
+
+        if (this.players.length > 0) {
+            let module = GetModule(MODULE_CODE_PLRS, VERSION);
+            bout.WriteQuadByte(MODULE_CODE_PLRS);
+            module.Serialize(this, bout);
+        }
+
+        if (this.items.length > 0) {
+            let module = GetModule(MODULE_CODE_ITEM, VERSION);
+            bout.WriteQuadByte(MODULE_CODE_ITEM);
+            module.Serialize(this, bout);
+        }
+
+        if (this.npcs.length > 0) {
+            let module = GetModule(MODULE_CODE_NPCS, VERSION);
+            bout.WriteQuadByte(MODULE_CODE_NPCS);
+            module.Serialize(this, bout);
         }
 
         return bout.data.slice(0, bout.usedSize);

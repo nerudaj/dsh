@@ -108,19 +108,25 @@ std::string Strings::encodeToBase64(const std::string &text) {
 std::string Strings::decodeFromBase64(const std::string &encoded) {
 	std::string result = "";
 
-	uint32_t buffer = 0, b = 0, i;
+	auto getReverseLookup = [](char c) {
+		const uint8_t minorOffset = ('Z' - 'A') + 1;
+		const uint8_t numberOffset = 2 * minorOffset;
+		if ('A' <= c && c <= 'Z') return uint8_t(c - 'A');
+		else if ('a' <= c && c <= 'z') return uint8_t(c - 'a' + minorOffset);
+		else if ('0' <= c && c <= '9') return uint8_t(c - '0' + numberOffset);
+		else if (c == '+') return uint8_t(62);
+		else if (c == '/') return uint8_t(63);
+		throw std::runtime_error(c + " is an invalid character!");
+	};
+
+	uint32_t buffer = 0, b = 0;
 	for (char c : encoded) {
 		if (c == '=') break;
-
-		// Find encoded character index
-		for (i = 0; i < 64; i++) {
-			if (c == BASE64_LOOKUP_TABLE[i]) break;
-		}
-		if (i == 64) throw std::runtime_error(c + " is an invalid character!");
+		uint8_t index = getReverseLookup(c);
 
 		buffer <<= 6;
 		b += 6;
-		buffer |= i;
+		buffer |= index;
 
 		while (b >= 8) {
 			b -= 8;

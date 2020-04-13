@@ -44,6 +44,10 @@ public:
 	}
 
 	static bool isPrefixOf(const std::string &str, const std::string &ofWhat);
+
+	static std::string encodeToBase64(const std::string &text);
+
+	static std::string decodeFromBase64(const std::string &encoded);
 };
 
 #endif

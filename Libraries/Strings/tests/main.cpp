@@ -44,3 +44,36 @@ TEST_CASE("Strings::isPrefixOf", "[Strings]") {
 	REQUIRE(Strings::isPrefixOf("abc", "abcdef"));
 	REQUIRE(!Strings::isPrefixOf("abc", "fedcba"));
 }
+
+TEST_CASE("Strings::encodeToBase64", "[Strings]") {
+	REQUIRE(
+		Strings::encodeToBase64("abc") == "YWJj"
+	);
+
+	REQUIRE(
+		Strings::encodeToBase64("Man is distinguished, not only by his reason, but ")
+		== "TWFuIGlzIGRpc3Rpbmd1aXNoZWQsIG5vdCBvbmx5IGJ5IGhpcyByZWFzb24sIGJ1dCA="
+	);
+}
+
+TEST_CASE("Strings::decodeFromBase64", "[Strings]") {
+	SECTION("Valid inputs") {
+		REQUIRE(
+			Strings::decodeFromBase64("TWFuIGlzIGRpc3Rpbmd1aXNoZWQsIG5vdCBvbmx5IGJ5IGhpcyByZWFzb24sIGJ1dCA=")
+			== "Man is distinguished, not only by his reason, but "
+		);
+
+		// No padding
+		REQUIRE(
+			Strings::decodeFromBase64("TWFuIGlzIGRpc3Rpbmd1aXNoZWQsIG5vdCBvbmx5IGJ5IGhpcyByZWFzb24sIGJ1dCA")
+			== "Man is distinguished, not only by his reason, but "
+		);
+	}
+
+	SECTION("Invalid inputs") {
+		try {
+			Strings::decodeFromBase64("InvalidChars!");
+			REQUIRE(false);
+		} catch (...) { REQUIRE(true); }
+	}
+}

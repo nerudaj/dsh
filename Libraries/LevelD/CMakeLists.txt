@@ -48,5 +48,13 @@ install(
 		docs
 )
 
+install(
+	FILES
+		_Bindings/EcmaScript6/leveld.js
+		_Bindings/EcmaScript6/readme.md
+	DESTINATION
+		bindings/ecmascript6
+)
+
 # Tests
 add_subdirectory ( Tests )

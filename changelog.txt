@@ -1,5 +1,6 @@
 v1.X.X changelog:
  * Added methods for base64 encode/decode to libstrings
+ * Added EcmaScript6 binding for LevelD library
 
 ---
 

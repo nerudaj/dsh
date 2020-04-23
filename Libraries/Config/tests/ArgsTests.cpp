@@ -5,7 +5,7 @@ TEST_CASE("Args::setupArguments", "[Args]") {
 	cfg::Args args;
 
 	SECTION("Passing") {
-		auto setup = GENERATE(as<std::string>{}, "h", "h:", "h!", "hg", "h:g:", "h!g!", "hg:i!");
+		auto setup = GENERATE(as<std::string>{}, "h", "h:", "hg", "h:g:");
 
 		REQUIRE_NOTHROW([&](){
 			args.setupArguments(setup);
@@ -13,7 +13,7 @@ TEST_CASE("Args::setupArguments", "[Args]") {
 	}
 
 	SECTION("Failing") {
-		auto setup = GENERATE(as<std::string>{}, "h?", "");
+		auto setup = GENERATE(as<std::string>{}, "h?", "h!", "");
 
 		try {
 			args.setupArguments(setup);
@@ -28,15 +28,12 @@ TEST_CASE("Args::setupArguments", "[Args]") {
 
 TEST_CASE("Args::parse passing", "[Args]") {
 	cfg::Args args;
-	std::vector<std::string> setups = {"h", "hc:", "hc:", "hc:", "m!", "m!vc:", "m!vc:"};
+	std::vector<std::string> setups = {"h", "hc:", "hc:", "hc:"};
 	std::vector<std::vector<const char *>> argSetups = {
 		{"progname"},
 		{"progname"},
 		{"progname", "-h"},
-		{"progname", "-c", "value"},
-		{"progname", "-m", "value"},
-		{"progname", "-m", "value"},
-		{"progname", "-m", "value", "-c", "value2"}
+		{"progname", "-c", "value"}
 	};
 
 	REQUIRE(setups.size() == argSetups.size());
@@ -53,11 +50,10 @@ TEST_CASE("Args::parse passing", "[Args]") {
 
 TEST_CASE("Args::parse failing", "[Args]") {
 	cfg::Args args;
-	std::vector<std::string> setups = {"c:", "m!", "h"};
+	std::vector<std::string> setups = {"c:", "h"};
 	std::vector<std::vector<const char *>> argSetups = {
 		{"progname", "-c"},
-		{"progname"},
-		{"progname", "-c"},
+		{"progname", "-c"}
 	};
 
 	REQUIRE(setups.size() == argSetups.size());
@@ -80,18 +76,16 @@ TEST_CASE("Args::parse failing", "[Args]") {
 
 TEST_CASE("Args::isSet passing", "[Args]") {
 	cfg::Args args;
-	std::vector<std::string> setups = {"h", "hc:", "hc:", "m!"};
+	std::vector<std::string> setups = {"h", "hc:", "hc:"};
 	std::vector<std::vector<const char *>> argSetups = {
 		{"progname", "-h"},
 		{"progname", "-h"},
-		{"progname", "-c", "value", "-h"},
-		{"progname", "-m", "value"},
+		{"progname", "-c", "value", "-h"}
 	};
 	std::vector<std::vector<char>> queries = {
 		{'h'},
 		{'h'},
-		{'h', 'c'},
-		{'m'}
+		{'h', 'c'}
 	};
 
 	REQUIRE(setups.size() == argSetups.size());
@@ -113,14 +107,12 @@ TEST_CASE("Args::isSet passing", "[Args]") {
 
 TEST_CASE("Args::isSet failing", "[Args]") {
 	cfg::Args args;
-	std::vector<std::string> setups = {"m!", "hc:"};
+	std::vector<std::string> setups = {"hc:"};
 	std::vector<std::vector<const char *>> argSetups = {
-		{"progname", "-m", "value"},
-		{"progname", "-c", "value", "-h"},
+		{"progname", "-c", "value", "-h"}
 	};
 	std::vector<std::vector<char>> queries = {
-		{'h'},
-		{'H', 'C'},
+		{'H', 'C'}
 	};
 
 	REQUIRE(setups.size() == argSetups.size());

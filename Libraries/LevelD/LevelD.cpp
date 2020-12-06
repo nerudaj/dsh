@@ -5,7 +5,7 @@
 #include <stdexcept>
 #include <iostream>
 
-const uint16_t VERSION = 2;
+const uint16_t VERSION = 3;
 
 using std::vector;
 using std::string;
@@ -16,14 +16,16 @@ Module *getModule(uint32_t identity, uint16_t version) {
         switch(version) {
         case 1: return new ModuleMesh_v1;
         case 2: return new ModuleMesh_v2;
+		case 3: return new ModuleMesh_v3;
         }
     }
-    else if (identity == LVLD_PLAYERS_CODE) return new ModulePlayers;
-    else if (identity == LVLD_ITEMS_CODE)   return new ModuleItems;
-    else if (identity == LVLD_NPCS_CODE)    return new ModuleNpcs;
-    /*else if (identity == LVLD_EVENTS_CODE)  return new ModuleEvents;*/
+    else if (identity == LVLD_PLAYERS_CODE) return new ModuleNpcsItemsPlayers; // Backward compatibility, replaced by things
+    else if (identity == LVLD_ITEMS_CODE)   return new ModuleNpcsItemsPlayers; // Backward compatibility, replaced by things
+    else if (identity == LVLD_NPCS_CODE)    return new ModuleNpcsItemsPlayers; // Backward compatibility, replaced by things
+	else if (identity == LVLD_THINGS_CODE)  return new ModuleThings;
+	else if (identity == LVLD_TRIGGERS_CODE)return new ModuleTriggers;
 
-    throw std::runtime_error("Unsupported identity code!");
+    throw std::runtime_error("Unsupported identity code: " + std::to_string(identity) + "!");
     return NULL;
 }
 
@@ -60,29 +62,17 @@ void LevelD::saveToFile(const string &filename) const {
         meshmod->serialize(bout, *this);
     }
 
-    if (!players.empty()) {
-        bout << LVLD_PLAYERS_CODE;
-        ModulePlayers plrsmod;
-        plrsmod.serialize(bout, *this);
+    if (!things.empty()) {
+        bout << LVLD_THINGS_CODE;
+        ModuleThings thngmod;
+        thngmod.serialize(bout, *this);
     }
 
-    if (!items.empty()) {
-        bout << LVLD_ITEMS_CODE;
-        ModuleItems itemmod;
-        itemmod.serialize(bout, *this);
+    if (!triggers.empty()) {
+        bout << LVLD_TRIGGERS_CODE;
+        ModuleTriggers trigmod;
+        trigmod.serialize(bout, *this);
     }
-
-    if (!npcs.empty()) {
-        bout << LVLD_NPCS_CODE;
-        ModuleNpcs npcmod;
-        npcmod.serialize(bout, *this);
-    }
-
-    /*if (!events.empty()) {
-        bout << LVLD_EVENTS_CODE;
-        ModuleEvents eventmod;
-        eventmd.serialize(bout, *this);
-    }*/ 
 
     bout.close();
 }

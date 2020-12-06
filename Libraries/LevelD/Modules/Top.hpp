@@ -5,10 +5,11 @@
 
 const uint32_t LVLD_METADATA_CODE = 0x4D455441; // 'META'
 const uint32_t LVLD_MESH_CODE     = 0x4D455348; // 'MESH'
+const uint32_t LVLD_THINGS_CODE   = 0x54484E47; // 'THNG'
 const uint32_t LVLD_PLAYERS_CODE  = 0x504C5253; // 'PLRS'
 const uint32_t LVLD_ITEMS_CODE    = 0x4954454D; // 'ITEM'
 const uint32_t LVLD_NPCS_CODE     = 0x4E504353; // 'NPCS'
-const uint32_t LVLD_EVENTS_CODE   = 0x45564E54; // 'EVNT'
+const uint32_t LVLD_TRIGGERS_CODE = 0x54524947; // 'TRIG'
 
 class Module {
 public:
@@ -34,25 +35,25 @@ public:
     virtual void deserialize(BytestreamIn &bin, LevelD &lvld) const final override;
 };
 
-class ModulePlayers : public Module {
+class ModuleMesh_v3 : public Module {
 public:
     virtual void serialize(BytestreamOut &bout, const LevelD &lvld) const final override;
     virtual void deserialize(BytestreamIn &bin, LevelD &lvld) const final override;
 };
 
-class ModuleItems : public Module {
+class ModuleNpcsItemsPlayers : public Module {
 public:
     virtual void serialize(BytestreamOut &bout, const LevelD &lvld) const final override;
     virtual void deserialize(BytestreamIn &bin, LevelD &lvld) const final override;
 };
 
-class ModuleNpcs : public Module {
+class ModuleThings : public Module {
 public:
     virtual void serialize(BytestreamOut &bout, const LevelD &lvld) const final override;
     virtual void deserialize(BytestreamIn &bin, LevelD &lvld) const final override;
 };
 
-class ModuleEvents : public Module {
+class ModuleTriggers : public Module {
 public:
     virtual void serialize(BytestreamOut &bout, const LevelD &lvld) const final override;
     virtual void deserialize(BytestreamIn &bin, LevelD &lvld) const final override;

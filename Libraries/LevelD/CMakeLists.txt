@@ -11,9 +11,9 @@ add_library(${PROJECT_NAME}
 					Bytestream/BytestreamOut.cpp
 					Modules/ModuleMetadata.cpp
 					Modules/ModuleMesh.cpp
-					Modules/ModulePlayers.cpp
-					Modules/ModuleItems.cpp
-					Modules/ModuleNpcs.cpp
+					Modules/ModuleNpcsItemsPlayers.cpp
+					Modules/ModuleThings.cpp
+					Modules/ModuleTriggers.cpp
 )
 target_include_directories (${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 

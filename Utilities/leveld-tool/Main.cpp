@@ -8,7 +8,7 @@ void printHelp() {
     std::cout << "Usage:" << std::endl;
     std::cout << "\tleveld-tool [-h] | <-i file> [-m outfile [-e str]]" << std::endl;
     std::cout << std::endl;
-    
+
     std::cout << "Parameters:" << std::endl;
     std::cout << "\t-h            Prints this message" << std::endl;
     std::cout << "\t-f file       Input file" << std::endl;
@@ -37,13 +37,8 @@ void printInfo(const LevelD &lvd, uint16_t version) {
     std::cout << "Mesh:" << std::endl;
     std::cout << "\ttileWidth:   " << lvd.mesh.tileWidth << std::endl;
     std::cout << "\ttileHeight:  " << lvd.mesh.tileHeight << std::endl;
-    std::cout << "\twidth:       " << lvd.mesh.width << std::endl;
-    std::cout << "\theight:      " << lvd.mesh.height << std::endl;
-
-    std::cout << std::endl;
-    std::cout << "Number of player spawns: " << lvd.players.size() << std::endl;
-    std::cout << "Number of npc spawns: " << lvd.npcs.size() << std::endl;
-    std::cout << "Number of items: " << lvd.items.size() << std::endl;
+    /*std::cout << "\twidth:       " << lvd.mesh.width << std::endl;
+    std::cout << "\theight:      " << lvd.mesh.height << std::endl;*/
 }
 
 uint16_t getVersionOfLvdFile(const std::string &filename) {
@@ -60,22 +55,22 @@ uint16_t getVersionOfLvdFile(const std::string &filename) {
 
 int main(int argc, char *argv[]) {
     cfg::Args args("hi:m:e:");
-    
+
     try { args.parse(argc, argv); }
     catch (std::exception &e) {
         std::cerr << "ERROR: " << e.what() << std::endl;
     }
-    
+
     if (args.isSet('h')) {
         printHelp();
         return 0;
     }
-    
+
     if (!args.isSet('i')) {
         std::cerr << "ERROR: Parameter -i is mandatory!" << std::endl;
         return 1;
     }
-    
+
     LevelD lvld;
     uint16_t version;
     try {

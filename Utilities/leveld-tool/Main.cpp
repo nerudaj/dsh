@@ -37,8 +37,17 @@ void printInfo(const LevelD &lvd, uint16_t version) {
     std::cout << "Mesh:" << std::endl;
     std::cout << "\ttileWidth:   " << lvd.mesh.tileWidth << std::endl;
     std::cout << "\ttileHeight:  " << lvd.mesh.tileHeight << std::endl;
-    /*std::cout << "\twidth:       " << lvd.mesh.width << std::endl;
-    std::cout << "\theight:      " << lvd.mesh.height << std::endl;*/
+	std::cout << "\tlayerWidth: " << lvd.mesh.layerWidth << std::endl;
+	std::cout << "\tlayerHeight: " << lvd.mesh.layerHeight << std::endl;
+	std::cout << "\tlayerCount: " << lvd.mesh.layers.size() << std::endl;
+
+	std::cout << std::endl;
+	std::cout << "Things:" << std::endl;
+	std::cout << "\tcount: " << lvd.things.size() << std::endl;
+
+	std::cout << std::endl;
+	std::cout << "Triggers:" << std::endl;
+	std::cout << "\tcount: " << lvd.triggers.size() << std::endl;
 }
 
 uint16_t getVersionOfLvdFile(const std::string &filename) {

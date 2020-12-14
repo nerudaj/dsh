@@ -2,8 +2,7 @@ name: C/C++ CI
 
 on:
   push:
-    branches: 
-      - devel
+    branches:
       - master
 
 jobs:
@@ -17,7 +16,7 @@ jobs:
       - name: make
         run: make
       - name: test
-        run: ctest
+        run: ctest -V
         
   build-windows-visual:
     runs-on: windows-latest
@@ -41,6 +40,6 @@ jobs:
     - name: make
       run: make
     - name: tests
-      run: ctest
+      run: ctest -V
     - name: package
       run: cpack

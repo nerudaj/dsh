@@ -133,7 +133,7 @@ class MetadataModule extends Module {
     }
 };
 
-class MeshModule_v2 extends Module {
+class MeshModule_v3 extends Module {
     constructor() {
         super();
     }
@@ -142,15 +142,22 @@ class MeshModule_v2 extends Module {
         console.log("MeshModule_v2::serialize");
         bout.WriteQuadByte(lvd.mesh.tileWidth);
         bout.WriteQuadByte(lvd.mesh.tileHeight);
-        bout.WriteQuadByte(lvd.mesh.width);
+        bout.WriteQuadByte(lvd.mesh.layerWidth);
+        bout.WriteQuadByte(lvd.mesh.layerHeight);
 
-        let dataSize = lvd.mesh.width * lvd.mesh.height;
-        bout.WriteQuadByte(dataSize);
+        bout.WriteQuadByte(lvd.mesh.layers.length);
+		let layersize = lvd.mesh.layerWidth * lvd.mesh.layerHeight;
 
-        for (let i = 0; i < dataSize; i++) {
-            let dblbyte = lvd.mesh.tiles[i];
-            dblbyte = (lvd.mesh.blocks[i] ? 0x8000 : 0) | dblbyte ;
-            bout.WriteDoubleByte(dblbyte);
+        for (let j = 0; j < lvd.mesh.layers.length; j++) {
+			let dataout = [];
+			for (let i = 0; i < layersize; i++) {
+				let dblbyte = lvd.mesh.layers[j].tiles[i];
+				dblbyte = (lvd.mesh.layers[j].blocks[i] ? 0x8000 : 0) | dblbyte ;
+				dataout.push(dblbyte);
+			}
+
+			console.log(dataout);
+			bout.WriteDoubleByteVector(dataout);
         }
     }
 
@@ -158,94 +165,145 @@ class MeshModule_v2 extends Module {
         console.log("MeshModule_v2::deserialize");
         lvd.mesh.tileWidth = bin.GetQuadByte();
         lvd.mesh.tileHeight = bin.GetQuadByte();
-        lvd.mesh.width = bin.GetQuadByte();
+        lvd.mesh.layerWidth = bin.GetQuadByte();
+        lvd.mesh.layerHeight = bin.GetQuadByte();
 
-        let data = bin.GetDoubleByteVector();
+		let layerCount = bin.GetQuadByte();
 
-        lvd.mesh.height = data.length / lvd.mesh.width;
-        lvd.mesh.tiles = [];
-        lvd.mesh.blocks = [];
+		for (let i = 0; i < layerCount; i++) {
+			lvd.mesh.layers.push(new LeveldTileLayer());
+			let data = bin.GetDoubleByteVector();
+			console.log(data);
 
-        for (let i = 0; i < data.length; i++) {
-            lvd.mesh.tiles.push(data[i] & 0x7fff);
-            lvd.mesh.blocks.push(data[i] & 0x8000 > 0);
-        }
+			for (let j = 0; j < data.length; j++) {
+				lvd.mesh.layers[i].tiles.push(data[j] & 0x7fff);
+				lvd.mesh.layers[i].blocks.push(data[j] & 0x8000 > 0);
+			}
+		}
     }
 };
 
-class ActorsModule extends Module {
+class ThingsModule extends Module {
     constructor() {
         super();
-        this.actorType = "none";
     }
 
     Serialize(lvd, bout) {
-        bout.WriteQuadByte(lvd[this.actorType].length);
+        console.log("ThingsModule::serialize");
 
-        for (let i = 0; i < lvd[this.actorType].length; i++) {
-            bout.WriteQuadByte(lvd[this.actorType][i].id);
-            bout.WriteQuadByte(lvd[this.actorType][i].x);
-            bout.WriteQuadByte(lvd[this.actorType][i].y);
-            bout.WriteDoubleByte(lvd[this.actorType][i].flags);
-        }
-    }
+		bout.WriteQuadByte(lvd.things.length);
 
-    Deserialize(bin, lvd) {
-        let count = bin.GetQuadByte();
+		for (let i = 0; i < lvd.things.length; i++) {
+			bout.WriteQuadByte(lvd.things[i].id);
+			bout.WriteQuadByte(lvd.things[i].tag);
+			bout.WriteQuadByte(lvd.things[i].x);
+			bout.WriteQuadByte(lvd.things[i].y);
+			bout.WriteDoubleByte(lvd.things[i].flags);
+			bout.WriteString(lvd.things[i].metadata);
+		}
+	}
 
-        for (let i = 0; i < count; i++) {
-            lvd[this.actorType].push(new LeveldActor());
-            lvd[this.actorType][i].id = bin.GetQuadByte();
-            lvd[this.actorType][i].x = bin.GetQuadByte();
-            lvd[this.actorType][i].y = bin.GetQuadByte();
-            lvd[this.actorType][i].flags = bin.GetDoubleByte();
-        }
-    }
+	Deserialize(bin, lvd) {
+        console.log("ThingsModule::deserialize");
+
+		let size = bin.GetQuadByte();
+		for (let i = 0; i < size; i++) {
+			lvd.things.push(new LeveldThing());
+			lvd.things[i].id = bin.GetQuadByte();
+			lvd.things[i].tag = bin.GetQuadByte();
+			lvd.things[i].x = bin.GetQuadByte();
+			lvd.things[i].y = bin.GetQuadByte();
+			lvd.things[i].flags = bin.GetDoubleByte();
+			lvd.things[i].metadata = bin.GetString();
+		}
+	}
 };
 
-class PlayersModule extends ActorsModule {
-    constructor() {
-        super();
-        this.actorType = "players";
-    }
+class TriggersModule extends Module {
+	constructor() {
+		super();
+	}
+
+	Serialize(lvd, bout) {
+        console.log("ThingsModule::serialize");
+
+		bout.WriteQuadByte(lvd.triggers.length);
+		for (let i = 0; i < lvd.triggers.length; i++) {
+			bout.WriteQuadByte(lvd.triggers[i].x);
+			bout.WriteQuadByte(lvd.triggers[i].y);
+
+			if (lvd.triggers[i].areaType == "rectangle") {
+				bout.WriteByte(0);
+				bout.WriteDoubleByte(lvd.triggers[i].width);
+				bout.WriteDoubleByte(lvd.triggers[i].height);
+			} else if (lvd.triggers[i].areaType == "circle") {
+				bout.WriteByte(1);
+				bout.WriteDoubleByte(lvd.triggers[i].radius);
+			}
+
+			bout.WriteQuadByte(lvd.triggers[i].id);
+			bout.WriteQuadByte(lvd.triggers[i].tag);
+			bout.WriteDoubleByte(lvd.triggers[i].type);
+			bout.WriteQuadByte(lvd.triggers[i].a1);
+			bout.WriteQuadByte(lvd.triggers[i].a2);
+			bout.WriteQuadByte(lvd.triggers[i].a3);
+			bout.WriteQuadByte(lvd.triggers[i].a4);
+			bout.WriteQuadByte(lvd.triggers[i].a5);
+		}
+	}
+
+	Deserialize(bin, lvd) {
+        console.log("TriggersModule::deserialize");
+
+		let size = bin.GetQuadByte();
+		for (let i = 0; i < size; i++) {
+			lvd.triggers.push(new LeveldTrigger());
+			lvd.triggers[i].x = bin.GetQuadByte();
+			lvd.triggers[i].y = bin.GetQuadByte();
+
+			let areaType = bin.GetByte();
+			if (areaType == 0) {
+				lvd.triggers[i].areaType = "rectangle";
+				lvd.triggers[i].radius = 0;
+				lvd.triggers[i].width = bin.GetDoubleByte();
+				lvd.triggers[i].height = bin.GetDoubleByte();
+			} else if (areaType == 1) {
+				lvd.triggers[i].areaType = "circle";
+				lvd.triggers[i].radius = bin.GetDoubleByte();
+				lvd.triggers[i].width = 0;
+				lvd.triggers[i].height = 0;
+			}
+
+			lvd.triggers[i].id = bin.GetQuadByte();
+			lvd.triggers[i].tag = bin.GetQuadByte();
+			lvd.triggers[i].type = bin.GetDoubleByte();
+			lvd.triggers[i].a1 = bin.GetQuadByte();
+			lvd.triggers[i].a2 = bin.GetQuadByte();
+			lvd.triggers[i].a3 = bin.GetQuadByte();
+			lvd.triggers[i].a4 = bin.GetQuadByte();
+			lvd.triggers[i].a5 = bin.GetQuadByte();
+		}
+	}
 };
 
-class NpcsModule extends ActorsModule {
-    constructor() {
-        super();
-        this.actorType = "npcs";
-    }
-};
-
-class ItemsModule extends ActorsModule {
-    constructor() {
-        super();
-        this.actorType = "items";
-    }
-};
-
-const VERSION = 2;
+const VERSION = 3;
 const MODULE_CODE_META = 0x4154454D;
 const MODULE_CODE_MESH = 0x4853454D;
-const MODULE_CODE_PLRS = 0x53524C50;
-const MODULE_CODE_NPCS = 0x5343504E;
-const MODULE_CODE_ITEM = 0x4D455449;
+const MODULE_CODE_THNG = 0x54484E47;
+const MODULE_CODE_TRIG = 0x54524947;
 
 function GetModule(code, version) {
     if (code == MODULE_CODE_META) {
         return new MetadataModule();
     }
     else if (code == MODULE_CODE_MESH && version == VERSION) {
-        return new MeshModule_v2();
+        return new MeshModule_v3();
     }
-    else if (code == MODULE_CODE_PLRS) {
-        return new PlayersModule();
+    else if (code == MODULE_CODE_THNG) {
+		return new ThingsModule();
     }
-    else if (code == MODULE_CODE_ITEM) {
-        return new ItemsModule();
-    }
-    else if (code == MODULE_CODE_NPCS) {
-        return new NpcsModule();
+    else if (code == MODULE_CODE_TRIG) {
+        return new TriggersModule();
     }
 
     throw new Error("Module code '" + code + "' is not recognized!");
@@ -261,33 +319,59 @@ class LeveldMetadata {
     }
 };
 
+class LeveldTileLayer {
+	constructor() {
+		this.tiles = [];
+		this.blocks = [];
+	}
+};
+
 class LeveldMesh {
     constructor() {
         this.tileWidth = 0;
         this.tileHeight = 0;
-        this.width = 0;
-        this.height = 0;
-        this.tiles = [];
-        this.blocks = [];
+        this.layerWidth = 0;
+        this.lyerHeight = 0;
+        this.layers = [];
     }
 };
 
-class LeveldActor {
-    constructor(id = 0, x = 0, y = 0, flags = 0) {
-        this.id = id;
-        this.x = x;
-        this.y = y;
-        this.flags = flags;
-    }
+class LeveldThing {
+	constructor() {
+		this.id = 0;
+		this.tag = 0;
+		this.x = 0;
+		this.y = 0;
+		this.flags = 0;
+		this.metadata = "";
+	}
+};
+
+class LeveldTrigger {
+	constructor() {
+		this.x = 0;
+		this.y = 0;
+		this.areaType = "rectangle"; // other choice "circle"
+		this.radius = 0;
+		this.width = 0;
+		this.height = 0;
+		this.id = 0;
+		this.tag = 0;
+		this.type = 0;
+		this.a1 = 0;
+		this.a2 = 0;
+		this.a3 = 0;
+		this.a4 = 0;
+		this.a5 = 0;
+	}
 };
 
 class LevelD {
     constructor() {
         this.metadata = new LeveldMetadata();
         this.mesh = new LeveldMesh();
-        this.players = [];
-        this.npcs = [];
-        this.items = [];
+		this.things = [];
+		this.triggers = [];
     }
 
     LoadFromUint8Array(arr) {
@@ -315,29 +399,23 @@ class LevelD {
         bout.WriteQuadByte(MODULE_CODE_META);
         metamod.Serialize(this, bout);
 
-        if (this.mesh.width * this.mesh.height > 0) {
+        if (this.mesh.layers.length > 0) {
             let meshmod = GetModule(MODULE_CODE_MESH, VERSION);
             bout.WriteQuadByte(MODULE_CODE_MESH);
             meshmod.Serialize(this, bout);
         }
 
-        if (this.players.length > 0) {
-            let module = GetModule(MODULE_CODE_PLRS, VERSION);
-            bout.WriteQuadByte(MODULE_CODE_PLRS);
-            module.Serialize(this, bout);
+		if (this.things.length > 0) {
+            let thngmod = GetModule(MODULE_CODE_THNG, VERSION);
+            bout.WriteQuadByte(MODULE_CODE_THNG);
+            thngmod.Serialize(this, bout);
         }
 
-        if (this.items.length > 0) {
-            let module = GetModule(MODULE_CODE_ITEM, VERSION);
-            bout.WriteQuadByte(MODULE_CODE_ITEM);
-            module.Serialize(this, bout);
-        }
-
-        if (this.npcs.length > 0) {
-            let module = GetModule(MODULE_CODE_NPCS, VERSION);
-            bout.WriteQuadByte(MODULE_CODE_NPCS);
-            module.Serialize(this, bout);
-        }
+		if (this.triggers.length > 0) {
+			let trigmod = GetModule(MODULE_CODE_TRIG, VERSION);
+            bout.WriteQuadByte(MODULE_CODE_TRIG);
+            trigmod.Serialize(this, bout);
+		}
 
         return bout.data.slice(0, bout.usedSize);
     }

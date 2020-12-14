@@ -7,9 +7,8 @@ This file contains comprehensive documentation of LevelD file format and how is 
  * [Introduction](#introduction)
  * [META block](#meta-block)
  * [MESH block](#mesh-block)
- * [PLRS block](#plrs-block)
- * [NPCS block](#npcs-block)
- * [ITEM block](#item-block)
+ * [THNG block](#thng-block)
+ * [TRIG block](#trig-block)
 
 ## Introduction
 
@@ -88,31 +87,51 @@ Mesh block represents the level mesh - how it looks and where the collisions are
 
 Each cell in `data` vector represents single tile. Tile with coordinates [x, y] lies in the cell with index `x * width + y`. Every cell represents two information - if the block is impassable (single top bit of the value, `true` if impassable) and id of the tile (bottom 15 bits). LevelD object has these two stored in separate vectors: `blocks` (collision data) and `tiles` (ids). Height of the map is compute as size of `data` divided by `width`.
 
-## PLRS block
+## THNG block
 
-Players block is for storing spawn positions of players in level:
+This block replaced Players/Npcs/Items block from previous versions and added more properties.
+
+This block is supposed to store spawns for all physical entities in the level. See Triggers block if you need to represent general purpose areas supposed to invoke functions in certain events.
 
 | Width (bytes) | Usage | Note |
 | :-----------: | :---- | :--- |
-| 4             | Block ID    | ID of this block. Value is fixed to 'PLRS' |
-| 4             | count | Total number of players |
+| 4             | Block ID    | ID of this block. Value is fixed to 'THNG' |
+| 4             | count | Total number of things |
 
 Following sub-block follows `count` number of times.
 
 | Width (bytes) | Usage | Note |
-| 4             | id | Id of the player |
-| 4             | x  | X coordinate of player spawn |
-| 4             | y  | Y coordinate of player spawn |
-| 2             | flags  | Flags given to player spawn |
+| 4             | id | Id of the thing (identifies general type, like "player spawn") |
+| 4             | tag | Tag used to identify groups of things, regardless of id |
+| 4             | x  | X coordinate of thing spawn |
+| 4             | y  | Y coordinate of thing spawn |
+| 2             | flags  | Flags given to thing |
+| string		| metadata | General purpose |
 
-## NPCS block
+## TRIG block
 
-NPCs block is for storing spawn positions of non-players in level.
+Used to store general purpose areas (rectangular/circular) that are supposed to invoke callback when triggered.
 
-Parsing is identical to parsing of PLRS block, just the Block ID is set to 'NPCS'.
+| Width (bytes) | Usage | Note |
+| :-----------: | :---- | :--- |
+| 4             | Block ID    | ID of this block. Value is fixed to 'THNG' |
+| 4             | count | Total number of triggers |
 
-## ITEM block
+Following sub-block follows `count` number of times.
 
-Item block is for storing spawn positions of items in level.
-
-Parsing is identical to parsing of PLRS and NPCS block, just the Block ID is set to 'ITEM'.
+| Width (bytes) | Usage | Note |
+| 4             | x  | X coordinate of thing spawn |
+| 4             | y  | Y coordinate of thing spawn |
+| 2             | type  | 0 - Rectangle, 1 - Circle |
+| 2				| width | Only present if type is 0 |
+| 2				| height | Only present if type is 0 |
+| 2				| radius | Only present if type is 1 |
+| 4             | id | Id of the thing (identifies callback function) |
+| 4             | tag | Tag used to identify groups of triggers, regardless of id |
+| 2				| type | Used to enumerate how the trigger is triggered |
+| 4             | a1 | First argument for callback |
+| 4             | a2 | Second argument for callback |
+| 4             | a3 | Third argument for callback |
+| 4             | a4 | Fourth argument for callback |
+| 4             | a5 | Fifth argument for callback |
+| string		| metadata | General purpose |

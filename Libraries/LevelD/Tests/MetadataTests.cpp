@@ -1,5 +1,6 @@
 #include <catch.hpp>
 #include "../LevelD.hpp"
+#include "Assertions.hpp"
 
 TEST_CASE("Metadata save/load", "[LevelD]") {
 	LevelD out;
@@ -16,9 +17,5 @@ TEST_CASE("Metadata save/load", "[LevelD]") {
 		in.loadFromFile("temp.lvd");
 	}
 
-	REQUIRE(in.metadata.timestamp == out.metadata.timestamp);
-	REQUIRE(in.metadata.id == out.metadata.id);
-	REQUIRE(in.metadata.name == out.metadata.name);
-	REQUIRE(in.metadata.author == out.metadata.author);
-	REQUIRE(in.metadata.description == out.metadata.description);
+	assertMetadata(in, out);
 }

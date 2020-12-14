@@ -1,10 +1,13 @@
 set ( TESTRUNNER "testrunner_leveld" )
 
-add_executable( ${TESTRUNNER} 
+add_executable( ${TESTRUNNER}
 	Main.cpp
+	Assertions.cpp
+	Helpers.cpp
 	MetadataTests.cpp
 	MeshTests.cpp
 	ThingsTests.cpp
+	TriggersTests.cpp
 	AllTests.cpp
 	BytestreamTests.cpp
 )

@@ -1,7 +1,11 @@
-v1.X.X changelog:
+v1.6.1 changelog:
  * Added methods for base64 encode/decode to libstrings
  * Added EcmaScript6 binding for LevelD library
  * Drop the ! parameter for cfg::Args setup
+ * Updated LevelD to version 3
+	* Mesh changed to layers
+	* Players/Items/Npcs merged to Things
+	* Added Triggers
 
 ---
 

@@ -3,7 +3,7 @@
 void ModuleTriggers::serialize(BytestreamOut &bout, const LevelD &lvld) const {
 	using AreaType = LevelD::Trigger::AreaType;
 
-	bout << lvld.triggers.size();
+	bout << uint32_t(lvld.triggers.size());
 
 	for (auto &trigger : lvld.triggers) {
 		bout << trigger.x << trigger.y;

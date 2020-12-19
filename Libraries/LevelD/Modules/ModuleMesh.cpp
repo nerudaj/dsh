@@ -68,7 +68,7 @@ void ModuleMesh_v2::deserialize(BytestreamIn &bin, LevelD &lvld) const {
 void ModuleMesh_v3::serialize(BytestreamOut &bout, const LevelD &lvld) const {
 	bout << lvld.mesh.tileWidth << lvld.mesh.tileHeight;
 	bout << lvld.mesh.layerWidth << lvld.mesh.layerHeight;
-	bout << lvld.mesh.layers.size();
+	bout << uint32_t(lvld.mesh.layers.size());
 
 	for (auto &layer : lvld.mesh.layers) {
 		std::vector<uint16_t> dataout(lvld.mesh.layerWidth * lvld.mesh.layerHeight);

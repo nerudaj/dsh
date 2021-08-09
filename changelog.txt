@@ -1,3 +1,9 @@
+v1.x.x changelog:
+ * Critical fix: LevelD did not correctly allocate memory when serializing data resulting in corrupted files
+ * Fixed broken tables in LevelD docs
+
+---
+
 v1.6.1 changelog:
  * Added methods for base64 encode/decode to libstrings
  * Added EcmaScript6 binding for LevelD library

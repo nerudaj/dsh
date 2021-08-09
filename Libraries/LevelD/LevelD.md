@@ -101,6 +101,7 @@ This block is supposed to store spawns for all physical entities in the level. S
 Following sub-block follows `count` number of times.
 
 | Width (bytes) | Usage | Note |
+| :-----------: | :---- | :--- |
 | 4             | id | Id of the thing (identifies general type, like "player spawn") |
 | 4             | tag | Tag used to identify groups of things, regardless of id |
 | 4             | x  | X coordinate of thing spawn |
@@ -120,6 +121,7 @@ Used to store general purpose areas (rectangular/circular) that are supposed to 
 Following sub-block follows `count` number of times.
 
 | Width (bytes) | Usage | Note |
+| :-----------: | :---- | :--- |
 | 4             | x  | X coordinate of thing spawn |
 | 4             | y  | Y coordinate of thing spawn |
 | 2             | type  | 0 - Rectangle, 1 - Circle |

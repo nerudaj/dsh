@@ -7,7 +7,10 @@ const std::size_t ALLOC_CHUNK_SIZE = 1024;
 
 void BytestreamOut::checkBufferSize(std::size_t bytecount) {
     if (pos + bytecount > data.size()) {
-        data.resize(data.size() + ALLOC_CHUNK_SIZE);
+        if (bytecount < ALLOC_CHUNK_SIZE)
+            data.resize(data.size() + ALLOC_CHUNK_SIZE);
+        else
+            data.resize(data.size() + bytecount);
     }
 }
 

@@ -1,4 +1,4 @@
-v1.x.x changelog:
+v1.6.2 changelog:
  * Critical fix: LevelD did not correctly allocate memory when serializing data resulting in corrupted files
  * Fixed broken tables in LevelD docs
 

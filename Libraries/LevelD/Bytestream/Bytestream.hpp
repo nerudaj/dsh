@@ -43,7 +43,7 @@ private:
     std::vector<uint8_t> data;
     std::size_t pos;
 
-    void checkBufferSize(std::size_t bytecount);
+    void updateBufferSize(std::size_t bytecount);
 
 public:
     BytestreamOut &operator<<(uint8_t num);

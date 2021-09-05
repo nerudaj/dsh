@@ -5,17 +5,15 @@
 
 const std::size_t ALLOC_CHUNK_SIZE = 1024;
 
-void BytestreamOut::checkBufferSize(std::size_t bytecount) {
+void BytestreamOut::updateBufferSize(std::size_t bytecount) {
     if (pos + bytecount > data.size()) {
-        if (bytecount < ALLOC_CHUNK_SIZE)
-            data.resize(data.size() + ALLOC_CHUNK_SIZE);
-        else
-            data.resize(data.size() + bytecount);
+        const auto ALLOC_SIZE = std::max(bytecount, ALLOC_CHUNK_SIZE);
+        data.resize(data.size() + ALLOC_SIZE);
     }
 }
 
 BytestreamOut &BytestreamOut::operator<<(uint8_t num) {
-    checkBufferSize(sizeof(num));
+    updateBufferSize(sizeof(num));
 
     data[pos] = num;
     pos += sizeof(num);
@@ -24,7 +22,7 @@ BytestreamOut &BytestreamOut::operator<<(uint8_t num) {
 }
 
 BytestreamOut &BytestreamOut::operator<<(uint16_t num) {
-    checkBufferSize(sizeof(num));
+    updateBufferSize(sizeof(num));
 
     *((uint16_t*)(data.data() + pos)) = sanitize(num);
     pos += sizeof(num);
@@ -33,7 +31,7 @@ BytestreamOut &BytestreamOut::operator<<(uint16_t num) {
 }
 
 BytestreamOut &BytestreamOut::operator<<(uint32_t num) {
-    checkBufferSize(sizeof(num));
+    updateBufferSize(sizeof(num));
 
     *((uint32_t*)(data.data() + pos)) = sanitize(num);
     pos += sizeof(num);
@@ -42,7 +40,7 @@ BytestreamOut &BytestreamOut::operator<<(uint32_t num) {
 }
 
 BytestreamOut &BytestreamOut::operator<<(uint64_t num) {
-    checkBufferSize(sizeof(num));
+    updateBufferSize(sizeof(num));
 
     *((uint64_t*)(data.data() + pos)) = sanitize(num);
     pos += sizeof(num);
@@ -57,7 +55,7 @@ BytestreamOut &BytestreamOut::operator<<(const std::string &str) {
 
     *this << uint8_t(str.size());
 
-    checkBufferSize(str.size());
+    updateBufferSize(str.size());
 
     for (unsigned i = 0;  i < str.size(); i++) {
         data[pos++] = str[i];
@@ -69,7 +67,7 @@ BytestreamOut &BytestreamOut::operator<<(const std::string &str) {
 BytestreamOut &BytestreamOut::operator<<(const std::vector<uint16_t> &vec) {
     *this << uint32_t(vec.size());
 
-    checkBufferSize(vec.size() * sizeof(uint16_t));
+    updateBufferSize(vec.size() * sizeof(uint16_t));
 
     uint16_t *vecdata = (uint16_t*)(data.data() + pos);
 

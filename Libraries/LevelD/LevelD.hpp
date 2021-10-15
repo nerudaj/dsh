@@ -14,11 +14,11 @@ public:
      *  \brief Section representing metadata
      */
     struct Metadata {
-        std::string id;          // Id of the level
-        std::string name;        // Name of the level
-        std::string author;      // Name of the author (up to 255 symbols)
-        std::string description; // Description of level (up to 255 symbols)
-        uint64_t    timestamp;   // Timestamp of level creation
+        std::string id;          ///< Id of the level
+        std::string name;        ///< Name of the level
+        std::string author;      ///< Name of the author (up to 255 symbols)
+        std::string description; ///< Description of level (up to 255 symbols)
+        uint64_t    timestamp;   ///< Timestamp of level creation
 
         Metadata() : timestamp(0) {}
         Metadata(std::string id, std::string name, std::string author, std::string description, uint64_t timestamp)
@@ -31,8 +31,8 @@ public:
 	 *  Dimensions are defined in mesh
 	 */
 	struct TileLayer {
-		std::vector<uint16_t>  tiles;  // Index number of tiles on map
-		std::vector<bool>      blocks; // Whether tile on index i is blocking
+		std::vector<uint16_t>  tiles;  ///< Index number of tiles on map
+		std::vector<bool>      blocks; ///< Whether tile on index i is blocking
 
         bool empty() const { return tiles.empty() && blocks.empty(); }
 
@@ -45,10 +45,10 @@ public:
      *  \brief Section representing level mesh, consisting from several layers of tilesets
      */
     struct Mesh {
-        uint16_t tileWidth; // Width of tile
-        uint16_t tileHeight; // Height of tile
-		uint32_t layerWidth; // Numbe of tiles on a row
-		uint32_t layerHeight; // Number of tiles in a column
+        uint16_t tileWidth; ///< Width of tile
+        uint16_t tileHeight; ///< Height of tile
+		uint32_t layerWidth; ///< Numbe of tiles on a row
+		uint32_t layerHeight; ///< Number of tiles in a column
 		std::vector<TileLayer> layers;
 
 		bool empty() const {
@@ -64,11 +64,11 @@ public:
      *  \brief Things - items, spawns, ...
      */
     struct Thing {
-        uint32_t id;    // Identifier of actor
-		uint32_t tag;   // Numerical tag reference
-        uint32_t x, y;  // Coordinates on map
-        uint16_t flags; // Behavioral flags for actor
-		std::string metadata; // Text metadata
+        uint32_t id;    ///< Identifier of actor
+		uint32_t tag;   ///< Numerical tag reference
+        uint32_t x, y;  ///< Coordinates on map
+        uint16_t flags; ///< Behavioral flags for actor
+		std::string metadata; ///< Text metadata
     };
     typedef std::vector<Thing> Things;
 
@@ -81,14 +81,14 @@ public:
 			Rectangle = 0, Circle
 		};
 
-		uint32_t x, y; // Coordinates of origin
+		uint32_t x, y; ///< Coordinates of origin
 		AreaType areaType;
-		uint16_t radius; // Only used for Circle
-		uint16_t width, height; // Only used for rectangle
+		uint16_t radius; ///< Only used for Circle
+		uint16_t width, height; ///< Only used for rectangle
 
-        uint32_t id; // Can be used to identify action to execute
-		uint32_t tag; // Can be used to identify this particular object
-		uint16_t type; // Can be used to enumerate kind of trigger (interact, walk-into, ...)
+        uint32_t id; ///< Can be used to identify action to execute
+		uint32_t tag; ///< Can be used to identify this particular object
+		uint16_t type; ///< Can be used to enumerate kind of trigger (interact, walk-into, ...)
         uint32_t a1, a2, a3, a4, a5; // Can be used as arguments for executed action
 		std::string metadata; // Text metadata;
 
@@ -98,12 +98,25 @@ public:
 			metadata("") {}
     };
     typedef std::vector<Trigger> Triggers;
+	
+	struct Path {
+		struct Point {
+			uint32_t x; ///< World x coord of a point
+			uint32_t y; ///< World y coord of a point
+			uint32_t value; ///< Auxiliary point value (for example timeout for how long to stand on that point)
+		};
+		
+		bool looping; ///< If the path is endless, because it loops in a circle
+		uint32_t tag; ///< Numerical tag reference, can be used to tie path with thing
+		std::vector<Point> points; ///< Vector of points
+	};
+    typedef std::vector<Path> Priggers;
 
-    Metadata metadata; // Level has metadata (always there)
-    Mesh mesh; // Level can have mesh (only if non-empty)
-    Things things; // Item placement
-    Triggers triggers; // Event trigger placement
-	// TODO: Paths
+    Metadata metadata; ///< Level has metadata (always there)
+    Mesh mesh; ///< Level can have mesh (only if non-empty)
+    Things things; ///< Item placement
+    Triggers triggers; ///< Event trigger placement
+	Paths paths; ///< Navigation paths
 
     /**
      *  \brief Clear contents of the object

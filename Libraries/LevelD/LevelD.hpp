@@ -110,7 +110,7 @@ public:
 		uint32_t tag; ///< Numerical tag reference, can be used to tie path with thing
 		std::vector<Point> points; ///< Vector of points
 	};
-    typedef std::vector<Path> Priggers;
+    typedef std::vector<Path> Paths;
 
     Metadata metadata; ///< Level has metadata (always there)
     Mesh mesh; ///< Level can have mesh (only if non-empty)

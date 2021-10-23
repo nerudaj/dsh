@@ -4,29 +4,40 @@
 #include <fstream>
 #include <stdexcept>
 #include <iostream>
+#include <memory>
 
 const uint16_t VERSION = 3;
 
 using std::vector;
 using std::string;
 
-Module *getModule(uint32_t identity, uint16_t version) {
-    if (identity == LVLD_METADATA_CODE)     return new ModuleMetadata;
-    else if (identity == LVLD_MESH_CODE)    {
-        switch(version) {
-        case 1: return new ModuleMesh_v1;
-        case 2: return new ModuleMesh_v2;
-		case 3: return new ModuleMesh_v3;
-        }
-    }
-    else if (identity == LVLD_PLAYERS_CODE) return new ModuleNpcsItemsPlayers; // Backward compatibility, replaced by things
-    else if (identity == LVLD_ITEMS_CODE)   return new ModuleNpcsItemsPlayers; // Backward compatibility, replaced by things
-    else if (identity == LVLD_NPCS_CODE)    return new ModuleNpcsItemsPlayers; // Backward compatibility, replaced by things
-	else if (identity == LVLD_THINGS_CODE)  return new ModuleThings;
-	else if (identity == LVLD_TRIGGERS_CODE)return new ModuleTriggers;
-
-    throw std::runtime_error("Unsupported identity code: " + std::to_string(identity) + "!");
-    return NULL;
+std::unique_ptr<Module> getModule(uint32_t identity, uint16_t version) {
+	switch (identity) {
+	case LVLD_METADATA_CODE:
+		return std::make_unique<ModuleMetadata>();
+	case LVLD_MESH_CODE: {
+		switch (version) {
+		case 1: return std::make_unique<ModuleMesh_v1>();
+		case 2: return std::make_unique<ModuleMesh_v2>();
+		case 3: return std::make_unique<ModuleMesh_v3>();
+		}
+	}
+	case LVLD_PLAYERS_CODE:
+	case LVLD_ITEMS_CODE:
+	case LVLD_NPCS_CODE:
+		return std::make_unique<ModuleNpcsItemsPlayers>();
+	case LVLD_THINGS_CODE:
+		return std::make_unique<ModuleThings>();
+	case LVLD_TRIGGERS_CODE:
+		return std::make_unique<ModuleTriggers>();
+	case LVLD_PATHS_CODE:
+		return std::make_unique<ModulePaths>();
+	default:
+		break;
+	}
+	
+	throw std::runtime_error("Unsupported identity code: " + std::to_string(identity) + "!");
+	return nullptr;
 }
 
 void LevelD::loadFromFile(const string &filename) {
@@ -42,9 +53,8 @@ void LevelD::loadFromFile(const string &filename) {
         uint32_t identity;
         bin >> identity;
 
-        auto *module = getModule(identity, version);
+        auto module = getModule(identity, version);
         module->deserialize(bin, *this);
-        delete module;
     }
 }
 
@@ -58,7 +68,7 @@ void LevelD::saveToFile(const string &filename) const {
 
     if (!mesh.empty()) {
         bout << LVLD_MESH_CODE;
-        Module* meshmod = getModule(LVLD_MESH_CODE, VERSION);
+        auto meshmod = getModule(LVLD_MESH_CODE, VERSION);
         meshmod->serialize(bout, *this);
     }
 
@@ -72,6 +82,12 @@ void LevelD::saveToFile(const string &filename) const {
         bout << LVLD_TRIGGERS_CODE;
         ModuleTriggers trigmod;
         trigmod.serialize(bout, *this);
+    }
+	
+	if (!paths.empty()) {
+        bout << LVLD_PATHS_CODE;
+        ModulePaths pathmod;
+        pathmod.serialize(bout, *this);
     }
 
     bout.close();

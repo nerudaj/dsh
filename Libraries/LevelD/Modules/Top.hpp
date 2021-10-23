@@ -10,6 +10,7 @@ const uint32_t LVLD_PLAYERS_CODE  = 0x504C5253; // 'PLRS'
 const uint32_t LVLD_ITEMS_CODE    = 0x4954454D; // 'ITEM'
 const uint32_t LVLD_NPCS_CODE     = 0x4E504353; // 'NPCS'
 const uint32_t LVLD_TRIGGERS_CODE = 0x54524947; // 'TRIG'
+const uint32_t LVLD_PATHS_CODE    = 0x50415448; // 'PATH'
 
 class Module {
 public:
@@ -54,6 +55,12 @@ public:
 };
 
 class ModuleTriggers : public Module {
+public:
+    virtual void serialize(BytestreamOut &bout, const LevelD &lvld) const final override;
+    virtual void deserialize(BytestreamIn &bin, LevelD &lvld) const final override;
+};
+
+class ModulePaths : public Module {
 public:
     virtual void serialize(BytestreamOut &bout, const LevelD &lvld) const final override;
     virtual void deserialize(BytestreamIn &bin, LevelD &lvld) const final override;

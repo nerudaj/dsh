@@ -7,6 +7,7 @@ add_executable( ${TESTRUNNER}
 	MetadataTests.cpp
 	MeshTests.cpp
 	ThingsTests.cpp
+	PathsTests.cpp
 	TriggersTests.cpp
 	AllTests.cpp
 	BytestreamTests.cpp

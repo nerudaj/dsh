@@ -9,3 +9,5 @@ void assertMesh(const LevelD &in, const LevelD &out);
 void assertThings(const LevelD &in, const LevelD &out);
 
 void assertTriggers(const LevelD &in, const LevelD &out);
+
+void assertPaths(const LevelD &in, const LevelD &out);

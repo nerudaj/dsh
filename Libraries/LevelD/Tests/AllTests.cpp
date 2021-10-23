@@ -27,6 +27,14 @@ TEST_CASE("Everything save/load", "[LevelD]") {
 			circleTrigger(100, 100, 32, 0, 0, 0, 1, 2, 3, 4, 0, ""),
 			rectTrigger(500, 200, 30, 50, 1, 10, 1280, 20, 0, 0, 0, 0, "text")
 		};
+		out.paths = {
+			{ false, 1, {
+				{ 0, 0, 1 },
+				{ 0, 1, 0 },
+				{ 1, 1, 0 },
+				{ 1, 0, 1 }
+			}}
+		};
 	}
 
 	SECTION("Bug: Too big mesh array", "[LevelD]") {

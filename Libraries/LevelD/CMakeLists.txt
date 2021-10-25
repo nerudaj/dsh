@@ -12,6 +12,7 @@ add_library(${PROJECT_NAME}
 					Modules/ModuleMetadata.cpp
 					Modules/ModuleMesh.cpp
 					Modules/ModuleNpcsItemsPlayers.cpp
+					Modules/ModulePaths.cpp
 					Modules/ModuleThings.cpp
 					Modules/ModuleTriggers.cpp
 )

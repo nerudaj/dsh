@@ -68,3 +68,22 @@ void assertTriggers(const LevelD &in, const LevelD &out) {
 		REQUIRE(inTrig.metadata == outTrig.metadata);
 	}
 }
+
+void assertPaths(const LevelD &in, const LevelD &out) {
+	REQUIRE(in.paths.size() == out.paths.size());
+	
+	for (std::size_t i = 0; i < out.paths.size(); i++) {
+		const LevelD::Path &inPath = in.paths[i];
+		const LevelD::Path &outPath = out.paths[i];
+		
+		REQUIRE(inPath.looping == outPath.looping);
+		REQUIRE(inPath.tag == outPath.tag);
+		REQUIRE(inPath.points.size() == outPath.points.size());
+		
+		for (std::size_t i = 0; i < outPath.points.size(); i++) {
+			REQUIRE(inPath.points[i].x == outPath.points[i].x);
+			REQUIRE(inPath.points[i].y == outPath.points[i].y);
+			REQUIRE(inPath.points[i].value == outPath.points[i].value);
+		}
+	}
+}

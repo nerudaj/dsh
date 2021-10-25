@@ -1,3 +1,9 @@
+v1.7.0 changelog:
+ * Added Paths module to LevelD format
+ * Fix minor memory leak in LevelD deserialization
+
+---
+
 v1.6.2 changelog:
  * Critical fix: LevelD did not correctly allocate memory when serializing data resulting in corrupted files
  * Fixed broken tables in LevelD docs

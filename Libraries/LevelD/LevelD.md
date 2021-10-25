@@ -9,6 +9,7 @@ This file contains comprehensive documentation of LevelD file format and how is 
  * [MESH block](#mesh-block)
  * [THNG block](#thng-block)
  * [TRIG block](#trig-block)
+ * [PATH block](#path-block)
 
 ## Introduction
 
@@ -53,6 +54,15 @@ When this specification states something is stored as a string, that this is sto
 ### Vectors
 
 When this specification states something is stored as a vector of XB numbers, it means first there are 4B of data specifiying *length* of the vector and then X * *length* bytes of data containing the desired vector.
+
+## Semantics
+
+Semantics of individual fields are not set in stone, but their supposed usage is reflected by the comments and as such is implemented in LevelD Editor. The semantics also somehow match the way Doom Builder editor does things with Doom levels. Couple examples:
+
+* id - this supposed to identify particular type of thing (like enemy Imp) or action to execute in triggers (like Open Door)
+* tag - this is supposed to tie together entities (for example if action says Kill Enemy, it will have the same tag as thing that is supposed to die)
+* flags - modify default behaviour of a given entity
+* metadata - way to label entity or can be used to add additional flags or scripts
 
 ## File header
 
@@ -137,3 +147,28 @@ Following sub-block follows `count` number of times.
 | 4             | a4 | Fourth argument for callback |
 | 4             | a5 | Fifth argument for callback |
 | string		| metadata | General purpose |
+
+## PATH block
+
+Used to store navigation information for NPCs.
+
+| Width (bytes) | Usage | Note |
+| :-----------: | :---- | :--- |
+| 4             | Block ID | ID of this block. Value is fixed to 'PATH' |
+| 4             | count | Total number of paths |
+
+Following sub-block follows `count` number of times.
+
+| Width (bytes) | Usage | Note |
+| :-----------: | :---- | :--- |
+| 1             | looping | Boolean value indicating whether path loops |
+| 4             | tag | Tag used to identify groups of entities, regardless of their IDs |
+| 4             | count2 | Total number of points in path |
+
+Following subsub-flock follows `count2` number of times
+
+| Width (bytes) | Usage | Note |
+| :-----------: | :---- | :--- |
+| 4             | x     | World X coordinate of a point |
+| 4             | y     | World Y coordinate of a point |
+| 4             | value | Auxiliary value |

@@ -17,6 +17,14 @@ jobs:
         run: make
       - name: test
         run: ctest -V
+      - name: Pack
+        run: cpack
+      - name: Publish artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: dsh
+          path: *.zip
+          retention-days: 5
         
   build-windows-visual:
     runs-on: windows-latest
@@ -29,6 +37,14 @@ jobs:
       run: |
         & "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\Common7\IDE\devenv" dsh.sln /Build Release /Project catch2
         & "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\Common7\IDE\devenv" dsh.sln /Build Release
+    - name: Pack
+      run: cpack
+    - name: Publish artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: dsh
+          path: *.zip
+          retention-days: 5
   
   build-ubuntu:
     runs-on: ubuntu-latest
@@ -43,3 +59,11 @@ jobs:
       run: ctest -V
     - name: package
       run: cpack
+    - name: Pack
+      run: cpack
+    - name: Publish artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: dsh
+          path: *.zip
+          retention-days: 5

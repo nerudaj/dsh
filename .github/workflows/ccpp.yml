@@ -23,7 +23,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: dsh
-          path: *.zip
+          path: ${{github.workspace}}/dsh*.zip
           retention-days: 5
         
   build-windows-visual:
@@ -40,10 +40,10 @@ jobs:
     - name: Pack
       run: cpack
     - name: Publish artifact
-        uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v2
         with:
           name: dsh
-          path: *.zip
+          path: ${{github.workspace}}/dsh*.zip
           retention-days: 5
   
   build-ubuntu:
@@ -62,8 +62,8 @@ jobs:
     - name: Pack
       run: cpack
     - name: Publish artifact
-        uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v2
         with:
           name: dsh
-          path: *.zip
+          path: ${{github.workspace}}/dsh*.zip
           retention-days: 5

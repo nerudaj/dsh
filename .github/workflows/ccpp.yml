@@ -41,10 +41,10 @@ jobs:
       run: cpack
     - name: Publish artifact
       uses: actions/upload-artifact@v2
-        with:
-          name: dsh
-          path: ${{github.workspace}}/dsh*.zip
-          retention-days: 5
+      with:
+        name: dsh
+        path: ${{github.workspace}}/dsh*.zip
+        retention-days: 5
   
   build-ubuntu:
     runs-on: ubuntu-latest
@@ -63,7 +63,7 @@ jobs:
       run: cpack
     - name: Publish artifact
       uses: actions/upload-artifact@v2
-        with:
-          name: dsh
-          path: ${{github.workspace}}/dsh*.zip
-          retention-days: 5
+      with:
+        name: dsh
+        path: ${{github.workspace}}/dsh*.zip
+        retention-days: 5

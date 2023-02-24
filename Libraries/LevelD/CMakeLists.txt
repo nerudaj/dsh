@@ -4,18 +4,44 @@ project (leveld)
 
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}/../Config")
 
+set ( BYTESTREAM_HEADERS
+	"${CMAKE_CURRENT_SOURCE_DIR}/Bytestream/Bytestream.hpp"
+	"${CMAKE_CURRENT_SOURCE_DIR}/Bytestream/SwapEndian.hpp"
+)
+
+set ( BYTESTREAM_SOURCES
+	"${CMAKE_CURRENT_SOURCE_DIR}/Bytestream/BytestreamIn.cpp"
+	"${CMAKE_CURRENT_SOURCE_DIR}/Bytestream/BytestreamOut.cpp"
+)
+
+set ( MODULES_HEADERS
+	"${CMAKE_CURRENT_SOURCE_DIR}/Modules/Top.hpp"
+)
+
+set ( MODULES_SOURCES
+	"${CMAKE_CURRENT_SOURCE_DIR}/Modules/ModuleMesh.cpp"
+	"${CMAKE_CURRENT_SOURCE_DIR}/Modules/ModuleMetadata.cpp"
+	"${CMAKE_CURRENT_SOURCE_DIR}/Modules/ModuleNpcsItemsPlayers.cpp"
+	"${CMAKE_CURRENT_SOURCE_DIR}/Modules/ModulePaths.cpp"
+	"${CMAKE_CURRENT_SOURCE_DIR}/Modules/ModuleThings.cpp"
+	"${CMAKE_CURRENT_SOURCE_DIR}/Modules/ModuleTriggers.cpp"
+)
+
+set ( LEVELD_HEADERS
+	"${CMAKE_CURRENT_SOURCE_DIR}/LevelD.hpp"
+)
+
+set ( LEVELD_SOURCES
+	"${CMAKE_CURRENT_SOURCE_DIR}/LevelD.cpp"
+)
+
 # Add library
 add_library(${PROJECT_NAME}
-					LevelD.cpp
-					Bytestream/BytestreamIn.cpp
-					Bytestream/BytestreamOut.cpp
-					Modules/ModuleMetadata.cpp
-					Modules/ModuleMesh.cpp
-					Modules/ModuleNpcsItemsPlayers.cpp
-					Modules/ModulePaths.cpp
-					Modules/ModuleThings.cpp
-					Modules/ModuleTriggers.cpp
+	${BYTESTREAM_HEADERS} ${BYTESTREAM_SOURCES}
+	${MODULES_HEADERS} ${MODULES_SOURCES}
+	${LEVELD_HEADERS} ${LEVELD_SOURCES}
 )
+
 target_include_directories (${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
 # Install
@@ -37,7 +63,7 @@ endif()
 
 install(
 	FILES
-		LevelD.hpp
+		${LEVELD_HEADERS}
 	DESTINATION
 		include
 )

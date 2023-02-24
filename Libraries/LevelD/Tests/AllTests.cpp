@@ -3,32 +3,35 @@
 #include "Assertions.hpp"
 #include "Helpers.hpp"
 
-TEST_CASE("Everything save/load", "[LevelD]") {
+TEST_CASE("Everything save/load", "[LevelD]")
+{
 	LevelD out;
 	LevelD in;
 
-	SECTION("Empty") {
+	SECTION("Empty")
+	{
 		//out.saveToFile("temp.lvd");
 		//in.loadFromFile("temp.lvd");
 	}
 
-	SECTION("Data") {
+	SECTION("Data")
+	{
 		out.metadata = { "map01", "Hangar", "doomista", "First level", 10 };
-		out.mesh = {16, 24, 2, 2, {}};
+		out.mesh = { 16, 24, 2, 2, {} };
 		out.mesh.layers.push_back({
 			{ 1, 2, 3, 4 }, { 1, 1, 0, 0 }
-		});
+			});
 		out.things = {
-			{0, 0, 10, 20, 4, ""},
-			{1, 1, 2, 15, 0, "silent"},
-			{2, 0, 244, 300, 10, ""}
+			{0, 0, 0, 10, 20, 4, ""},
+			{1, 1, 1, 2, 15, 0, "silent"},
+			{2, 0, 2, 244, 300, 10, ""}
 		};
 		out.triggers = {
-			circleTrigger(100, 100, 32, 0, 0, 0, 1, 2, 3, 4, 0, ""),
-			rectTrigger(500, 200, 30, 50, 1, 10, 1280, 20, 0, 0, 0, 0, "text")
+			circleTrigger(100, 100, 0, 32, 0, 0, 0, 1, 2, 3, 4, 0, ""),
+			rectTrigger(500, 200, 1, 30, 50, 1, 10, 1280, 20, 0, 0, 0, 0, "text")
 		};
 		out.paths = {
-			{ false, 1, {
+			{ false, 1, 10, {
 				{ 0, 0, 1 },
 				{ 0, 1, 0 },
 				{ 1, 1, 0 },
@@ -37,7 +40,8 @@ TEST_CASE("Everything save/load", "[LevelD]") {
 		};
 	}
 
-	SECTION("Bug: Too big mesh array", "[LevelD]") {
+	SECTION("Bug: Too big mesh array", "[LevelD]")
+	{
 		// Chunk size used for resizing internal output buffer was smaller than the size of the
 		// mesh array - not enough memory was allocated and data were written outside of allocated memory.
 		const unsigned W = 45;
@@ -46,7 +50,7 @@ TEST_CASE("Everything save/load", "[LevelD]") {
 		out.mesh.layers.push_back({
 			std::vector<uint16_t>(W * H, 1),
 			std::vector<bool>(W * H, 1),
-		});
+			});
 		out.things.resize(27);
 		out.triggers.resize(1);
 	}

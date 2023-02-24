@@ -1,5 +1,6 @@
 v1.7.x
  * Catch2 is now fetched during compilation time, slightly speeding up build times
+ * Improved exception message when trying to write too big string in LevelD
 
 ---
 

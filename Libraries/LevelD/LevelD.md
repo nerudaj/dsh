@@ -116,6 +116,7 @@ Following sub-block follows `count` number of times.
 | 4             | tag | Tag used to identify groups of things, regardless of id |
 | 4             | x  | X coordinate of thing spawn |
 | 4             | y  | Y coordinate of thing spawn |
+| 4             | layerId | Index of mesh layer thing is supposed to spawn in |
 | 2             | flags  | Flags given to thing |
 | string		| metadata | General purpose |
 
@@ -132,8 +133,9 @@ Following sub-block follows `count` number of times.
 
 | Width (bytes) | Usage | Note |
 | :-----------: | :---- | :--- |
-| 4             | x  | X coordinate of thing spawn |
-| 4             | y  | Y coordinate of thing spawn |
+| 4             | x  | X coordinate of trigger origin |
+| 4             | y  | Y coordinate of trigger origin |
+| 4             | layerId | Index of mesh layer trigger is supposed to appear in |
 | 2             | type  | 0 - Rectangle, 1 - Circle |
 | 2				| width | Only present if type is 0 |
 | 2				| height | Only present if type is 0 |
@@ -163,6 +165,7 @@ Following sub-block follows `count` number of times.
 | :-----------: | :---- | :--- |
 | 1             | looping | Boolean value indicating whether path loops |
 | 4             | tag | Tag used to identify groups of entities, regardless of their IDs |
+| 4             | layerId | Index of mesh layer path is supposed to appear in |
 | 4             | count2 | Total number of points in path |
 
 Following subsub-flock follows `count2` number of times

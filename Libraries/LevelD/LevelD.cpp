@@ -6,20 +6,24 @@
 #include <iostream>
 #include <memory>
 
-const uint16_t VERSION = 3;
+const uint16_t VERSION = 4;
 
 using std::vector;
 using std::string;
 
-std::unique_ptr<Module> getModule(uint32_t identity, uint16_t version) {
-	switch (identity) {
+std::unique_ptr<Module> getModule(uint32_t identity, uint16_t version)
+{
+	switch (identity)
+	{
 	case LVLD_METADATA_CODE:
 		return std::make_unique<ModuleMetadata>();
-	case LVLD_MESH_CODE: {
-		switch (version) {
+	case LVLD_MESH_CODE:
+	{
+		switch (version)
+		{
 		case 1: return std::make_unique<ModuleMesh_v1>();
 		case 2: return std::make_unique<ModuleMesh_v2>();
-		case 3: return std::make_unique<ModuleMesh_v3>();
+		default: return std::make_unique<ModuleMesh_v3>();
 		}
 	}
 	case LVLD_PLAYERS_CODE:
@@ -27,68 +31,94 @@ std::unique_ptr<Module> getModule(uint32_t identity, uint16_t version) {
 	case LVLD_NPCS_CODE:
 		return std::make_unique<ModuleNpcsItemsPlayers>();
 	case LVLD_THINGS_CODE:
-		return std::make_unique<ModuleThings>();
+	{
+		switch (version)
+		{
+		case 4: return std::make_unique<ModuleThings_v4>();
+		default: return std::make_unique<ModuleThings>();
+		}
+	}
 	case LVLD_TRIGGERS_CODE:
-		return std::make_unique<ModuleTriggers>();
+	{
+		switch (version)
+		{
+		case 4: return std::make_unique<ModuleTriggers_v4>();
+		default: return std::make_unique<ModuleTriggers>();
+		}
+	}
 	case LVLD_PATHS_CODE:
-		return std::make_unique<ModulePaths>();
+	{
+		switch (version)
+		{
+		case 4: return std::make_unique<ModulePaths_v4>();
+		default: return std::make_unique<ModulePaths>();
+		}
+	}
 	default:
 		break;
 	}
-	
+
 	throw std::runtime_error("Unsupported identity code: " + std::to_string(identity) + "!");
 	return nullptr;
 }
 
-void LevelD::loadFromFile(const string &filename) {
-    BytestreamIn bin(filename);
-    uint16_t version;
-    bin >> version;
+void LevelD::loadFromFile(const string& filename)
+{
+	BytestreamIn bin(filename);
+	uint16_t version;
+	bin >> version;
 
-    if (version > VERSION) {
-        throw std::runtime_error("Unsupported version of LVD!");
-    }
+	if (version > VERSION)
+	{
+		throw std::runtime_error("Unsupported version of LVD!");
+	}
 
-    while (!bin.eof()) {
-        uint32_t identity;
-        bin >> identity;
+	while (!bin.eof())
+	{
+		uint32_t identity;
+		bin >> identity;
 
-        auto module = getModule(identity, version);
-        module->deserialize(bin, *this);
-    }
+		auto module = getModule(identity, version);
+		module->deserialize(bin, *this);
+	}
 }
 
-void LevelD::saveToFile(const string &filename) const {
-    BytestreamOut bout(filename);
-    bout << VERSION;
+void LevelD::saveToFile(const string& filename) const
+{
+	BytestreamOut bout(filename);
+	bout << VERSION;
 
-    ModuleMetadata metamod;
-    bout << LVLD_METADATA_CODE;
-    metamod.serialize(bout, *this);
+	ModuleMetadata metamod;
+	bout << LVLD_METADATA_CODE;
+	metamod.serialize(bout, *this);
 
-    if (!mesh.empty()) {
-        bout << LVLD_MESH_CODE;
-        auto meshmod = getModule(LVLD_MESH_CODE, VERSION);
-        meshmod->serialize(bout, *this);
-    }
+	if (!mesh.empty())
+	{
+		bout << LVLD_MESH_CODE;
+		auto meshmod = getModule(LVLD_MESH_CODE, VERSION);
+		meshmod->serialize(bout, *this);
+	}
 
-    if (!things.empty()) {
-        bout << LVLD_THINGS_CODE;
-        ModuleThings thngmod;
-        thngmod.serialize(bout, *this);
-    }
+	if (!things.empty())
+	{
+		bout << LVLD_THINGS_CODE;
+		auto thngmod = getModule(LVLD_THINGS_CODE, VERSION);
+		thngmod->serialize(bout, *this);
+	}
 
-    if (!triggers.empty()) {
-        bout << LVLD_TRIGGERS_CODE;
-        ModuleTriggers trigmod;
-        trigmod.serialize(bout, *this);
-    }
-	
-	if (!paths.empty()) {
-        bout << LVLD_PATHS_CODE;
-        ModulePaths pathmod;
-        pathmod.serialize(bout, *this);
-    }
+	if (!triggers.empty())
+	{
+		bout << LVLD_TRIGGERS_CODE;
+		auto trigmod = getModule(LVLD_TRIGGERS_CODE, VERSION);
+		trigmod->serialize(bout, *this);
+	}
 
-    bout.close();
+	if (!paths.empty())
+	{
+		bout << LVLD_PATHS_CODE;
+		auto pathmod = getModule(LVLD_PATHS_CODE, VERSION);
+		pathmod->serialize(bout, *this);
+	}
+
+	bout.close();
 }

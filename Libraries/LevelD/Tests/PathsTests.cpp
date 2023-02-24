@@ -2,7 +2,8 @@
 #include "../LevelD.hpp"
 #include "Assertions.hpp"
 
-TEST_CASE("Paths save/load", "[LevelD]") {
+TEST_CASE("Paths save/load", "[LevelD]")
+{
 	LevelD out;
 	LevelD in;
 	std::vector<LevelD::Path::Point> points = {
@@ -18,27 +19,32 @@ TEST_CASE("Paths save/load", "[LevelD]") {
 		{ 1, 1, 9 },
 		{ 42, 69, 1 }
 	};
-	
-	SECTION("Empty") {
-		out.paths.empty();
+
+	SECTION("Empty")
+	{
+		REQUIRE(out.paths.empty());
 	}
-	
-	SECTION("Defined path no points") {
-		out.paths.push_back({false, 10, {}});
+
+	SECTION("Defined path no points")
+	{
+		out.paths.push_back({ false, 10, 0, {} });
 	}
-	
-	SECTION("Defined path with some points") {
-		out.paths.push_back({true, 2, points});
+
+	SECTION("Defined path with some points")
+	{
+		out.paths.push_back({ true, 2, 1, points });
 	}
-	
-	SECTION("Thousand paths") {
-		for (unsigned i = 0; i < 1000; i++) {
-			out.paths.push_back({ static_cast<bool>(i % 2), i, points});
+
+	SECTION("Thousand paths")
+	{
+		for (unsigned i = 0; i < 1000; i++)
+		{
+			out.paths.push_back({ static_cast<bool>(i % 2), i, i, points });
 		}
 	}
-	
+
 	out.saveToFile("temp.lvd");
 	in.loadFromFile("temp.lvd");
-	
+
 	assertPaths(in, out);
 }

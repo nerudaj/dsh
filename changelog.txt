@@ -1,3 +1,8 @@
+v1.7.1
+ * Added layerId to Paths, Things and Triggers in LevelD
+
+---
+
 v1.7.0 changelog:
  * Added Paths module to LevelD format
  * Fix minor memory leak in LevelD deserialization

@@ -2,68 +2,53 @@ name: C/C++ CI
 
 on:
   push:
-    branches:
-      - master
+    branches: [master]
+  pull_requests:
+    branches: [master]
+
+env:
+  BUILD_DIR: ${{github.workspace}}/build
 
 jobs:
-  build-windows-mingw:
-    runs-on: windows-latest
+  build:
+    runs-on: [ windows-2022, ubuntu-latest ]
     
     steps:
-      - uses: actions/checkout@v1
-      - name: configure
-        run: cmake -G "MinGW Makefiles" -DCMAKE_SH="CMAKE_SH-NOTFOUND" .
-      - name: make
-        run: make
-      - name: test
-        run: ctest -V
-      - name: Pack
-        run: cpack
-      - name: Publish artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: dsh
-          path: ${{github.workspace}}/dsh*.zip
-          retention-days: 5
-        
-  build-windows-visual:
-    runs-on: windows-latest
+    - name: Checkout
+      uses: actions/checkout@v3
     
-    steps:
-    - uses: actions/checkout@v1
-    - name: configure
-      run: cmake .
-    - name: make
+    - name: Setup cmake
+      uses: jwlawson/actions-setup-cmake@1.13
+      with:
+        cmake-version: '3.23.2'
+    
+    - name: Configure
+      shell: cmd
       run: |
-        & "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\Common7\IDE\devenv" dsh.sln /Build Release /Project catch2
-        & "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\Common7\IDE\devenv" dsh.sln /Build Release
+        cmake --version
+        mkdir "${{env.BUILD_DIR}}"
+        cd "${{env.BUILD_DIR}}"
+        cmake ..
+    
+    - name: Build
+      shell: cmd
+      working-directory: ${{env.BUILD_DIR}}
+      run: |
+        cmake --build . --config Release
+    
+    - name: Test
+      shell: cmd
+      working-directory: ${{env.BUILD_DIR}}
+      run: |
+        ctest -C Release
+    
     - name: Pack
+      working-directory: ${{env.BUILD_DIR}}
       run: cpack
-    - name: Publish artifact
-      uses: actions/upload-artifact@v2
+    
+    - name: Store artifact
+      uses: actions/upload-artifact@v3
       with:
-        name: dsh
-        path: ${{github.workspace}}/dsh*.zip
-        retention-days: 5
-  
-  build-ubuntu:
-    runs-on: ubuntu-latest
-  
-    steps:
-    - uses: actions/checkout@v1
-    - name: configure
-      run: cmake .
-    - name: make
-      run: make
-    - name: tests
-      run: ctest -V
-    - name: package
-      run: cpack
-    - name: Pack
-      run: cpack
-    - name: Publish artifact
-      uses: actions/upload-artifact@v2
-      with:
-        name: dsh
-        path: ${{github.workspace}}/dsh*.zip
-        retention-days: 5
+        name: build-artifact
+        path: ${{env.BUILD_DIR}}/*.zip
+        retention-days: 1

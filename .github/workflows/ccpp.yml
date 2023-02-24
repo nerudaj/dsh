@@ -11,7 +11,11 @@ env:
 
 jobs:
   build:
-    runs-on: [ windows-2022, ubuntu-latest ]
+    strategy:
+      matrix:
+        os: [ ubuntu-latest, windows-2022 ]
+        
+    runs-on: ${{matrix.os}}
     
     steps:
     - name: Checkout

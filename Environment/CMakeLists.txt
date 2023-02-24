@@ -8,7 +8,9 @@ install(
 		doomsh.cmd
 		dsh.bat
 		unzip.vbs
+		unzip.bat
 		wget.js
+		wget.bat
 	DESTINATION
 		install
 )

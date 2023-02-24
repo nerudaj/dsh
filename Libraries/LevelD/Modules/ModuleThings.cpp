@@ -3,7 +3,7 @@
 
 void ModuleThings::serialize(BytestreamOut& bout, const LevelD& lvld) const
 {
-	std::runtime_error("DEPRECATED: Trying to serialize using outdated ModuleThings");
+	throw std::runtime_error("DEPRECATED: Trying to serialize using outdated ModuleThings");
 }
 
 void ModuleThings::deserialize(BytestreamIn& bin, LevelD& lvld) const

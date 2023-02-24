@@ -3,7 +3,7 @@
 
 void ModulePaths::serialize(BytestreamOut& bout, const LevelD& lvld) const
 {
-	std::runtime_error("DEPRECATED: Trying to serialize using outdated ModulePaths");
+	throw std::runtime_error("DEPRECATED: Trying to serialize using outdated ModulePaths");
 }
 
 void ModulePaths::deserialize(BytestreamIn& bin, LevelD& lvld) const

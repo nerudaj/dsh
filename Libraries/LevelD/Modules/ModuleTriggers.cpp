@@ -3,7 +3,7 @@
 
 void ModuleTriggers::serialize(BytestreamOut& bout, const LevelD& lvld) const
 {
-	std::runtime_error("DEPRECATED: Trying to serialize using outdated ModuleTriggers");
+	throw std::runtime_error("DEPRECATED: Trying to serialize using outdated ModuleTriggers");
 }
 
 void ModuleTriggers::deserialize(BytestreamIn& bin, LevelD& lvld) const

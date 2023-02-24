@@ -27,7 +27,6 @@ jobs:
         cmake-version: '3.23.2'
     
     - name: Configure
-      shell: cmd
       run: |
         cmake --version
         mkdir "${{env.BUILD_DIR}}"
@@ -35,16 +34,12 @@ jobs:
         cmake ..
     
     - name: Build
-      shell: cmd
       working-directory: ${{env.BUILD_DIR}}
-      run: |
-        cmake --build . --config Release
+      run: cmake --build . --config Release
     
     - name: Test
-      shell: cmd
       working-directory: ${{env.BUILD_DIR}}
-      run: |
-        ctest -C Release
+      run: ctest -C Release
     
     - name: Pack
       working-directory: ${{env.BUILD_DIR}}

@@ -1,4 +1,5 @@
 v1.7.x
+ * Debug files for MSVC are bundled with release
  * Catch2 is now fetched during compilation time, slightly speeding up build times
  * Improved exception message when trying to write too big string in LevelD
 

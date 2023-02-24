@@ -103,7 +103,7 @@ public:
 		uint32_t a1, a2, a3, a4, a5; // Can be used as arguments for executed action
 		std::string metadata; // Text metadata;
 
-		Trigger() : x(0), y(0), areaType(AreaType::Rectangle),
+		Trigger() : x(0), y(0), layerId(0), areaType(AreaType::Rectangle),
 			radius(0), width(0), height(0), id(0),
 			tag(0), type(0), a1(0), a2(0), a3(0), a4(0), a5(0),
 			metadata("")

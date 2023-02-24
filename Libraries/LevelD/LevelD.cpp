@@ -102,22 +102,22 @@ void LevelD::saveToFile(const string& filename) const
 	if (!things.empty())
 	{
 		bout << LVLD_THINGS_CODE;
-		ModuleThings thngmod;
-		thngmod.serialize(bout, *this);
+		auto thngmod = getModule(LVLD_THINGS_CODE, VERSION);
+		thngmod->serialize(bout, *this);
 	}
 
 	if (!triggers.empty())
 	{
 		bout << LVLD_TRIGGERS_CODE;
-		ModuleTriggers trigmod;
-		trigmod.serialize(bout, *this);
+		auto trigmod = getModule(LVLD_TRIGGERS_CODE, VERSION);
+		trigmod->serialize(bout, *this);
 	}
 
 	if (!paths.empty())
 	{
 		bout << LVLD_PATHS_CODE;
-		ModulePaths pathmod;
-		pathmod.serialize(bout, *this);
+		auto pathmod = getModule(LVLD_PATHS_CODE, VERSION);
+		pathmod->serialize(bout, *this);
 	}
 
 	bout.close();

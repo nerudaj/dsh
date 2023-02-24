@@ -26,18 +26,7 @@ set ( PROJECT_VERSION_MAJOR "1" )
 set ( PROJECT_VERSION_MINOR "7" )
 set ( PROJECT_VERSION_PATCH "1" )
 
-## Catch2
-include ( ExternalProject )
-ExternalProject_Add( catch2
-	URL                 "https://github.com/catchorg/Catch2/releases/download/v2.10.2/catch.hpp"
-	DOWNLOAD_DIR        "${CMAKE_CURRENT_BINARY_DIR}/catch2"
-	DOWNLOAD_NO_EXTRACT true
-	CONFIGURE_COMMAND   ""
-	BUILD_COMMAND       ""
-	INSTALL_COMMAND     ""
-)
-
-include_directories ( "${CMAKE_CURRENT_BINARY_DIR}/catch2" )
+include ( cmake/dependencies.cmake )
 
 ## Add subdirectories as needed
 add_subdirectory ( Libraries )

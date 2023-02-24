@@ -1,3 +1,8 @@
+v1.7.x
+ * Catch2 is now fetched during compilation time, slightly speeding up build times
+
+---
+
 v1.7.1
  * Added layerId to Paths, Things and Triggers in LevelD
 

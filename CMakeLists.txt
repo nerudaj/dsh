@@ -14,7 +14,7 @@ else()
 endif()
 
 set (CMAKE_INSTALL_PREFIX /tools)
-set (CMAKE_CXX_STANDARD 17)
+set (CMAKE_CXX_STANDARD 20)
 
 IF (MSVC)
 	set (CMAKE_CXX_FLAGS "/EHsc")

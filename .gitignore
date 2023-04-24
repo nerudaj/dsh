@@ -33,6 +33,7 @@
 
 # Cmake
 RELEASE
+_build
 build
 vsbuild
 Libraries/build

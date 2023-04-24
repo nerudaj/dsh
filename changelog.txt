@@ -1,3 +1,8 @@
+v1.x.x
+ * LevelD fires a meaningful exception if loaded file doesn't exist
+
+---
+
 v1.7.2
  * Debug files for MSVC are bundled with release
  * Catch2 is now fetched during compilation time, slightly speeding up build times

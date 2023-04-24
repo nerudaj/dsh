@@ -2,6 +2,8 @@
 #include "SwapEndian.hpp"
 #include <fstream>
 #include <stdexcept>
+#include <filesystem>
+#include <format>
 
 void BytestreamIn::checkStreamSize(std::size_t bytecount)
 {
@@ -82,6 +84,11 @@ BytestreamIn& BytestreamIn::operator>>(std::vector<uint16_t>& vec)
 
 BytestreamIn::BytestreamIn(const std::string& filename)
 {
+	if (!std::filesystem::exists(filename))
+	{
+		throw std::runtime_error(std::format("File {} does not exist", filename));
+	}
+
 	std::ifstream load(filename, std::ios::binary);
 
 	load.seekg(0, load.end);

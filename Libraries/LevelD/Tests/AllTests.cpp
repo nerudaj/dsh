@@ -40,7 +40,7 @@ TEST_CASE("Everything save/load", "[LevelD]")
 		};
 	}
 
-	SECTION("Bug: Too big mesh array", "[LevelD]")
+	SECTION("Bug: Too big mesh array")
 	{
 		// Chunk size used for resizing internal output buffer was smaller than the size of the
 		// mesh array - not enough memory was allocated and data were written outside of allocated memory.
@@ -53,6 +53,11 @@ TEST_CASE("Everything save/load", "[LevelD]")
 			});
 		out.things.resize(27);
 		out.triggers.resize(1);
+	}
+
+	SECTION("Throws exception when file does not exist")
+	{
+		REQUIRE_THROWS(in.loadFromFile("nonexistent"));
 	}
 
 	out.saveToFile("temp.lvd");
